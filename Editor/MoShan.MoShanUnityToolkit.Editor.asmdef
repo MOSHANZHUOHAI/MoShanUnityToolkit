@@ -1,0 +1,16 @@
+{
+    "name": "MoShan.MoShanUnityToolkit.Editor",
+    "rootNamespace": "MoShan.Unity",
+    "references": [
+        "MoShan.MoShanUnityToolkit"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
