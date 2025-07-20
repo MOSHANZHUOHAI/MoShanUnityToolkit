@@ -1,0 +1,12 @@
+{
+  "name": "com.moshanzhuohai.moshantoolkit",
+  "displayName": "墨山工具包",
+  "version": "0.0.1",
+  "unity": "2022.3",
+  "keywords": [ "MoShan", "Package" ],
+  "description": "墨山灼海的个人 Unity 工具包。",
+  "author": "墨山灼海 MoShanZhuoHai",
+  "dependencies": {
+
+  }
+}
