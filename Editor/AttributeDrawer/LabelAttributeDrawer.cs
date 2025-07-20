@@ -29,7 +29,7 @@ namespace MoShan.Unity.EditorExpand
         /// </summary>
         /// <param name="position">绘制区域</param>
         /// <param name="property">绘制属性</param>
-        /// <param name="label">绘制属性的标签</param>
+        /// <param name="label">绘制属性的 GUI 内容</param>
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             LabelAttribute target = attribute as LabelAttribute;
@@ -123,7 +123,7 @@ namespace MoShan.Unity.EditorExpand
         /// 获取【属性高度】
         /// </summary>
         /// <param name="property">序列化属性</param>
-        /// <param name="label">GUI内容</param>
+        /// <param name="label">绘制属性的 GUI 内容</param>
         /// <returns>返回属性在【<see cref="UnityEditor.InspectorWindow">检视窗口</see>】的绘制高度</returns>
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
