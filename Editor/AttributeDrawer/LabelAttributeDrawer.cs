@@ -14,7 +14,6 @@ namespace MoShan.Unity.EditorExpand
     /// 属性绘制器：标签特性
     /// </summary>
     /// <remarks>
-    /// <para/>用于在【<see cref="global::UnityEditor.InspectorWindow">检视窗口</see>】中显示自定义变量名称
     /// <para>
     /// <br><b>注意：</b></br>
     /// <br>该类型所在的脚本文件需要放置在【Editor】文件夹下；</br>
@@ -24,7 +23,7 @@ namespace MoShan.Unity.EditorExpand
     [CustomPropertyDrawer(typeof(LabelAttribute))] // 设置自定义属性绘制器对应的类型
     internal sealed class LabelAttributeDrawer : PropertyDrawer
     {
-        #region 生命周期函数
+        #region 生命周期方法
         /// <summary>
         /// 绘制 GUI 时
         /// </summary>
@@ -33,22 +32,22 @@ namespace MoShan.Unity.EditorExpand
         /// <param name="label">绘制属性的标签</param>
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            LabelAttribute attributeTarget = attribute as LabelAttribute;
+            LabelAttribute target = attribute as LabelAttribute;
 
             // 使用正则表达式判断属性的显示名称是否不匹配模式【Element \d+】，即是否以【Element】作为开头，且后面跟着一个或多个数字
             // 若属性是数组或列表的元素属性，为了在检视面板中正确显示每个元素的标签，则将属性的显示名称直接赋值给标签的文本
             if (!Regex.IsMatch(property.displayName, "Element \\d+"))
             {
                 // 判断 <【属性的自定义标签名称】是否不为【空】>
-                if (!string.IsNullOrWhiteSpace(attributeTarget.m_Name))
+                if (!string.IsNullOrWhiteSpace(target.Name))
                 {
                     // 设置【标签】为【自定义标签】
-                    label.text = attributeTarget.m_Name;
+                    label.text = target.Name;
                 }
             }
 
             // 更新【提示】
-            label.tooltip = attributeTarget.m_Tooltip;
+            label.tooltip = target.Tooltip;
 
             // 获取【缩进后的字段绘制区域】
             Rect fieldRect = EditorGUI.IndentedRect(position);
@@ -95,7 +94,7 @@ namespace MoShan.Unity.EditorExpand
                 LabelAttribute[] attributes = (LabelAttribute[])info.GetCustomAttributes(typeof(LabelAttribute), false);
 
                 // 若不存在自定义标签特性标记，则保留原有枚举元素名称
-                values[i] = attributes.Length == 0 ? names[i] : attributes[0].m_Name;
+                values[i] = attributes.Length == 0 ? names[i] : attributes[0].Name;
             }
 
             // 判断 <【序列化属性】是否为【多选枚举】>
@@ -132,7 +131,7 @@ namespace MoShan.Unity.EditorExpand
         }
         #endregion
 
-        #region 私有函数
+        #region 私有方法
         /// <summary>
         /// 判断【是否为标记枚举】
         /// </summary>

@@ -135,9 +135,9 @@ namespace MoShan.Unity.EditorExpand
         }
         #endregion
 
-        #region 构造函数
+        #region 构造方法
         /// <summary>
-        /// 构造函数
+        /// 构造方法
         /// </summary>
         static CompilerOptionsEditorUtility()
         {
@@ -177,7 +177,7 @@ namespace MoShan.Unity.EditorExpand
         }
         #endregion
 
-        #region 私有函数
+        #region 私有方法
 
         #region 菜单选项
         /// <summary>
@@ -219,9 +219,9 @@ namespace MoShan.Unity.EditorExpand
 
         #region 菜单选项验证
         /// <summary>
-        /// 验证函数：【<see cref="LockReloadAssemblies">锁定程序集重载</see>】
+        /// 验证方法：【<see cref="LockReloadAssemblies">锁定程序集重载</see>】
         /// </summary>
-        /// <returns>返回<see cref="LockReloadAssemblies">对应函数</see>是否可显示在菜单中的判断结果。</returns>
+        /// <returns>返回<see cref="LockReloadAssemblies">对应方法</see>是否可显示在菜单中的判断结果。</returns>
         [MenuItem("Tools/编译器选项/锁定程序集重载 _F1", true, 1)]
         private static bool LockReloadAssembliesValidate()
         {
@@ -229,9 +229,9 @@ namespace MoShan.Unity.EditorExpand
         }
 
         /// <summary>
-        /// 验证函数：【<see cref="UnlockReloadAssemblies">解锁程序集重载</see>】
+        /// 验证方法：【<see cref="UnlockReloadAssemblies">解锁程序集重载</see>】
         /// </summary>
-        /// <returns>返回<see cref="UnlockReloadAssemblies">对应函数</see>是否可显示在菜单中的判断结果。</returns>
+        /// <returns>返回<see cref="UnlockReloadAssemblies">对应方法</see>是否可显示在菜单中的判断结果。</returns>
         [MenuItem("Tools/编译器选项/解锁程序集重载 _F2", true, 2)]
         private static bool UnlockReloadAssembliesValidate()
         {
@@ -239,9 +239,9 @@ namespace MoShan.Unity.EditorExpand
         }
 
         /// <summary>
-        /// 验证函数：【<see cref="LockPlayingReloadAssemblies">锁定运行时程序集重载</see>】
+        /// 验证方法：【<see cref="LockPlayingReloadAssemblies">锁定运行时程序集重载</see>】
         /// </summary>
-        /// <returns>返回<see cref="LockPlayingReloadAssemblies">对应函数</see>是否可显示在菜单中的判断结果。</returns>
+        /// <returns>返回<see cref="LockPlayingReloadAssemblies">对应方法</see>是否可显示在菜单中的判断结果。</returns>
         [MenuItem("Tools/编译器选项/锁定运行时程序集重载", true, 21)]
         private static bool LockPlayingReloadAssembliesValidate()
         {
@@ -249,9 +249,9 @@ namespace MoShan.Unity.EditorExpand
         }
 
         /// <summary>
-        /// 验证函数：【<see cref="UnlockPlayingReloadAssemblies">解锁运行时程序集重载</see>】
+        /// 验证方法：【<see cref="UnlockPlayingReloadAssemblies">解锁运行时程序集重载</see>】
         /// </summary>
-        /// <returns>返回<see cref="UnlockPlayingReloadAssemblies">对应函数</see>是否可显示在菜单中的判断结果。</returns>
+        /// <returns>返回<see cref="UnlockPlayingReloadAssemblies">对应方法</see>是否可显示在菜单中的判断结果。</returns>
         [MenuItem("Tools/编译器选项/解锁运行时程序集重载", true, 22)]
         private static bool UnlockPlayingReloadAssembliesValidate()
         {
@@ -261,7 +261,7 @@ namespace MoShan.Unity.EditorExpand
 
         #endregion
 
-        #region 回调函数
+        #region 回调方法
         /// <summary>
         /// 编辑器运行模式状态变更时
         /// </summary>

@@ -11,7 +11,6 @@ namespace MoShan.Unity.EditorExpand
     /// 属性绘制器：只读特性
     /// </summary>
     /// <remarks>
-    /// <para/>用于在【<see cref="global::UnityEditor.InspectorWindow">检视窗口</see>】中显示自定义变量名称
     /// <para>
     /// <br><b>注意：</b></br>
     /// <br>该类型所在的脚本文件需要放置在【Editor】文件夹下；</br>
@@ -21,7 +20,7 @@ namespace MoShan.Unity.EditorExpand
     [CustomPropertyDrawer(typeof(ReadOnlyAttribute))] // 设置自定义属性绘制器对应的类型
     internal sealed class ReadOnlyAttributeDrawer : PropertyDrawer
     {
-        #region 生命周期函数
+        #region 生命周期方法
         /// <summary>
         /// 绘制 GUI 时
         /// </summary>

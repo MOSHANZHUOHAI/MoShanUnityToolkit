@@ -28,9 +28,9 @@ namespace MoShan.Unity.EngineExpand
     [AttributeUsage(AttributeTargets.Field, Inherited = false, AllowMultiple = false)] // 仅对字段生效，不可继承，单个字段上不允许添加多个该属性
     public sealed class ReadOnlyAttribute : PropertyAttribute
     {
-        #region 构造函数
+        #region 构造方法
         /// <summary>
-        /// 构造函数
+        /// 构造方法
         /// </summary>
         public ReadOnlyAttribute() { }
         #endregion

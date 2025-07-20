@@ -31,36 +31,36 @@ namespace MoShan.Unity.EngineExpand
     {
         #region 字段
         /// <summary>
-        /// 名称（只读）
+        /// 名称
         /// </summary>
-        public readonly string m_Name;
+        public readonly string Name;
 
         /// <summary>
-        /// 提示（只读）
+        /// 提示
         /// </summary>
-        public readonly string m_Tooltip;
+        public readonly string Tooltip;
         #endregion
 
-        #region 构造函数
+        #region 构造方法
         /// <summary>
-        /// 构造函数
+        /// 构造方法
         /// </summary>
         /// <param name="name">需要显示在【<see cref="UnityEditor.InspectorWindow">检视窗口</see>】中的自定义字段名称</param>
         public LabelAttribute(string name)
         {
-            m_Name    = string.IsNullOrWhiteSpace(name) ? string.Empty : name;
-            m_Tooltip = string.Empty;
+            Name    = string.IsNullOrWhiteSpace(name) ? string.Empty : name;
+            Tooltip = string.Empty;
         }
 
         /// <summary>
-        /// 构造函数
+        /// 构造方法
         /// </summary>
         /// <param name="name">需要显示在【<see cref="UnityEditor.InspectorWindow">检视窗口</see>】中的自定义字段名称</param>
         /// <param name="tooltip">当光标悬停在【<see cref="UnityEditor.InspectorWindow">检视窗口</see>】中的对应字段上时，需要显示的自定义提示信息</param>
         public LabelAttribute(string name, string tooltip)
         {
-            m_Name    = string.IsNullOrWhiteSpace(name)    ? string.Empty : name;
-            m_Tooltip = string.IsNullOrWhiteSpace(tooltip) ? string.Empty : tooltip;
+            Name    = string.IsNullOrWhiteSpace(name)    ? string.Empty : name;
+            Tooltip = string.IsNullOrWhiteSpace(tooltip) ? string.Empty : tooltip;
         }
         #endregion
     }
