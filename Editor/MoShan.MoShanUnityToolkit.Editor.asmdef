@@ -1,6 +1,6 @@
 {
     "name": "MoShan.MoShanUnityToolkit.Editor",
-    "rootNamespace": "MoShan.Unity",
+    "rootNamespace": "MoShan.Unity.EditorExpand",
     "references": [
         "MoShan.MoShanUnityToolkit"
     ],

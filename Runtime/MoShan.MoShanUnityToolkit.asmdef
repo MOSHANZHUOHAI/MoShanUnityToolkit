@@ -1,6 +1,6 @@
 {
     "name": "MoShan.MoShanUnityToolkit",
-    "rootNamespace": "MoShan.Unity",
+    "rootNamespace": "MoShan.Unity.EngineExpand",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

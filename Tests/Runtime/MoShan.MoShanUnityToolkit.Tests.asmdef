@@ -1,10 +1,8 @@
 {
     "name": "MoShan.MoShanUnityToolkit.Tests",
-    "rootNamespace": "MoShan.Unity",
+    "rootNamespace": "MoShan.Unity.EngineExpand.Test",
     "references": [
-        "MoShan.MoShanUnityToolkit",
-        "MoShan.MoShanUnityToolkit.Tests",
-        "MoShan.MoShanUnityToolkit.Editor"
+        "MoShan.MoShanUnityToolkit"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
