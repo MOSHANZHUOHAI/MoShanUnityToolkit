@@ -16,37 +16,40 @@ namespace MoShan.Unity.EditorExpand
     /// <para>
     /// <br><b>注意：</b></br>
     /// <br>该类型所在的脚本文件需要放置在【Editor】文件夹下；</br>
-    /// <br>该类型需要配合【<see cref="SceneNameAttribute">场景特性</see>】类型使用，且对应类型所在的脚本文件应放置在非【Editor】文件夹下。</br>
+    /// <br>该类型需要配合【<see cref="SceneNameAttribute">场景名称特性</see>】类型使用，且对应类型所在的脚本文件应放置在非【Editor】文件夹下。</br>
     /// </para>
     /// </remarks>
-    [CustomPropertyDrawer(typeof(SceneNameAttribute))]
+    [CustomPropertyDrawer(typeof(SceneNameAttribute))] // 设置自定义属性绘制器对应的类型
     public class SceneNameAttributeDrawer : PropertyDrawer
     {
         #region 静态私有函数
         /// <summary>
-        /// 获取【构建设置内的所有场景名称】
+        /// 获取【构建设置中的所有场景名称】
         /// </summary>
-        /// <returns>若【构建设置】内存在场景，返回构建设置内所有场景的名称；否则，返回元素数量为【0】的空数组。</returns>
-        private static string[] GetSceneNamesInBuildSettings()
+        /// <returns>若【构建设置】中存在场景，返回【构建设置中的所有场景的名称】；否则，返回【空数组】。</returns>
+        private static string[] GetBuildSettingsSceneNames()
         {
-            // 判断 <【构建设置（BuildSettings）】中是否不存在任何场景资产>
+            // 判断 <【构建设置】中是否不存在任何场景资产>
             if (EditorBuildSettings.scenes.Length == 0)
             {
                 // 返回【空数组】
                 return new string[0];
             }
 
-            // 获取【构建设置】中的所有场景
+            // 获取【构建设置】中的【所有场景】
             EditorBuildSettingsScene[] editorBuildSettingScenes = EditorBuildSettings.scenes;
 
             // 创建【场景名称数组】
-            string[] sceneNames = new string[editorBuildSettingScenes.Length];
+            string[] sceneNames = new string[editorBuildSettingScenes.Length + 1];
 
-            // 循环以记录所有【构建设置】中的【场景名称】到【场景名称数组】
-            for (int i = 0; i < editorBuildSettingScenes.Length; i++)
+            // 设置【场景名称数组】的【首个元素】为【无】
+            sceneNames[0] = "<None>";
+
+            // 循环以记录【构建设置中的所有场景名称】到【场景名称数组】
+            for (int i = 1; i <= editorBuildSettingScenes.Length; i++)
             {
                 // 获取【不附带文件扩展名的文件名称】，即【场景名称】
-                sceneNames[i] = Path.GetFileNameWithoutExtension(editorBuildSettingScenes[i].path);
+                sceneNames[i] = Path.GetFileNameWithoutExtension(editorBuildSettingScenes[i - 1].path);
             }
 
             return sceneNames;
@@ -76,16 +79,25 @@ namespace MoShan.Unity.EditorExpand
             // 获取【当前场景名称】
             string currentSceneName = property.stringValue;
 
-            // 获取【构建设置（BuildSettings）】内的所有场景名称
-            string[] sceneNames = GetSceneNamesInBuildSettings();
+            // 获取【构建设置中的所有场景名称】
+            string[] sceneNames = GetBuildSettingsSceneNames();
+
+            // 判断 <【构建设置】中是否不存在任何场景>
+            if (sceneNames.Length == 0)
+            {
+                property.stringValue = string.Empty;
+
+                EditorGUI.Popup(position, label.text, 0, sceneNames);
+            }
 
             // 开始【GUI 变更检测】
             EditorGUI.BeginChangeCheck();
 
-            int index = -1;
+            // 获取【索引】
+            int index = 0;
 
-            // 循环以对应所有【构建设置（BuildSettings）】中的【场景名称】
-            for (int i = 0; i < sceneNames.Length; ++i)
+            // 循环以查找【构建设置中的所有场景名称】中是否存在对应【当前场景名称】的元素
+            for (int i = 1; i < sceneNames.Length; ++i)
             {
                 // 判断 <是否存在对应的【场景名称】>
                 if (sceneNames[i].Equals(currentSceneName))
@@ -98,19 +110,21 @@ namespace MoShan.Unity.EditorExpand
 
             index = EditorGUI.Popup(position, label.text, index, sceneNames);
 
-            // 判断 <【构建设置】内是否不存在任何场景资产>
-            if (sceneNames.Length == 0)
-            {
-                property.stringValue = string.Empty;
-            }
-
             // 结束【GUI 变更检测】，并判断 <是否未发生 GUI 变更>
             if (!EditorGUI.EndChangeCheck())
             {
                 return;
             }
 
-            property.stringValue = sceneNames[index];
+            // 判断 <【索引】是否为【0】>
+            if (index == 0)
+            {
+                property.stringValue = string.Empty;
+            }
+            else
+            {
+                property.stringValue = sceneNames[index];
+            }
 
             // 结束【绘制属性】
             EditorGUI.EndProperty();

@@ -9,6 +9,8 @@ using UnityEngine;
 
 namespace MoShan.Unity.EditorExpand
 {
+    using Rect = global::UnityEngine.Rect;
+
     /// <summary>
     /// 检视窗口编辑器：按钮特性
     /// </summary>
