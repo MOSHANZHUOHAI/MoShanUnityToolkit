@@ -16,7 +16,7 @@ namespace MoShan.Unity.EditorExpand
     /// <para>
     /// <br><b>注意：</b></br>
     /// <br>该类型所在的脚本文件需要放置在【Editor】文件夹下；</br>
-    /// <br>该类型需要配合【<see cref="ButtonAttribute">标签特性</see>】类型使用，且对应类型所在的脚本文件应放置在非【Editor】文件夹下。</br>
+    /// <br>该类型需要配合【<see cref="ButtonAttribute">按钮特性</see>】类型使用，且对应类型所在的脚本文件应放置在非【Editor】文件夹下。</br>
     /// </para>
     /// </remarks>
     [CanEditMultipleObjects] // 可编辑多个对象
