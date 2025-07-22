@@ -22,7 +22,7 @@ namespace MoShan.Unity.EditorExpand
     [CustomPropertyDrawer(typeof(SceneNameAttribute))] // 设置自定义属性绘制器对应的类型
     public class SceneNameAttributeDrawer : PropertyDrawer
     {
-        #region 静态私有函数
+        #region 静态私有方法
         /// <summary>
         /// 获取【构建设置中的所有场景名称】
         /// </summary>
@@ -56,7 +56,7 @@ namespace MoShan.Unity.EditorExpand
         }
         #endregion
 
-        #region 生命周期函数
+        #region 生命周期方法
         /// <summary>
         /// 绘制 GUI 时
         /// </summary>

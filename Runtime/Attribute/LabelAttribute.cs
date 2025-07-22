@@ -14,6 +14,7 @@ namespace MoShan.Unity.EngineExpand
     /// </para>
     /// <para>
     /// <br><b>注意：</b></br>
+    /// <br>该类型的特性标签对字段进行标记时，应位于【MoShan.Unity.EngineExpand】命名空间中的其它继承了【PropertyAttribute】的特性标签之前，否则特性效果可能不会生效。</br>
     /// <br>该类型的特性标签对字段进行标记时，应位于其它 Unity 原生特性标签之前，否则特性效果可能不会生效。</br>
     /// <br>该类型所在的脚本文件应放置在非【Editor】文件夹下，否则会因为找不到该类型而导致报错。</br>
     /// </para>

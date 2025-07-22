@@ -32,7 +32,7 @@ namespace MoShan.Unity.EditorExpand
         private const float HEX_FIELD_WIDTH = 60.0f;
         #endregion
 
-        #region 生命周期函数
+        #region 生命周期方法
         /// <summary>
         /// 绘制 GUI 时
         /// </summary>
