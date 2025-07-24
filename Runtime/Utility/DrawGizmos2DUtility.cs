@@ -40,14 +40,14 @@ namespace MoShan.Unity.EngineExpand
         }
         #endregion
 
-        #region 构造函数
+        #region 构造方法
         /// <summary>
-        /// 构造函数
+        /// 构造方法
         /// </summary>
         static DrawGizmos2DUtility() { }
         #endregion
 
-        #region 公开函数
+        #region 公开方法
 
         #region 变更【颜色】
         /// <summary>
@@ -113,6 +113,15 @@ namespace MoShan.Unity.EngineExpand
                 // 恢复【线框颜色】为当前循环轮次对应的颜色
                 Gizmos.color = s_ColorRecords.Pop();
             }
+        }
+
+        /// <summary>
+        /// 变更【颜色】
+        /// </summary>
+        /// <param name="newColor"></param>
+        public static void ChangeColor(Color newColor)
+        {
+            Gizmos.color = newColor;
         }
         #endregion
 
@@ -228,7 +237,7 @@ namespace MoShan.Unity.EngineExpand
         #endregion
 
         /// <summary>
-        /// 内部绘制【线段】
+        /// 绘制【线段】
         /// </summary>
         /// <param name="from">起点</param>
         /// <param name="to">终点</param>
@@ -244,6 +253,22 @@ namespace MoShan.Unity.EngineExpand
         }
 
         /// <summary>
+        /// 绘制【射线】
+        /// </summary>
+        /// <param name="from">起点</param>
+        /// <param name="direction">方向</param>
+        public static void DrawRay(Vector2 from, Vector2 direction)
+        {
+            BeginMatrixChange();
+
+            ResetMatrix();
+
+            Gizmos.DrawRay(from, direction);
+
+            EndMatrixChange();
+        }
+
+        /// <summary>
         /// 绘制【圆形】
         /// </summary>
         /// <param name="center">圆形中心坐标</param>
@@ -254,13 +279,18 @@ namespace MoShan.Unity.EngineExpand
 
             ResetMatrix();
 
-            // 声明【间隔】
+            MoveMatrix(center);
+
+            // 初始化【半径】
+            radius = Math.Abs(radius);
+
+            // 获取【间隔】
             float delta = 2 * Mathf.PI / 360;
 
-            // 声明【起始点位】以记录首个点位坐标
-            Vector2 originPoint = new Vector2(radius * Mathf.Cos(0f), radius * Mathf.Sin(0f));
+            // 获取【起始点位】以记录首个点位坐标
+            Vector2 originPoint = new Vector2(radius * Mathf.Cos(0.0f), radius * Mathf.Sin(0.0f));
 
-            // 声明【开始点位】与【结束点位】
+            // 获取【开始点位】与【结束点位】
             Vector2 startPoint = originPoint;
             Vector2 endPoint = Vector2.zero;
 
@@ -574,23 +604,26 @@ namespace MoShan.Unity.EngineExpand
             MoveMatrix(center);
 
             #region 初始化【参数】
+            // 初始化【半径】
+            radius = Math.Abs(radius);
+
             // 约束输入【范围】
-            range = range % 360f;
+            range = range % 360.0f;
 
             // 判断 <【扇形范围】是否为【负数】>
-            if (range < 0f)
+            if (range < 0.0f)
             {
-                range = range + 360f;
+                range = range + 360.0f;
             }
 
             // 转换输入【范围】为【弧度制】
             range = range * Mathf.Deg2Rad;
             #endregion
 
-            // 声明【间隔】，化简：delta = range * Mathf.Deg2Rad / (int)range ≈ Mathf.Deg2Rad
+            // 获取【间隔】，化简：delta = range * Mathf.Deg2Rad / (int)range ≈ Mathf.Deg2Rad
             float delta = Mathf.Deg2Rad;
 
-            // 声明【开始点位】与【结束点位】
+            // 获取【开始点位】与【结束点位】
             Vector2 startPoint = new Vector2(radius * Mathf.Cos(-range / 2), radius * Mathf.Sin(-range / 2));
             Vector2 endPoint = Vector2.zero;
 
@@ -639,7 +672,7 @@ namespace MoShan.Unity.EngineExpand
         /// <param name="radius">椭圆半径</param>
         public static void DrawEllipse(Vector2 center, Vector2 radius)
         {
-            DrawEllipse(center, radius, 0f);
+            DrawEllipse(center, radius, 0.0f);
         }
 
         /// <summary>
@@ -659,7 +692,7 @@ namespace MoShan.Unity.EngineExpand
             MoveMatrix(center);
 
             // 声明【间隔】
-            float delta = 2 * Mathf.PI / 360f;
+            float delta = 2 * Mathf.PI / 360.0f;
 
             // 声明【起始点位】以记录首个点位坐标
             Vector2 originPoint = new Vector2(radius.x * Mathf.Cos(0.0f), radius.y * Mathf.Sin(0.0f));
@@ -1020,13 +1053,13 @@ namespace MoShan.Unity.EngineExpand
 
         #endregion
 
-        #region 私有函数
+        #region 私有方法
         /// <summary>
         /// 内部绘制【线段】
         /// </summary>
         /// <param name="from">起点</param>
         /// <param name="to">终点</param>
-        private static void InternalDrawLine(Vector2 from, Vector2 to)
+        private static void InternalDrawLine(Vector3 from, Vector3 to)
         {
             Gizmos.DrawLine(from, to);
         }
