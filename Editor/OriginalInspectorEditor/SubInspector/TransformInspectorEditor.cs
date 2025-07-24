@@ -25,6 +25,13 @@ namespace MoShan.Unity.EditorExpand
     [CustomEditor(typeof(Transform))]
     internal sealed class TransformInspectorEditor : OriginalComponentInspectorEditor<Transform>
     {
+        #region 常量
+        /// <summary>
+        /// 编辑器首选项键：是否显示扩展功能
+        /// </summary>
+        private const string IS_DISPLAY_EXTENSION_FUNCTION_EDITOR_PREFS_KEY = nameof(TransformInspectorEditor) + "." + nameof(m_IsDisplayExtensionFunction);
+        #endregion
+
         #region 静态字段
         /// <summary>
         /// 位置复制按钮内容
@@ -373,8 +380,8 @@ namespace MoShan.Unity.EditorExpand
         /// <inheritdoc/>
         protected override void OnEnter()
         {
-            // 将【是否显示扩展功能】存入【编辑器首选项】
-            m_IsDisplayExtensionFunction = EditorPrefs.GetBool($"{nameof(TransformInspectorEditor)}.{nameof(m_IsDisplayExtensionFunction)}");
+            // 从【编辑器首选项】中读取【是否显示扩展功能】
+            m_IsDisplayExtensionFunction = EditorPrefs.GetBool(IS_DISPLAY_EXTENSION_FUNCTION_EDITOR_PREFS_KEY);
         }
 
         /// <inheritdoc/>
@@ -412,8 +419,8 @@ namespace MoShan.Unity.EditorExpand
         /// <inheritdoc/>
         protected override void OnExit()
         {
-            // 从【编辑器首选项】中读取【是否显示扩展功能】
-            EditorPrefs.SetBool($"{nameof(TransformInspectorEditor)}.{nameof(m_IsDisplayExtensionFunction)}", m_IsDisplayExtensionFunction);
+            // 将【是否显示扩展功能】存入【编辑器首选项】
+            EditorPrefs.SetBool(IS_DISPLAY_EXTENSION_FUNCTION_EDITOR_PREFS_KEY, true);
         }
 
         /// <summary>

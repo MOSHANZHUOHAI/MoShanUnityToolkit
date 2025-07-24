@@ -204,7 +204,7 @@ namespace MoShan.Unity.EditorExpand
             GUI.enabled = false;
 
             // 判断 <是否显示目标脚本>
-            if (InspectorEditorUtility.IsShowTargetScript)
+            if (InspectorEditorUtility.IsDisplayTargetScript)
             {
                 EditorGUILayout.ObjectField
                 (
@@ -216,7 +216,7 @@ namespace MoShan.Unity.EditorExpand
             }
 
             // 判断 <是否显示编辑器脚本>
-            if (InspectorEditorUtility.IsShowEditorScript)
+            if (InspectorEditorUtility.IsDisplayEditorScript)
             {
                 EditorGUILayout.ObjectField
                 (

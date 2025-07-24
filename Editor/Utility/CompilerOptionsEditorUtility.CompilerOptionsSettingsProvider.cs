@@ -7,20 +7,20 @@ using UnityEngine;
 namespace MoShan.Unity.EditorExpand
 {
     /// <summary>
-    /// 编辑器实用程序：检视窗口编辑器
+    /// 编辑器实用程序：编译选项
     /// </summary>
-    public static partial class InspectorEditorUtility
+    internal static partial class CompilerOptionsEditorUtility
     {
         /// <summary>
-        /// 设置提供器：检视窗口编辑器
+        /// 设置提供器：编译选项
         /// </summary>
-        private sealed class InspectorEditorSettingsProvider : SettingsProvider
+        private sealed class CompilerOptionsSettingsProvider : SettingsProvider
         {
             #region 常量
             /// <summary>
             /// 路径
             /// </summary>
-            private const string PATH = "MoShan/检视窗口编辑器";
+            private const string PATH = "MoShan/编译选项";
 
             /// <summary>
             /// 作用域
@@ -34,17 +34,17 @@ namespace MoShan.Unity.EditorExpand
             /// <summary>
             /// 关键词
             /// </summary>
-            private static readonly IEnumerable<string> KEYWORDS = new HashSet<string>(new[] { "Is", "Show", "Script", "Target", "Editor" });
+            private static readonly IEnumerable<string> KEYWORDS = new HashSet<string>(new[] { "Is", "Lock", "CompilerOptions" });
             #endregion
 
             #region 构造方法
             /// <summary>
             /// 构造方法
             /// </summary>
-            public InspectorEditorSettingsProvider() : base(PATH, SCOPES, KEYWORDS)
+            public CompilerOptionsSettingsProvider() : base(PATH, SCOPES, KEYWORDS)
             {
                 // 设置【名称】
-                label = "检视窗口编辑器";
+                label = "编译选项";
             }
             #endregion
 
@@ -55,16 +55,16 @@ namespace MoShan.Unity.EditorExpand
             /// <param name="searchContext">搜索上下文</param>
             public override void OnGUI(string searchContext)
             {
-                IsDisplayTargetScript = EditorGUILayout.Toggle
+                IsLock = EditorGUILayout.Toggle
                 (
-                    new GUIContent("显示目标脚本", "显示检视窗口编辑器拓展的【目标类型的脚本】到检视窗口中对应区块的顶部。"),
-                    s_IsDisplayTargetScript
+                    new GUIContent("锁定程序集重载", "当脚本发生变更时，程序集不进行编译。"),
+                    s_IsLock
                 );
 
-                IsDisplayEditorScript = EditorGUILayout.Toggle
+                IsLockOnPlaying = EditorGUILayout.Toggle
                 (
-                    new GUIContent("显示编辑器脚本", "显示检视窗口编辑器拓展的【自身类型的脚本】到检视窗口中对应区块的顶部。"),
-                    s_IsDisplayEditorScript
+                    new GUIContent("锁定运行时程序集重载", "若编辑器处于运行时，当脚本发生变更时，程序集不进行编译。"),
+                    s_IsLockOnPlaying
                 );
             }
             #endregion

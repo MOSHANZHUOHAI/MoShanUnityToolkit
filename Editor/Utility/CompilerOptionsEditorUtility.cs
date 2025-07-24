@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,18 +10,18 @@ namespace MoShan.Unity.EditorExpand
     /// 编辑器实用程序：编译选项
     /// </summary>
     [InitializeOnLoad] // 加载 Unity 和重新编译脚本时初始化该类型
-    internal static class CompilerOptionsEditorUtility
+    internal static partial class CompilerOptionsEditorUtility
     {
         #region 常量
         /// <summary>
-        /// 预设索引：<see cref="IsLock">是否锁定程序集重载</see>
+        /// 编辑器首选项键：是否锁定程序集重载
         /// </summary>
-        private const string ISLOCK_PRESET_INDEX = nameof(CompilerOptionsEditorUtility) + nameof(IsLock);
+        private const string IS_LOCK_EDITOR_PREFS_KEY            = nameof(CompilerOptionsEditorUtility) + "." + nameof(IsLock);
 
         /// <summary>
-        /// 预设索引：<see cref="IsLockOnPlaying">是否锁定运行时程序集重载</see>
+        /// 编辑器首选项键：是否锁定运行时程序集重载
         /// </summary>
-        private const string ISLOCKONPLAYING_PRESET_INDEX = nameof(CompilerOptionsEditorUtility) + nameof(IsLockOnPlaying);
+        private const string IS_LOCK_ON_PLAYING_EDITOR_PREFS_KEY = nameof(CompilerOptionsEditorUtility) + "." + nameof(IsLockOnPlaying);
         #endregion
 
         #region 字段
@@ -55,8 +56,8 @@ namespace MoShan.Unity.EditorExpand
 
                 s_IsLock = value;
 
-                // 更新编辑器预设
-                EditorPrefs.SetBool(ISLOCK_PRESET_INDEX, s_IsLock);
+                // 将【是否锁定程序集重载】存入【编辑器首选项】
+                EditorPrefs.SetBool(IS_LOCK_EDITOR_PREFS_KEY, s_IsLock);
 
                 // 判断 <是否锁定程序集重载>
                 if (s_IsLock)
@@ -99,8 +100,8 @@ namespace MoShan.Unity.EditorExpand
 
                 s_IsLockOnPlaying = value;
 
-                // 更新编辑器预设
-                EditorPrefs.SetBool(ISLOCKONPLAYING_PRESET_INDEX, s_IsLockOnPlaying);
+                // 将【是否锁定运行时程序集重载】存入【编辑器首选项】
+                EditorPrefs.SetBool(IS_LOCK_ON_PLAYING_EDITOR_PREFS_KEY, s_IsLockOnPlaying);
 
                 // 判断 <是否锁定运行时程序集重载>
                 if (s_IsLockOnPlaying)
@@ -141,9 +142,11 @@ namespace MoShan.Unity.EditorExpand
         /// </summary>
         static CompilerOptionsEditorUtility()
         {
-            // 获取编辑器预设
-            s_IsLock          = EditorPrefs.GetBool(ISLOCK_PRESET_INDEX         , false);
-            s_IsLockOnPlaying = EditorPrefs.GetBool(ISLOCKONPLAYING_PRESET_INDEX, false);
+            // 从【编辑器首选项】中读取【是否锁定程序集重载】
+            s_IsLock          = EditorPrefs.GetBool(IS_LOCK_EDITOR_PREFS_KEY           , false);
+
+            // 从【编辑器首选项】中读取【是否锁定运行时程序集重载】
+            s_IsLockOnPlaying = EditorPrefs.GetBool(IS_LOCK_ON_PLAYING_EDITOR_PREFS_KEY, false);
 
             // 判断 <是否锁定程序集重载>
             if (s_IsLock)
@@ -178,6 +181,57 @@ namespace MoShan.Unity.EditorExpand
         #endregion
 
         #region 私有方法
+        /// <summary>
+        /// 创建【设置提供器】
+        /// </summary>
+        /// <returns>返回添加条目到【首选项窗口】或【项目设置窗口】所需的设置提供器。</returns>
+        [SettingsProvider] // 标记该方法可创建【设置提供器】以添加条目到【首选项窗口】或【项目设置窗口】，修饰方法必须为静态类型下的静态方法
+        private static SettingsProvider CreateSettingsProvider()
+        {
+            return new CompilerOptionsSettingsProvider();
+        }
+
+        /// <summary>
+        /// 编辑器运行模式状态变更时
+        /// </summary>
+        /// <param name="playModeState">当前编辑器运行模式状态变更</param>
+        private static void OnPlayModeStateChanged(PlayModeStateChange playModeState)
+        {
+            // 判断 <是否锁定程序集重载>
+            if (s_IsLock)
+            {
+                // 锁定程序集重载
+                EditorApplication.LockReloadAssemblies();
+
+                return;
+            }
+
+            switch (playModeState)
+            {
+                // 退出【编辑】模式时，进入【运行】模式前
+                case PlayModeStateChange.ExitingEditMode:
+                    break;
+                // 退出【运行】模式时，进入【编辑】模式前
+                case PlayModeStateChange.ExitingPlayMode:
+                    break;
+
+                // 进入【编辑】模式后，下次更新时调用
+                case PlayModeStateChange.EnteredEditMode:
+                    // 解锁程序集重载
+                    EditorApplication.UnlockReloadAssemblies();
+                    break;
+
+                // 进入【运行】模式后，下次更新时调用
+                case PlayModeStateChange.EnteredPlayMode:
+                    // 判断 <是否锁定运行时程序集重载>
+                    if (s_IsLockOnPlaying)
+                    {
+                        // 锁定程序集重载
+                        EditorApplication.LockReloadAssemblies();
+                    }
+                    break;
+            }
+        }
 
         #region 菜单选项
         /// <summary>
@@ -259,50 +313,6 @@ namespace MoShan.Unity.EditorExpand
         }
         #endregion
 
-        #endregion
-
-        #region 回调方法
-        /// <summary>
-        /// 编辑器运行模式状态变更时
-        /// </summary>
-        /// <param name="playModeState">当前编辑器运行模式状态变更</param>
-        private static void OnPlayModeStateChanged(PlayModeStateChange playModeState)
-        {
-            // 判断 <是否锁定程序集重载>
-            if (s_IsLock)
-            {
-                // 锁定程序集重载
-                EditorApplication.LockReloadAssemblies();
-
-                return;
-            }
-
-            switch (playModeState)
-            {
-                // 退出【编辑】模式时，进入【运行】模式前
-                case PlayModeStateChange.ExitingEditMode:
-                    break;
-                // 退出【运行】模式时，进入【编辑】模式前
-                case PlayModeStateChange.ExitingPlayMode:
-                    break;
-
-                // 进入【编辑】模式后，下次更新时调用
-                case PlayModeStateChange.EnteredEditMode:
-                    // 解锁程序集重载
-                    EditorApplication.UnlockReloadAssemblies();
-                    break;
-
-                // 进入【运行】模式后，下次更新时调用
-                case PlayModeStateChange.EnteredPlayMode:
-                    // 判断 <是否锁定运行时程序集重载>
-                    if (s_IsLockOnPlaying)
-                    {
-                        // 锁定程序集重载
-                        EditorApplication.LockReloadAssemblies();
-                    }
-                    break;
-            }
-        }
         #endregion
     }
 }

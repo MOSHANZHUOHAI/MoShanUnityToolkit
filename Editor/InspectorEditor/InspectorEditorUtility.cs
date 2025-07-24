@@ -11,62 +11,76 @@ namespace MoShan.Unity.EditorExpand
     /// </summary>
     public static partial class InspectorEditorUtility
     {
+        #region 常量
+        /// <summary>
+        /// 编辑器首选项键：是否显示目标脚本
+        /// </summary>
+        private const string IS_DISPLAY_TARGET_SCRIPT_EDITOR_PREFS_KEY = nameof(TransformInspectorEditor) + "." + nameof(s_IsDisplayTargetScript);
+
+        /// <summary>
+        /// 编辑器首选项键：是否显示目标脚本
+        /// </summary>
+        private const string IS_DISPLAY_EDITOR_SCRIPT_EDITOR_PREFS_KEY = nameof(TransformInspectorEditor) + "." + nameof(s_IsDisplayEditorScript);
+        #endregion
+
         #region 字段
         /// <summary>
         /// 是否显示目标脚本
         /// </summary>
-        private static bool s_IsShowTargetScript = true;
+        private static bool s_IsDisplayTargetScript = true;
 
         /// <summary>
         /// 是否显示编辑器脚本
         /// </summary>
-        private static bool s_IsShowEditorScript = false;
+        private static bool s_IsDisplayEditorScript = false;
         #endregion
 
         #region 属性
         /// <summary>
         /// 是否显示目标脚本
         /// </summary>
-        public static bool IsShowTargetScript
+        public static bool IsDisplayTargetScript
         {
             get
             {
-                return s_IsShowTargetScript;
+                return s_IsDisplayTargetScript;
             }
             set
             {
                 // 判断 <【是否显示目标脚本】是否等于【输入值】>
-                if (s_IsShowTargetScript == value)
+                if (s_IsDisplayTargetScript == value)
                 {
                     return;
                 }
 
-                s_IsShowTargetScript = value;
+                s_IsDisplayTargetScript = value;
 
-                EditorPrefs.SetBool($"{nameof(InspectorEditorUtility)}.{nameof(s_IsShowTargetScript)}", value);
+                // 将【是否显示目标脚本】存入【编辑器首选项】
+                EditorPrefs.SetBool(IS_DISPLAY_TARGET_SCRIPT_EDITOR_PREFS_KEY, value);
             }
         }
 
         /// <summary>
         /// 是否显示编辑器脚本
         /// </summary>
-        public static bool IsShowEditorScript
+        public static bool IsDisplayEditorScript
         {
             get
             {
-                return IsShowEditorScript;
+                return IsDisplayEditorScript;
             }
             set
             {
                 // 判断 <【是否显示编辑器脚本】是否等于【输入值】>
-                if (s_IsShowEditorScript == value)
+                if (s_IsDisplayEditorScript == value)
                 {
                     return;
                 }
 
-                s_IsShowEditorScript = value;
+                s_IsDisplayEditorScript = value;
 
-                EditorPrefs.SetBool($"{nameof(InspectorEditorUtility)}.{nameof(s_IsShowTargetScript)}", value);
+                // 将【是否显示编辑器脚本】存入【编辑器首选项】
+                EditorPrefs.SetBool(IS_DISPLAY_EDITOR_SCRIPT_EDITOR_PREFS_KEY, value);
             }
         }
         #endregion
@@ -77,8 +91,11 @@ namespace MoShan.Unity.EditorExpand
         /// </summary>
         static InspectorEditorUtility()
         {
-            s_IsShowTargetScript = EditorPrefs.GetBool($"{nameof(InspectorEditorUtility)}.{nameof(s_IsShowTargetScript)}", true);
-            s_IsShowEditorScript = EditorPrefs.GetBool($"{nameof(InspectorEditorUtility)}.{nameof(s_IsShowEditorScript)}", false);
+            // 从【编辑器首选项】中读取【是否显示目标脚本】
+            s_IsDisplayTargetScript = EditorPrefs.GetBool(IS_DISPLAY_TARGET_SCRIPT_EDITOR_PREFS_KEY, true);
+
+            // 从【编辑器首选项】中读取【是否显示编辑器脚本】
+            s_IsDisplayEditorScript = EditorPrefs.GetBool(IS_DISPLAY_EDITOR_SCRIPT_EDITOR_PREFS_KEY, false);
         }
         #endregion
 
