@@ -172,8 +172,8 @@ namespace MoShan.Unity.EditorExpand
         /// <summary>
         /// 获取【序列化属性】
         /// </summary>
-        /// <param name="serializedProperty">序列化对象</param>
-        protected virtual void GetSerializedProperties(SerializedObject serializedProperty) { }
+        /// <param name="serializedObject">序列化对象</param>
+        protected virtual void GetSerializedProperties(SerializedObject serializedObject) { }
 
         /// <summary>
         /// 进入时

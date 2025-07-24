@@ -358,7 +358,7 @@ namespace MoShan.Unity.EditorExpand
 
         #region 私有方法
         /// <inheritdoc/>
-        protected override void GetSerializedProperties(SerializedObject serializedProperty)
+        protected override void GetSerializedProperties(SerializedObject serializedObject)
         {
             // 获取序列化属性：相对坐标
             m_LocalPositionProperty = serializedObject.FindProperty("m_LocalPosition");
@@ -367,7 +367,7 @@ namespace MoShan.Unity.EditorExpand
             m_LocalRotationProperty = serializedObject.FindProperty("m_LocalRotation");
 
             // 获取序列化属性：相对缩放
-            m_LocalScaleProperty    = serializedObject.FindProperty("m_LocalScale");
+            m_LocalScaleProperty = serializedObject.FindProperty("m_LocalScale");
         }
 
         /// <inheritdoc/>

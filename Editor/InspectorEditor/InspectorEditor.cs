@@ -16,7 +16,68 @@ namespace MoShan.Unity.EditorExpand
     /// <br>该类型所在的脚本文件应放在【Editor】文件夹下。</br>
     /// </para>
     /// </remarks>
-    /// <typeparam name="TUnityObject">泛型 Unity 对象</typeparam>
+    /// <typeparam name="TUnityObject">泛型 Unity 对象，建议为 MonoBahviour 或 ScriptableObejct 的子级类型</typeparam>
+    /// <example>
+    /// <code><![CDATA[
+    /// 
+    /// /// <summary>
+    /// /// 检视窗口编辑器：示例脚本
+    /// /// <para>注意：该脚本需要放在 Editor 文件夹下</para>
+    /// /// </summary>
+    /// [CustomEditor(typeof(Example))] // 设置自定义检视窗口编辑器对应的类型
+    /// public sealed class ExampleInspectorEditor : ScriptEditorBase<ExampleEditor>
+    /// {
+    ///     #region 字段
+    ///     /// <summary>
+    ///     /// 序列化属性：名称
+    ///     /// </summary>
+    ///     private m_NameSerializedProperty
+    ///     #endregion
+    ///     
+    ///     #region 属性
+    ///     /// <inheritdoc/>
+    ///     protected virtual string Name
+    ///     {
+    ///         get
+    ///         {
+    ///             return "示例组件";
+    ///         }
+    ///     }
+    ///     #endregion
+    ///     
+    ///     #region 私有方法
+    ///     /// <inheritdoc/>
+    ///     protected override void GetSerializedProperties(SerializedObject serializedProperty)
+    ///     {
+    ///         // 获取【绘制时需要用到的序列化属性】，示例如下：
+    ///         
+    ///         // 获取序列化属性：名称
+    ///         m_NameSerializedProperty = serializedObject.FindProperty("m_Name");
+    ///     }    
+    ///     
+    ///     /// <inheritdoc/>
+    ///     protected override void OnDraw()
+    ///     {
+    ///         // 绘制【需要显示在检视窗口中的编辑器拓展内容】，示例如下：
+    ///         
+    ///         // 开始【GUI 变更检测】
+    ///         EditorGUI.BeginChangeCheck();
+    ///         
+    ///         // 绘制属性：名称
+    ///         EditorGUILayout.PropertyField(m_NameSerializedProperty);
+    ///
+    ///         // 停止【GUI 变更检测】，并判断 <是否发生变更>
+    ///         if (EditorGUI.BeginChangeCheck())
+    ///         {
+    ///             // 应用【修改后的属性】
+    ///             base.serializedObject.ApplyModifiedProperties();
+    ///         }
+    ///     }
+    ///     #endregion
+    /// }
+    /// 
+    /// ]]></code>
+    /// </example>
     // [CanEditMultipleObjects] // 可以编辑多个对象
     // [CustomEditor(typeof(TUnityObject))] // 设置自定义检视窗口编辑器对应的类型
     public abstract class InspectorEditor<TUnityObject> : Editor
@@ -107,7 +168,7 @@ namespace MoShan.Unity.EditorExpand
             // 获取【序列化对象】
             SerializedObject serializedObject = base.serializedObject;
 
-            // 判断 <【序列化对象】是否为空>
+            // 判断 <【序列化对象】是否为【空】>
             if (serializedObject != null)
             {
                 GetSerializedProperties(base.serializedObject);
@@ -188,8 +249,11 @@ namespace MoShan.Unity.EditorExpand
         /// <summary>
         /// 获取【序列化属性】
         /// </summary>
-        /// <param name="serializedProperty">序列化对象</param>
-        protected virtual void GetSerializedProperties(SerializedObject serializedProperty) { }
+        /// <remarks>
+        /// 在【<see cref="OnEnter">进入时</see>】之前调用
+        /// </remarks>
+        /// <param name="serializedObject">序列化对象</param>
+        protected virtual void GetSerializedProperties(SerializedObject serializedObject) { }
 
         /// <summary>
         /// 进入时

@@ -1,5 +1,5 @@
 #if UNITY_EDITOR
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -56,8 +56,6 @@ namespace MoShan.Unity.EditorExpand
             /// <param name="searchContext">搜索上下文</param>
             public override void OnGUI(string searchContext)
             {
-                base.OnGUI(searchContext);
-
                 IsShowTargetScript = EditorGUILayout.Toggle
                 (
                     new GUIContent("显示目标脚本", "显示检视窗口编辑器拓展的【目标类型的脚本】到检视窗口中对应区块的顶部。"),
