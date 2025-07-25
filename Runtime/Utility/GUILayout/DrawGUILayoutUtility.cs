@@ -1,9 +1,11 @@
 using System;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace MoShan.Unity.EngineExpand
 {
+    using Rect    = global::UnityEngine.Rect;
+    using Vector2 = global::UnityEngine.Vector2;
+
     /// <summary>
     /// 实用程序：自动布局 IMGUI 绘制
     /// </summary>
@@ -22,17 +24,59 @@ namespace MoShan.Unity.EngineExpand
         /// 边框宽度
         /// </summary>
         private const int BORDER_WIDTH = 4;
+
+        /// <summary>
+        /// 缩进宽度
+        /// </summary>
+        private const int INDENT_WIDTH = 15;
+
+        /// <summary>
+        /// 前缀标签宽度下限
+        /// </summary>
+        private const int MIN_PREFIX_LABEL_WIDTH = 150;
         #endregion
 
         #region 字段
         /// <summary>
-        /// 字段宽度
+        /// 缩进级别
         /// </summary>
-        private static int s_FieldWidth = 0;
+        private static int s_IndentLevel = 0;
         #endregion
 
         #region 属性
+        /// <summary>
+        /// 缩进级别
+        /// </summary>
+        public static int IndentLevel
+        {
+            get
+            {
+                return s_IndentLevel;
+            }
+            set
+            {
+                int newValue = value > 0 ? value : 0;
 
+                // 判断 <【缩进级别】是否等于【输入值】>
+                if (s_IndentLevel == value)
+                {
+                    return;
+                }
+
+                s_IndentLevel = value;
+            }
+        }
+
+        /// <summary>
+        /// 缩进空间
+        /// </summary>
+        public static int IndentSpace
+        {
+            get
+            {
+                return s_IndentLevel * INDENT_WIDTH;
+            }
+        }
         #endregion
 
         #region 公开方法
@@ -43,7 +87,7 @@ namespace MoShan.Unity.EngineExpand
         /// <returns></returns>
         public static Rect GetControlRect(float height)
         {
-            return GUILayoutUtility.GetRect(s_FieldWidth, int.MaxValue, height, height);
+            return GUILayoutUtility.GetRect(0.0f, int.MaxValue, height, height);
         }
 
         /// <summary>
@@ -286,7 +330,66 @@ namespace MoShan.Unity.EngineExpand
         }
 
         /// <summary>
-        /// 获取【控件】位置
+        /// 获取【前缀标签位置】
+        /// </summary>
+        /// <param name="totalPosition">用于绘制前缀标签和后续控件的绘制位置</param>
+        /// <param name="label">标签</param>
+        /// <returns>返回前缀标签的绘制位置。</returns>
+        public static Rect GetPrefixLabelPosition(Rect totalPosition, GUIContent label)
+        {
+            // 判断 <【标签】是否为【空】>
+            if (label == null || label == GUIContent.none)
+            {
+                return totalPosition;
+            }
+
+            // 判断 <【前缀标签宽度上限】是否大于【输入位置宽度】>，即<是否无法绘制【控件】>
+            if (MIN_PREFIX_LABEL_WIDTH >= totalPosition.width)
+            {
+                totalPosition.x = Mathf.Min(totalPosition.x + IndentSpace, totalPosition.x + totalPosition.width);
+
+                totalPosition.width = IndentSpace >= totalPosition.width ? 0.0f : totalPosition.width - IndentSpace;
+
+                // 判断 <【前缀标签宽度】是否小于等于【0】>，即<是否无法绘制【前缀标签】>
+                if (totalPosition.width <= 0.0f)
+                {
+                    totalPosition.height = 0.0f;
+                }
+
+                return totalPosition;
+            }
+
+            // 获取【前缀标签宽度】
+            float prefixLabelWidth;
+
+            // 判断 <【前缀标签宽度上限】是否大于【输入位置宽度的一半】>
+            if (MIN_PREFIX_LABEL_WIDTH >= totalPosition.width * 0.5f)
+            {
+                prefixLabelWidth = MIN_PREFIX_LABEL_WIDTH;
+            }
+            else
+            {
+                prefixLabelWidth = totalPosition.width * 0.5f;
+            }
+
+            // 获取【标签 X 轴坐标】
+            totalPosition.x = Mathf.Min(totalPosition.x + IndentSpace, prefixLabelWidth);
+
+            // 获取【标签宽度】
+            // 前缀标签宽度 = 总宽度 / 2 - 缩进空间
+            totalPosition.width = Mathf.Max(prefixLabelWidth - IndentSpace, 0.0f);
+
+            // 判断 <【前缀标签宽度】是否小于等于【0】>，即<是否无法绘制【前缀标签】>
+            if (totalPosition.width <= 0.0f)
+            {
+                totalPosition.height = 0.0f;
+            }
+
+            return totalPosition;
+        }
+
+        /// <summary>
+        /// 获取【控件位置】
         /// </summary>
         /// <param name="totalPosition">用于绘制前缀标签和后续控件的绘制位置</param>
         /// <param name="prefixLabelPosition">前缀标签的绘制位置</param>
@@ -334,7 +437,7 @@ namespace MoShan.Unity.EngineExpand
             Rect totalPosition = GetControlRect(height);
 
             // 获取【前缀标签位置】
-            Rect prefixLabelPosition = DrawGUIUtility.GetPrefixLabelPosition(totalPosition);
+            Rect prefixLabelPosition = GetPrefixLabelPosition(totalPosition, label);
 
             // 绘制【前缀标签】
             DrawGUIUtility.DrawLabel(HandleBroder(prefixLabelPosition), label);
