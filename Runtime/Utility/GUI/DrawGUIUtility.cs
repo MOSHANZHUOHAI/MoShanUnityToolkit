@@ -16,25 +16,14 @@ namespace MoShan.Unity.EngineExpand
     {
         #region 常量
         /// <summary>
-        /// 缩进空间
+        /// 缩进宽度
         /// </summary>
-        private const int INDENT_SPACE = 15;
+        private const int INDENT_WIDTH = 15;
 
         /// <summary>
-        /// 前缀标签宽度
+        /// 前缀标签宽度下限
         /// </summary>
-        /// <remarks>
-        /// 前缀标签的宽度上限
-        /// </remarks>
-        private const int PREFIX_LABEL_WIDTH = 150;
-
-        /// <summary>
-        /// 控件宽度
-        /// </summary>
-        /// <remarks>
-        /// 控件的宽度下限
-        /// </remarks>
-        private const int CONTROL_WIDTH = 50;
+        private const int MIN_PREFIX_LABEL_WIDTH = 150;
         #endregion
 
         #region 字段
@@ -85,7 +74,7 @@ namespace MoShan.Unity.EngineExpand
         {
             get
             {
-                return s_IndentLevel * INDENT_SPACE;
+                return s_IndentLevel * INDENT_WIDTH;
             }
         }
 
@@ -126,6 +115,58 @@ namespace MoShan.Unity.EngineExpand
 
         #region 公开方法
         /// <summary>
+        /// 获取【前缀标签位置】
+        /// </summary>
+        /// <param name="totalPosition">用于绘制前缀标签和后续控件的绘制位置</param>
+        /// <returns>返回前缀标签的绘制位置。</returns>
+        public static Rect GetPrefixLabelPosition(Rect totalPosition)
+        {
+            // 判断 <【前缀标签宽度上限】是否大于【输入位置宽度】>，即<是否无法绘制【控件】>
+            if (MIN_PREFIX_LABEL_WIDTH >= totalPosition.width)
+            {
+                totalPosition.x = Mathf.Min(totalPosition.x + IndentSpace, totalPosition.x + totalPosition.width);
+
+                totalPosition.width = IndentSpace >= totalPosition.width ? 0.0f : totalPosition.width - IndentSpace;
+
+                // 判断 <【前缀标签宽度】是否小于等于【0】>，即<是否无法绘制【前缀标签】>
+                if (totalPosition.width <= 0.0f)
+                {
+                    totalPosition.height = 0.0f;
+                }
+
+                return totalPosition;
+            }
+
+            // 获取【前缀标签宽度】
+            float prefixLabelWidth;
+
+            // 判断 <【前缀标签宽度上限】是否大于【输入位置宽度的一半】>
+            if (MIN_PREFIX_LABEL_WIDTH >= totalPosition.width * 0.5f)
+            {
+                prefixLabelWidth = MIN_PREFIX_LABEL_WIDTH;
+            }
+            else
+            {
+                prefixLabelWidth = totalPosition.width * 0.5f;
+            }
+
+            // 获取【标签 X 轴坐标】
+            totalPosition.x = Mathf.Min(totalPosition.x + IndentSpace, prefixLabelWidth);
+
+            // 获取【标签宽度】
+            // 前缀标签宽度 = 总宽度 / 2 - 缩进空间
+            totalPosition.width = Mathf.Max(prefixLabelWidth - IndentSpace, 0.0f);
+
+            // 判断 <【前缀标签宽度】是否小于等于【0】>，即<是否无法绘制【前缀标签】>
+            if (totalPosition.width <= 0.0f)
+            {
+                totalPosition.height = 0.0f;
+            }
+
+            return totalPosition;
+        }
+
+        /// <summary>
         /// 绘制【标签】
         /// </summary>
         /// <param name="position">位置</param>
@@ -143,53 +184,6 @@ namespace MoShan.Unity.EngineExpand
         public static void DrawLabel(Rect position, GUIContent label)
         {
             GUI.Label(position, label);
-        }
-
-        /// <summary>
-        /// 绘制【前缀标签】
-        /// </summary>
-        /// <param name="totalPosition">用于绘制前缀标签和后续控件的绘制位置</param>
-        /// <returns>返回绘制前缀标签之后仍可用于后续控件的绘制位置。</returns>
-        public static Rect DrawPrefixLabel(Rect totalPosition, GUIContent label)
-        {
-            // 判断 <【标签】是否为【空】>
-            if (label == GUIContent.none)
-            {
-                return totalPosition;
-            }
-
-            // 获取【边界宽度】
-            int borderWidth = 4;
-
-            // 获取【标签宽度】
-            // 标签宽度 = 总宽度 - 控件宽度 - 缩进空间 - 2 * 边界宽度
-            float prefixLabel = totalPosition.width - CONTROL_WIDTH - IndentSpace - 2 * borderWidth;
-
-            // 判断 <【标签宽度】是否小于【0】>，即<是否无法绘制【前缀标签】>
-            if (prefixLabel <= 0)
-            {
-                return totalPosition;
-            }
-
-            // 获取【标签位置】
-            Rect labelPosition = new Rect
-            (
-                totalPosition.x + IndentSpace + borderWidth,
-                totalPosition.y,
-                prefixLabel,
-                totalPosition.height
-            );
-
-            // 绘制【标签】
-            DrawLabel(labelPosition, label);
-
-            return new Rect
-            (
-                totalPosition.x + PREFIX_LABEL_WIDTH + borderWidth,
-                totalPosition.y,
-                totalPosition.width - PREFIX_LABEL_WIDTH - 2 * borderWidth,
-                totalPosition.height
-            );
         }
 
         /// <summary>

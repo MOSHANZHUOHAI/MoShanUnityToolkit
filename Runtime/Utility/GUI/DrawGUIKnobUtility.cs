@@ -69,14 +69,19 @@ namespace MoShan.Unity.EngineExpand
                 knobRadius = 10.0f;
             }
 
-            // 设置【背景圆形半径】为【绘制区域尺寸】的【宽】与【高】中的最小值的一半减去【旋钮半径】
-            float backgroundRadius = Math.Min(Math.Abs(size.x), Math.Abs(size.y)) * 0.5f - knobRadius;
+            // 限定【旋钮半径】
+            knobRadius = Math.Clamp
+            (
+                knobRadius,
+                0.0f,
+                Math.Max(Math.Min(size.x, size.y), 0.0f) * 0.5f
+            );
 
-            // 判断 <【背景圆形半径】是否小于等于【0】>，即<是否无法绘制该控件>
-            if (backgroundRadius <= 0.0f)
-            {
-                return angle;
-            }
+            // 设置【背景圆形半径】为【绘制区域尺寸】的【宽】与【高】中的最小值的一半减去【旋钮半径】
+            float backgroundRadius = Math.Max(Math.Min(size.x, size.y), 0.0f) * 0.5f - knobRadius;
+
+            // 限定【背景圆形半径】
+            backgroundRadius = Math.Max(backgroundRadius, 0.0f);
 
             #region 获取【背景位置】
             // 获取【背景半尺寸】

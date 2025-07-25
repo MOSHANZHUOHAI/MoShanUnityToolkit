@@ -94,14 +94,22 @@ namespace MoShan.Unity.EngineExpand
             // 获取【绘制区域尺寸】
             Vector2 size = position.size;
 
-            // 判断 <旋钮半径是否小于等于【0】>，即<是否需要重置【旋钮半径】为预设值>
+            // 判断 <【旋钮半径】是否小于等于【0】>，即<是否需要重置【旋钮半径】为预设值>
             if (knobRadius <= 0.0f)
             {
                 knobRadius = 10.0f;
             }
 
+            // 限定【旋钮半径】
+            knobRadius = Math.Clamp
+            (
+                knobRadius,
+                0.0f,
+                Math.Max(Math.Min(position.width, position.height), 0.0f)
+            );
+
             // 获取【背景尺寸】
-            float backgroundWidth = size.x - 2 * knobRadius;
+            float backgroundWidth = Math.Max(size.x - 2 * knobRadius, 0.0f);
             float backgroundHeight = 6.0f;
 
             #region 获取【背景位置】
