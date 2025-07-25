@@ -1,47 +1,76 @@
 using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace MoShan.Unity.EngineExpand
 {
-    using Rect    = global::UnityEngine.Rect;
-    using Vector2 = global::UnityEngine.Vector2;
-
     /// <summary>
-    /// 实用程序：IMGUI 旋钮绘制
+    /// 实用程序：IMGUI 滑动条绘制
     /// </summary>
-    /// <remarks>
-    /// 内部一切涉及角度的计算均采用角度制，即输入角度与输出角度的取值范围均为[0°, 360°)，以正右为【0°】，逆时针增长
-    /// </remarks>
-    internal static class DrawGUIKnobUtility
+    public static class DrawGUISliderUtility
     {
         #region 常量
         /// <summary>
         /// 控件哈希值
         /// </summary>
-        private static readonly int CONTROL_HASH = nameof(DrawGUIKnobUtility).GetHashCode();
+        private static readonly int CONTROL_HASH = nameof(DrawGUITextFieldUtility).GetHashCode();
         #endregion
 
         #region 字段
         /// <summary>
-        /// 热控件值
+        /// 热滑动条控件值
         /// </summary>
         private static float s_HotControlValue = 0.0f;
         #endregion
 
-        #region 公开方法
+        #region 属性
         /// <summary>
-        /// 绘制【旋钮】
+        /// 绘制【整型滑动条】
         /// </summary>
-        /// <param name="position">位置</param>
         /// <param name="knobRadius">旋钮半径，取值范围为[0, +∞)</param>
-        /// <param name="angle">角度（角度制），取值范围为[0, 360)</param>
+        /// <param name="position">位置</param>
+        /// <param name="value">滑动条值</param>
+        /// <param name="min">最小值</param>
+        /// <param name="max">最大值</param>
+        /// <param name="isRetrunImmediately">是否立即返回结果</param>
+        /// <returns>返回用户输入的滑动条值。</returns>
+        public static int DrawIntSlider(Rect position, float knobRadius, int value, int min, int max, bool isRetrunImmediately)
+        {
+            return (int)DrawSlider(position, knobRadius, value, min, max, true, true, isRetrunImmediately);
+        }
+
+        /// <summary>
+        /// 绘制【滑动条】
+        /// </summary>
+        /// <param name="knobRadius">旋钮半径，取值范围为[0, +∞)</param>
+        /// <param name="position">位置</param>
+        /// <param name="value">滑动条值</param>
+        /// <param name="min">最小值</param>
+        /// <param name="max">最大值</param>
+        /// <param name="isInt">是否为整型</param>
         /// <param name="isRoundToInt">是否对返回结果进行四舍五入取整</param>
         /// <param name="isRetrunImmediately">是否立即返回结果</param>
-        /// <returns>返回用户输入的旋转角度，取值范围为[0, 360)。</returns>
-        public static float DrawKnob(Rect position, float knobRadius, float angle, bool isRoundToInt, bool isRetrunImmediately)
+        /// <returns>返回用户输入的滑动条值。</returns>
+        public static float DrawSlider(Rect position, float knobRadius, float value, float min, float max, bool isInt, bool isRoundToInt, bool isRetrunImmediately)
         {
+            // 判断 <是否为【整型】>
+            if (isInt)
+            {
+                value = (int)value;
+                min = (int)min;
+                max = (int)max;
+            }
+
+            // 判断 <【最小值】是否大于【最大值】>
+            if (min > max)
+            {
+                float temp = min;
+                min = max;
+                max = temp;
+            }
+
             // 判断 <【输入角度】是否为【NaN】>，即<【输入角度】是否无效>
-            if (float.IsNaN(angle))
+            if (float.IsNaN(value))
             {
                 try
                 {
@@ -54,8 +83,10 @@ namespace MoShan.Unity.EngineExpand
                     Debug.LogException(otherException);
                 }
 
-                angle = 0.0f;
+                value = min;
             }
+
+            value = Mathf.Clamp(value, min, max);
 
             // 获取【绘制区域中心】
             Vector2 center = position.center;
@@ -69,24 +100,18 @@ namespace MoShan.Unity.EngineExpand
                 knobRadius = 10.0f;
             }
 
-            // 设置【背景圆形半径】为【绘制区域尺寸】的【宽】与【高】中的最小值的一半减去【旋钮半径】
-            float backgroundRadius = Math.Min(Math.Abs(size.x), Math.Abs(size.y)) * 0.5f - knobRadius;
-
-            // 判断 <【背景圆形半径】是否小于等于【0】>，即<是否无法绘制该控件>
-            if (backgroundRadius <= 0.0f)
-            {
-                return angle;
-            }
+            // 获取【背景尺寸】
+            float backgroundWidth = size.x - 2 * knobRadius;
+            float backgroundHeight = 6.0f;
 
             #region 获取【背景位置】
-            // 获取【背景半尺寸】
-            Vector2 halfBackgroundSize = backgroundRadius * Vector2.one;
-
             // 获取【背景位置】
             Rect backgroundPosition = new Rect
             (
-                center - halfBackgroundSize,
-                2 * halfBackgroundSize
+                center.x - backgroundWidth * 0.5f,
+                center.y - backgroundHeight * 0.5f,
+                backgroundWidth,
+                backgroundHeight
             );
             #endregion
 
@@ -105,29 +130,29 @@ namespace MoShan.Unity.EngineExpand
             #endregion
 
             #region 获取【旋钮位置】
-            // 获取【当前角度】
-            float currentAngle;
+            // 获取【当前值】
+            float currentValue;
 
             // 判断 <【当前控件】是否拥有焦点>、<【当前事件类型】是否为【拖拽鼠标】>
             if (isHasFocus)
             {
-                // 设置【当前角度】为【热控件值】
-                currentAngle = s_HotControlValue;
+                // 设置【当前值】为【热控件值】
+                currentValue = s_HotControlValue;
             }
             else
             {
-                // 设置【当前角度】为【输入角度】
-                currentAngle = angle;
+                // 设置【当前值】为【输入角度】
+                currentValue = value;
             }
 
-            // 转换【当前角度】为【弧度制角度】
-            float radians = currentAngle * Mathf.Deg2Rad;
+            // 获取【当前值】在【输入范围】中对应的【比例】
+            float ratio = Mathf.Clamp01((currentValue - min) / (max - min));
 
             // 获取【旋钮中心】
             Vector2 knobCenter = new Vector2
             (
-                center.x + Mathf.Cos(radians) * backgroundRadius,
-                center.y - Mathf.Sin(radians) * backgroundRadius
+                backgroundPosition.x + ratio * backgroundPosition.width,
+                center.y
             );
 
             // 获取【旋钮位置】
@@ -154,7 +179,7 @@ namespace MoShan.Unity.EngineExpand
                     backgroundPosition.size + 2 * Vector2.one),
                     circleTexture,
                     Color.white,
-                    backgroundRadius + 1
+                    5 + 1
                 );
 
                 // 绘制【旋钮】描边
@@ -173,7 +198,7 @@ namespace MoShan.Unity.EngineExpand
                 backgroundPosition,
                 circleTexture,
                 Color.black,
-                backgroundRadius
+                5
             );
 
             // 绘制【旋钮】
@@ -188,7 +213,7 @@ namespace MoShan.Unity.EngineExpand
 
             #region 获取【返回值】
             // 获取【返回值】
-            float result = angle;
+            float result = value;
 
             switch (eventType)
             {
@@ -213,9 +238,9 @@ namespace MoShan.Unity.EngineExpand
                         GUIUtility.hotControl = controlId;
 
                         // 初始化【热控件值】
-                        s_HotControlValue = angle % 360.0f;
+                        s_HotControlValue = value;
 
-                        result = angle;
+                        result = value;
                     }
                     break;
 
@@ -236,24 +261,11 @@ namespace MoShan.Unity.EngineExpand
                     // 判断 <【当前控件】是否拥有焦点>
                     if (isHasFocus)
                     {
-                        // 获取【鼠标相对中心的方向】
-                        Vector2 direction = currentEvent.mousePosition - center;
-
-                        // 获取【鼠标相对旋钮中心的角度】，即【旋钮角度】
-                        float knobAngle = Mathf.Atan2(-direction.y, direction.x) * Mathf.Rad2Deg;
-
-                        // 判断 <【当前角度】是否小于【0】>
-                        if (knobAngle < 0)
-                        {
-                            // 标准化【当前角度】的取值范围到[0, 360)
-                            knobAngle += 360;
-                        }
+                        // 获取【鼠标相对起点的距离】
+                        float distance = currentEvent.mousePosition.x - backgroundPosition.x;
 
                         // 更新【热控件值】
-                        s_HotControlValue = knobAngle;
-
-                        // 更新【当前角度】为【热控件值】
-                        currentAngle = s_HotControlValue;
+                        s_HotControlValue = Mathf.Lerp(min, max, Mathf.Clamp01(distance / backgroundWidth));
 
                         // 使用事件
                         currentEvent.Use();
@@ -275,27 +287,8 @@ namespace MoShan.Unity.EngineExpand
             // 判断 <是否对返回结果进行四舍五入取整>
             if (isRoundToInt)
             {
-                result = (int)Math.Round(result) % 360;
-
-                currentAngle = (int)Math.Round(currentAngle) % 360;
+                result = (int)Math.Round(result);
             }
-
-            #region 绘制【标签】
-            // 判断 <是否存在足够位置绘制标签>
-            if (backgroundRadius >= 32)
-            {
-                /*
-                 * 经过测试，在使用默认旋钮半径（10 px）与标签样式的默认文本尺寸时，考虑到可显示的最大值为【 359.99°】，在保证可视化效果的情况下，【32 px】为可绘制标签的最小背景半径值。
-                 * 即默认情况下，若需要保证可视化效果，绘制区域的最小宽高为【84 px】。
-                 */
-
-                // 获取【标签文本】，在文本前添加空格以对冲文本末尾角度符号【°】的宽度导致的文本偏移
-                string labelText = string.Format(" {0}°", currentAngle.ToString("F2"));
-
-                // 绘制【标签】以显示【当前角度】
-                GUI.Label(position, new GUIContent(labelText), DrawGUIUtility.MiddleCenterLabelStyle);
-            }
-            #endregion
 
             return result;
 
@@ -327,7 +320,7 @@ namespace MoShan.Unity.EngineExpand
                 result = s_HotControlValue;
 
                 // 判断 <【输入值】是否不等于【返回值】>
-                if (angle != result)
+                if (value != result)
                 {
                     // 通知 GUI 已发生变更
                     GUI.changed = true;
