@@ -201,10 +201,10 @@ namespace MoShan.Unity.EngineExpand
             Rect fieldPosition = DrawPrefixLabel(FIELD_HEIGHT, label);
 
             // 获取【向量分量宽度】
-            float componentWidth = fieldPosition.width / 2;
+            float componentWidth = fieldPosition.width * 0.5f;
 
             // 获取【向量分量标签尺寸】
-            Vector2 componentLabelSize = new Vector2(12, fieldPosition.height);
+            Vector2 componentLabelSize = new Vector2(16.0f, fieldPosition.height);
 
             // 更新【向量分量宽度】
             componentWidth -= componentLabelSize.x;
@@ -212,7 +212,7 @@ namespace MoShan.Unity.EngineExpand
             // 更新【字段位置宽度】
             fieldPosition.width = componentWidth;
 
-            // 绘制【标签】
+            // 绘制【X 轴标签】
             DrawGUIUtility.DrawLabel(new Rect(fieldPosition.position, componentLabelSize), new GUIContent("X"));
 
             fieldPosition.x += componentLabelSize.x;
@@ -226,7 +226,7 @@ namespace MoShan.Unity.EngineExpand
 
             fieldPosition.x += componentWidth;
 
-            // 绘制【标签】
+            // 绘制【Y 轴标签】
             DrawGUIUtility.DrawLabel(new Rect(fieldPosition.position, componentLabelSize), new GUIContent("Y"));
 
             fieldPosition.x += componentLabelSize.x;

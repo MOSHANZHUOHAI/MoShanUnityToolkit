@@ -67,16 +67,6 @@ namespace MoShan.Unity.EngineExpand
         /// </summary>
         /// <param name="position">位置</param>
         /// <param name="label">标签</param>
-        public static void DrawLabel(Rect position, string label)
-        {
-            DrawLabel(position, new GUIContent(label));
-        }
-
-        /// <summary>
-        /// 绘制【标签】
-        /// </summary>
-        /// <param name="position">位置</param>
-        /// <param name="label">标签</param>
         public static void DrawLabel(Rect position, GUIContent label)
         {
             GUI.Label(position, label);

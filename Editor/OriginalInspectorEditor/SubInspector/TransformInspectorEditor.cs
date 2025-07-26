@@ -420,7 +420,7 @@ namespace MoShan.Unity.EditorExpand
         protected override void OnExit()
         {
             // 将【是否显示扩展功能】存入【编辑器首选项】
-            EditorPrefs.SetBool(IS_DISPLAY_EXTENSION_FUNCTION_EDITOR_PREFS_KEY, true);
+            EditorPrefs.SetBool(IS_DISPLAY_EXTENSION_FUNCTION_EDITOR_PREFS_KEY, m_IsDisplayExtensionFunction);
         }
 
         /// <summary>
