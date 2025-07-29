@@ -341,6 +341,8 @@ namespace MoShan.Unity.EngineExpand
             // 判断 <【标签】是否为【空】>
             if (label == null || label == GUIContent.none)
             {
+                totalPosition.size = Vector2.zero;
+
                 return totalPosition;
             }
 
