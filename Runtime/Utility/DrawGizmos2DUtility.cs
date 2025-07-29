@@ -10,6 +10,9 @@ namespace MoShan.Unity.EngineExpand
     /// <summary>
     /// 实用程序：二维线框绘制
     /// </summary>
+    /// <remarks>
+    /// 用于在【OnDrawGizmos】或【OnDrawGizmosSelected】生命周期方法期间进行绘制
+    /// </remarks>
     public static class DrawGizmos2DUtility
     {
         #region 字段

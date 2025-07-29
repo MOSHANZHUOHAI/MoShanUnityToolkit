@@ -9,7 +9,8 @@ namespace MoShan.Unity.EngineExpand
     /// 实用程序：IMGUI 绘制
     /// </summary>
     /// <remarks>
-    /// 内部一切涉及角度的计算均采用角度制，即输入角度与输出角度的取值范围均为[0°, 360°)，以正右为【0°】，逆时针增长
+    /// <para>用于在【OnGUI】生命周期方法期间进行绘制</para>
+    /// <para>内部一切涉及角度的计算均采用角度制，即输入角度与输出角度的取值范围均为[0°, 360°)，以正右为【0°】，逆时针增长</para>
     /// </remarks>
     public static class DrawGUIUtility
     {

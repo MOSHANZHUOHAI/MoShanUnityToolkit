@@ -9,6 +9,9 @@ namespace MoShan.Unity.EngineExpand
     /// <summary>
     /// 实用程序：绘制 GL
     /// </summary>
+    /// <remarks>
+    /// 在URP渲染管线下，需要在【OnGUI】生命周期方法期间进行绘制
+    /// </remarks>
     public static partial class DrawGLUtility
     {
         #region 字段
@@ -418,11 +421,11 @@ namespace MoShan.Unity.EngineExpand
                     break;
             }
 
-            // 开始【绘制】
-            s_IsDrawing = true;
-
             // 开始【绘制图元】
             GL.Begin((int)drawMode);
+
+            // 开始【绘制】
+            s_IsDrawing = true;
         }
 
         /// <summary>
@@ -430,14 +433,14 @@ namespace MoShan.Unity.EngineExpand
         /// </summary>
         private static void EndDraw()
         {
-            // 关闭【绘制】
-            s_IsDrawing = false;
-
             // 结束【绘制图元】
             GL.End();
 
             // 恢复【模型、视图和投影矩阵】为【矩阵堆栈顶部】
             GL.PopMatrix();
+
+            // 关闭【绘制】
+            s_IsDrawing = false;
         }
 
         /// <summary>

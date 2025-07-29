@@ -67,7 +67,7 @@ namespace MoShan.Unity.EditorExpand
         {
             get
             {
-                return IsDisplayEditorScript;
+                return s_IsDisplayEditorScript;
             }
             set
             {

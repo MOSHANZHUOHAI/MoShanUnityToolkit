@@ -25,7 +25,7 @@ namespace MoShan.Unity.EditorExpand
     /// /// <para>注意：该脚本需要放在 Editor 文件夹下</para>
     /// /// </summary>
     /// [CustomEditor(typeof(Example))] // 设置自定义检视窗口编辑器对应的类型
-    /// public sealed class ExampleInspectorEditor : ScriptEditorBase<ExampleEditor>
+    /// public sealed class ExampleInspectorEditor : InspectorEditor<Example>
     /// {
     ///     #region 字段
     ///     /// <summary>
