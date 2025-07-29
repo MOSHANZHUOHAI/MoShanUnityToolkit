@@ -291,12 +291,12 @@ namespace MoShan.Unity.EngineExpand
         /// 绘制【旋钮】
         /// </summary>
         /// <param name="label">标签</param>
-        /// <param name="knobRadius">旋钮半径，取值范围为[0, +∞)</param>
         /// <param name="angle">角度（角度制），取值范围为[0, 360)</param>
+        /// <param name="isCounterclockwise">是否逆时针</param>
         /// <param name="isRoundToInt">是否对返回结果进行四舍五入取整</param>
         /// <param name="isRetrunImmediately">是否立即返回结果</param>
         /// <returns>返回用户输入的旋转角度，取值范围为[0, 360)。</returns>
-        public static float DrawKnob(GUIContent label, float angle, bool isRoundToInt = false, bool isRetrunImmediately = false)
+        public static float DrawKnob(GUIContent label, float angle, bool isCounterclockwise = false, bool isRoundToInt = false, bool isRetrunImmediately = false)
         {
             // 获取【控件高度】
             int controlHeight = 84;
@@ -306,6 +306,7 @@ namespace MoShan.Unity.EngineExpand
                 DrawPrefixLabel(controlHeight, label),
                 8.0f,
                 angle,
+                isCounterclockwise,
                 isRoundToInt,
                 isRetrunImmediately
             );

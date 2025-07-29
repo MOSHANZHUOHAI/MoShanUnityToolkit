@@ -35,10 +35,11 @@ namespace MoShan.Unity.EngineExpand
         /// <param name="position">位置</param>
         /// <param name="knobRadius">旋钮半径，取值范围为[0, +∞)</param>
         /// <param name="angle">角度（角度制），取值范围为[0, 360)</param>
+        /// <param name="isCounterclockwise">是否逆时针</param>
         /// <param name="isRoundToInt">是否对返回结果进行四舍五入取整</param>
         /// <param name="isRetrunImmediately">是否立即返回结果</param>
         /// <returns>返回用户输入的旋转角度，取值范围为[0, 360)。</returns>
-        public static float DrawKnob(Rect position, float knobRadius, float angle, bool isRoundToInt, bool isRetrunImmediately)
+        public static float DrawKnob(Rect position, float knobRadius, float angle, bool isCounterclockwise, bool isRoundToInt, bool isRetrunImmediately)
         {
             // 判断 <【输入角度】是否为【NaN】>，即<【输入角度】是否无效>
             if (float.IsNaN(angle))
@@ -126,7 +127,7 @@ namespace MoShan.Unity.EngineExpand
             }
 
             // 转换【当前角度】为【弧度制角度】
-            float radians = currentAngle * Mathf.Deg2Rad;
+            float radians = currentAngle * Mathf.Deg2Rad * (isCounterclockwise ? -1 : 1);
 
             // 获取【旋钮中心】
             Vector2 knobCenter = new Vector2
@@ -216,7 +217,7 @@ namespace MoShan.Unity.EngineExpand
 
                         // 设置【GUI 实用程序】的【当前热控件 ID】为【当前控件 ID】
                         GUIUtility.hotControl = controlId;
-
+                        
                         // 初始化【热控件值】
                         s_HotControlValue = angle % 360.0f;
 
@@ -245,7 +246,17 @@ namespace MoShan.Unity.EngineExpand
                         Vector2 direction = currentEvent.mousePosition - center;
 
                         // 获取【鼠标相对旋钮中心的角度】，即【旋钮角度】
-                        float knobAngle = Mathf.Atan2(-direction.y, direction.x) * Mathf.Rad2Deg;
+                        float knobAngle;
+
+                        // 判断 <是否逆时针>
+                        if (isCounterclockwise)
+                        {
+                            knobAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                        }
+                        else
+                        {
+                            knobAngle = Mathf.Atan2(-direction.y, direction.x) * Mathf.Rad2Deg;
+                        }
 
                         // 判断 <【当前角度】是否小于【0】>
                         if (knobAngle < 0)
@@ -293,6 +304,12 @@ namespace MoShan.Unity.EngineExpand
                  * 经过测试，在使用默认旋钮半径（10 px）与标签样式的默认文本尺寸时，考虑到可显示的最大值为【 359.99°】，在保证可视化效果的情况下，【32 px】为可绘制标签的最小背景半径值。
                  * 即默认情况下，若需要保证可视化效果，绘制区域的最小宽高为【84 px】。
                  */
+
+                // 判断 <【当前角度】是否小于【0】>
+                if (currentAngle < 0)
+                {
+                    currentAngle += 360;
+                }
 
                 // 获取【标签文本】，在文本前添加空格以对冲文本末尾角度符号【°】的宽度导致的文本偏移
                 string labelText = string.Format(" {0}°", currentAngle.ToString("F2"));
