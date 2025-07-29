@@ -305,6 +305,8 @@ namespace MoShan.Unity.EngineExpand
                  * 即默认情况下，若需要保证可视化效果，绘制区域的最小宽高为【84 px】。
                  */
 
+                currentAngle %= 360;
+
                 // 判断 <【当前角度】是否小于【0】>
                 if (currentAngle < 0)
                 {
