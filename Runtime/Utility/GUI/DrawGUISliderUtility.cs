@@ -21,9 +21,31 @@ namespace MoShan.Unity.EngineExpand
         /// 热滑动条控件值
         /// </summary>
         private static float s_HotControlValue = 0.0f;
+
+        /// <summary>
+        /// 圆形纹理
+        /// </summary>
+        private static Texture2D s_CircleTexture;
         #endregion
 
-        #region 属性
+        #region 构造方法
+        /// <summary>
+        /// 构造方法
+        /// </summary>
+        static DrawGUISliderUtility()
+        {
+            // 创建【圆形纹理】
+            s_CircleTexture = new Texture2D(1, 1);
+
+            // 设置【圆形纹理】的【颜色】为【白色】
+            s_CircleTexture.SetPixel(0, 0, Color.white);
+
+            // 应用设置
+            s_CircleTexture.Apply();
+        }
+        #endregion
+
+        #region 公开方法
         /// <summary>
         /// 绘制【整型滑动条】
         /// </summary>
@@ -168,15 +190,6 @@ namespace MoShan.Unity.EngineExpand
             #endregion
 
             #region 绘制【控件】
-            // 创建【圆形纹理】
-            Texture2D circleTexture = new Texture2D(1, 1);
-
-            // 设置【圆形颜色】
-            circleTexture.SetPixel(0, 0, Color.white);
-
-            // 应用设置
-            circleTexture.Apply();
-
             // 判断 <【当前控件】是否拥有焦点>
             if (isHasFocus)
             {
@@ -185,7 +198,7 @@ namespace MoShan.Unity.EngineExpand
                 (
                     new Rect(backgroundPosition.position - Vector2.one,
                     backgroundPosition.size + 2 * Vector2.one),
-                    circleTexture,
+                    s_CircleTexture,
                     Color.white,
                     5 + 1
                 );
@@ -194,7 +207,7 @@ namespace MoShan.Unity.EngineExpand
                 DrawCircle
                 (
                     new Rect(knobPosition.position - Vector2.one, knobPosition.size + 2 * Vector2.one),
-                    circleTexture,
+                    s_CircleTexture,
                     Color.white,
                     knobRadius + 1
                 );
@@ -204,7 +217,7 @@ namespace MoShan.Unity.EngineExpand
             DrawCircle
             (
                 backgroundPosition,
-                circleTexture,
+                s_CircleTexture,
                 Color.black,
                 5
             );
@@ -213,7 +226,7 @@ namespace MoShan.Unity.EngineExpand
             DrawCircle
             (
                 knobPosition,
-                circleTexture,
+                s_CircleTexture,
                 Color.gray,
                 knobRadius
             );

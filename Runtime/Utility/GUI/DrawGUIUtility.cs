@@ -152,18 +152,20 @@ namespace MoShan.Unity.EngineExpand
         }
 
         /// <summary>
-        /// 绘制【旋钮】
+        /// 绘制【圆形滑动条】
         /// </summary>
         /// <param name="position">位置</param>
         /// <param name="knobRadius">旋钮半径，取值范围为[0, +∞)</param>
-        /// <param name="angle">角度（角度制），取值范围为[0, 360)</param>
+        /// <param name="value">值</param>
+        /// <param name="min">最小值</param>
+        /// <param name="max">最大值</param>
         /// <param name="isCounterclockwise">是否逆时针</param>
         /// <param name="isRoundToInt">是否对返回结果进行四舍五入取整</param>
         /// <param name="isRetrunImmediately">是否立即返回结果</param>
         /// <returns>返回用户输入的旋转角度，取值范围为[0, 360)。</returns>
-        public static float DrawKnob(Rect position, float knobRadius, float angle, bool isCounterclockwise = false, bool isRoundToInt = false, bool isRetrunImmediately = false)
+        public static float DrawCircleSlider(Rect position, float knobRadius, float value, float min, float max, bool isCounterclockwise = false, bool isRoundToInt = false, bool isRetrunImmediately = false)
         {
-            return DrawGUIKnobUtility.DrawKnob(position, knobRadius, angle, isCounterclockwise, isRoundToInt, isRetrunImmediately);
+            return DrawGUICircleSliderUtility.DrawCircleSlider(position, knobRadius, value, min, max, isCounterclockwise, isRoundToInt, isRetrunImmediately);
         }
         #endregion
     }
