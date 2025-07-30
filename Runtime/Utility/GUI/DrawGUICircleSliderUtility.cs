@@ -193,9 +193,7 @@ namespace MoShan.Unity.EngineExpand
                 // 绘制【背景】描边
                 DrawCircle
                 (
-                    new Rect(backgroundPosition.position - Vector2.one,
-                    backgroundPosition.size + 2 * Vector2.one),
-                    s_CircleTexture,
+                    new Rect(backgroundPosition.position - Vector2.one, backgroundPosition.size + 2 * Vector2.one),
                     Color.white,
                     backgroundRadius + 1
                 );
@@ -204,7 +202,6 @@ namespace MoShan.Unity.EngineExpand
                 DrawCircle
                 (
                     new Rect(knobPosition.position - Vector2.one, knobPosition.size + 2 * Vector2.one),
-                    s_CircleTexture,
                     Color.white,
                     knobRadius + 1
                 );
@@ -214,7 +211,6 @@ namespace MoShan.Unity.EngineExpand
             DrawCircle
             (
                 backgroundPosition,
-                s_CircleTexture,
                 Color.black,
                 backgroundRadius
             );
@@ -223,7 +219,6 @@ namespace MoShan.Unity.EngineExpand
             DrawCircle
             (
                 knobPosition,
-                s_CircleTexture,
                 Color.gray,
                 knobRadius
             );
@@ -358,15 +353,27 @@ namespace MoShan.Unity.EngineExpand
             #region 局部方法
             // 静态局部方法：绘制圆形
             // @position：位置
-            // @image：图像
             // @color：颜色
             // @radius：半径
-            static void DrawCircle(Rect position, Texture2D image, Color color, float radius)
+            static void DrawCircle(Rect position, Color color, float radius)
             {
+                // 判断 <【圆形纹理】是否为空>
+                if (s_CircleTexture == null)
+                {
+                    // 创建【圆形纹理】
+                    s_CircleTexture = new Texture2D(1, 1);
+
+                    // 设置【圆形纹理】的【颜色】为【白色】
+                    s_CircleTexture.SetPixel(0, 0, Color.white);
+
+                    // 应用设置
+                    s_CircleTexture.Apply();
+                }
+
                 GUI.DrawTexture
                 (
                     position,
-                    image,
+                    s_CircleTexture,
                     ScaleMode.StretchToFill,
                     true,
                     0,
