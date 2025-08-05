@@ -189,6 +189,23 @@ namespace MoShan.Unity.EngineExpand
         }
 
         /// <summary>
+        /// 绘制【颜色字段】
+        /// </summary>
+        /// <param name="label">标签</param>
+        /// <param name="value">值</param>
+        /// <param name="isRetrunImmediately">是否立即返回结果</param>
+        /// <returns>返回用户输入的颜色。</returns>
+        public static Color DrawColorField(GUIContent label, Color value, bool isRetrunImmediately = false)
+        {
+            return DrawGUIUtility.DrawColorField
+            (
+                DrawPrefixLabel(FIELD_HEIGHT, label),
+                value,
+                isRetrunImmediately
+            );
+        }
+
+        /// <summary>
         /// 绘制【二维向量字段】
         /// </summary>
         /// <param name="label">标签</param>

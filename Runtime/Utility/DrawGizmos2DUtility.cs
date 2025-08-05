@@ -19,12 +19,12 @@ namespace MoShan.Unity.EngineExpand
         /// <summary>
         /// 栈：矩阵变更记录
         /// </summary>
-        private readonly static Stack<Matrix4x4> s_MatrixRecords = new Stack<Matrix4x4>();
+        private static readonly Stack<Matrix4x4> s_MatrixRecords = new Stack<Matrix4x4>();
 
         /// <summary>
         /// 栈：颜色变更记录
         /// </summary>
-        private readonly static Stack<Color> s_ColorRecords = new Stack<Color>();
+        private static readonly Stack<Color> s_ColorRecords = new Stack<Color>();
         #endregion
 
         #region 属性
@@ -32,7 +32,7 @@ namespace MoShan.Unity.EngineExpand
         /// 颜色深度
         /// </summary>
         /// <remarks>
-        /// 当前已记录的 Gizmos 颜色变更的总数
+        /// 当前已记录的颜色变更的总数
         /// </remarks>
         public static int ColorDepth
         {
@@ -54,9 +54,9 @@ namespace MoShan.Unity.EngineExpand
 
         #region 变更【颜色】
         /// <summary>
-        /// 开始颜色变更
+        /// 开始【颜色变更】
         /// </summary>
-        /// <returns>开始颜色变更后，当前已记录的【线框颜色】变更的总数</returns>
+        /// <returns>返回开始颜色变更后，当前已记录的【线框颜色】变更的总数。</returns>
         public static int BeginColorChange()
         {
             // 记录当前【线框颜色】
@@ -66,10 +66,10 @@ namespace MoShan.Unity.EngineExpand
         }
 
         /// <summary>
-        /// 开始颜色变更
+        /// 开始【颜色变更】
         /// </summary>
-        /// <param name="newColor">需要变更的新线框颜色</param>
-        /// <returns>开始颜色变更后，当前已记录的【线框颜色】变更的总数</returns>
+        /// <param name="newColor">需要变更的新【线框颜色】</param>
+        /// <returns>返回开始颜色变更后，当前已记录的【线框颜色】变更的总数。</returns>
         public static int BeginColorChange(Color newColor)
         {
             // 记录当前【线框颜色】
@@ -82,9 +82,9 @@ namespace MoShan.Unity.EngineExpand
         }
 
         /// <summary>
-        /// 结束颜色变更
+        /// 结束【颜色变更】
         /// </summary>
-        /// <returns>结束颜色变更后，当前仍记录的【线框颜色】变更的总数</returns>
+        /// <returns>返回结束颜色变更后，当前仍记录的【线框颜色】变更的总数。</returns>
         public static int EndColorChange()
         {
             // 判断 <【颜色变更记录栈】是否为【空】>
@@ -100,7 +100,7 @@ namespace MoShan.Unity.EngineExpand
         }
 
         /// <summary>
-        /// 结束所有颜色变更
+        /// 结束【所有颜色变更】
         /// </summary>
         public static void EndAllColorChange()
         {
@@ -121,7 +121,7 @@ namespace MoShan.Unity.EngineExpand
         /// <summary>
         /// 变更【颜色】
         /// </summary>
-        /// <param name="newColor"></param>
+        /// <param name="newColor">需要变更的新【线框颜色】</param>
         public static void ChangeColor(Color newColor)
         {
             Gizmos.color = newColor;
@@ -130,9 +130,9 @@ namespace MoShan.Unity.EngineExpand
 
         #region 变更【矩阵】
         /// <summary>
-        /// 开始矩阵变更
+        /// 开始【矩阵变更】
         /// </summary>
-        /// <returns>开始矩阵变更后，当前已记录的【线框矩阵】变更的总数</returns>
+        /// <returns>返回开始矩阵变更后，当前已记录的【线框矩阵】变更的总数。</returns>
         public static int BeginMatrixChange()
         {
             // 记录当前【线框矩阵】
@@ -142,10 +142,10 @@ namespace MoShan.Unity.EngineExpand
         }
 
         /// <summary>
-        /// 开始矩阵变更
+        /// 开始【矩阵变更】
         /// </summary>
         /// <param name="nextColor">需要变更的新线框矩阵</param>
-        /// <returns>开始矩阵变更后，当前已记录的【线框矩阵】变更的总数</returns>
+        /// <returns>返回开始矩阵变更后，当前已记录的【线框矩阵】变更的总数。</returns>
         public static int BeginMatrixChange(Matrix4x4 newMatrix)
         {
             // 记录当前【线框矩阵】
@@ -158,9 +158,9 @@ namespace MoShan.Unity.EngineExpand
         }
 
         /// <summary>
-        /// 结束矩阵变更
+        /// 结束【矩阵变更】
         /// </summary>
-        /// <returns>结束矩阵变更后，当前仍记录的【线框矩阵】变更的总数</returns>
+        /// <returns>返回结束矩阵变更后，当前仍记录的【线框矩阵】变更的总数。</returns>
         public static int EndMatrixChange()
         {
             // 判断 <【矩阵变更记录栈】是否为【空】>
@@ -176,7 +176,7 @@ namespace MoShan.Unity.EngineExpand
         }
 
         /// <summary>
-        /// 结束所有矩阵变更
+        /// 结束【所有矩阵变更】
         /// </summary>
         public static void EndAllMatrixChange()
         {

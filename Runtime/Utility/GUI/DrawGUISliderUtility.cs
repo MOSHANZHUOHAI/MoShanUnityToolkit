@@ -21,28 +21,26 @@ namespace MoShan.Unity.EngineExpand
         /// 热滑动条控件值
         /// </summary>
         private static float s_HotControlValue = 0.0f;
+        #endregion
 
+        #region 属性
         /// <summary>
         /// 圆形纹理
         /// </summary>
-        private static Texture2D s_CircleTexture;
+        private static Texture2D CircleTexture
+        {
+            get
+            {
+                return DrawGUIUtility.RectTexture;
+            }
+        }
         #endregion
 
         #region 构造方法
         /// <summary>
         /// 构造方法
         /// </summary>
-        static DrawGUISliderUtility()
-        {
-            // 创建【圆形纹理】
-            s_CircleTexture = new Texture2D(1, 1);
-
-            // 设置【圆形纹理】的【颜色】为【白色】
-            s_CircleTexture.SetPixel(0, 0, Color.white);
-
-            // 应用设置
-            s_CircleTexture.Apply();
-        }
+        static DrawGUISliderUtility() { }
         #endregion
 
         #region 公开方法
@@ -315,23 +313,10 @@ namespace MoShan.Unity.EngineExpand
             // @radius：半径
             static void DrawCircle(Rect position, Color color, float radius)
             {
-                // 判断 <【圆形纹理】是否为空>
-                if (s_CircleTexture == null)
-                {
-                    // 创建【圆形纹理】
-                    s_CircleTexture = new Texture2D(1, 1);
-
-                    // 设置【圆形纹理】的【颜色】为【白色】
-                    s_CircleTexture.SetPixel(0, 0, Color.white);
-
-                    // 应用设置
-                    s_CircleTexture.Apply();
-                }
-
                 GUI.DrawTexture
                 (
                     position,
-                    s_CircleTexture,
+                    CircleTexture,
                     ScaleMode.StretchToFill,
                     true,
                     0,
