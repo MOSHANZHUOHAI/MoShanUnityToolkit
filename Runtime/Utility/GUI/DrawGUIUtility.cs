@@ -40,6 +40,11 @@ namespace MoShan.Unity.EngineExpand
         private static readonly GUIStyle s_MiddleCenterLabelStyle;
 
         /// <summary>
+        /// 栈：组变更记录
+        /// </summary>
+        private static readonly Stack<Rect> s_GroupRecords = new Stack<Rect>();
+
+        /// <summary>
         /// 栈：颜色变更记录
         /// </summary>
         private static readonly Stack<Color> s_ColorRecords = new Stack<Color>();
@@ -135,7 +140,7 @@ namespace MoShan.Unity.EngineExpand
 
         #region 公开方法
 
-        #region 组
+        #region 变更【组】
         /// <summary>
         /// 开始【组】
         /// </summary>
@@ -143,20 +148,21 @@ namespace MoShan.Unity.EngineExpand
         /// <returns>返回开始组后，当前已记录的【组】的总数。</returns>
         public static int BeginGroup(Rect position)
         {
-            GUI.BeginGroup(position);
-
-            return ++s_GroupDepth;
+            return BeginGroup(position, GUIStyle.none);
         }
 
         /// <summary>
         /// 开始【组】
         /// </summary>
         /// <param name="position">位置</param>
-        /// <param name="style">样式</param>
+        /// <param name="style">背景样式</param>
         /// <returns>返回开始组后，当前已记录的【组】的总数。</returns>
         public static int BeginGroup(Rect position, GUIStyle style)
         {
-            GUI.BeginGroup(position, style);
+            // 记录输入【位置】为【组】
+            s_GroupRecords.Push(position);
+
+            GUI.BeginGroup(position, GUIContent.none, style);
 
             return ++s_GroupDepth;
         }
@@ -173,9 +179,34 @@ namespace MoShan.Unity.EngineExpand
                 return 0;
             }
 
+            // 恢复【组】为次顶层的记录位置
+            s_GroupRecords.Pop();
+
             GUI.EndGroup();
 
             return --s_GroupDepth;
+        }
+
+        /// <summary>
+        /// 结束【组】到【指定深度】
+        /// </summary>
+        /// <param name="depth">深度</param>
+        /// <returns>返回结束【组】到【指定深度】是否成功的判断结果。</returns>
+        public static bool EndGroupTo(int depth)
+        {
+            // 判断 <【组深度】是否小于等于【0】>或<【组深度】是否大于等于【输入深度】>，即<是否无需或无法结束【组】到【指定深度】>
+            if (s_GroupDepth <= 0 || s_GroupDepth >= depth)
+            {
+                return false;
+            }
+
+            // While 循环以结束【组】到【指定深度】
+            while (s_GroupDepth > depth)
+            {
+                EndGroup();
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -189,6 +220,7 @@ namespace MoShan.Unity.EngineExpand
                 return;
             }
 
+            // While 循环以结束【所有组】
             while (s_GroupDepth > 0)
             {
                 EndGroup();
@@ -203,7 +235,7 @@ namespace MoShan.Unity.EngineExpand
         /// <returns>返回开始颜色变更后，当前已记录的【GUI 颜色】变更的总数。</returns>
         public static int BeginColorChange()
         {
-            // 记录当前【GUI颜色】
+            // 记录当前【GUI 颜色】
             s_ColorRecords.Push(GUI.color);
 
             return s_ColorRecords.Count;
@@ -281,6 +313,25 @@ namespace MoShan.Unity.EngineExpand
         public static void DrawLabel(Rect position, GUIContent label)
         {
             GUI.Label(position, label);
+        }
+
+        /// <summary>
+        /// 绘制【框】
+        /// </summary>
+        /// <param name="position">位置</param>
+        public static void DrawBox(Rect position)
+        {
+            GUI.Box(position, GUIContent.none);
+        }
+
+        /// <summary>
+        /// 绘制【框】
+        /// </summary>
+        /// <param name="position">位置</param>
+        /// <param name="style">样式</param>
+        public static void DrawBox(Rect position, GUIStyle style)
+        {
+            GUI.Box(position, GUIContent.none, style);
         }
 
         /// <summary>
@@ -397,7 +448,7 @@ namespace MoShan.Unity.EngineExpand
         /// <param name="direction">方向</param>
         /// <param name="distance">移动距离</param>
         /// <returns>返回用户输入的拖拽线位置。</returns>
-        public static Rect DrawDragLine(Rect position, Direction2 direction, out Vector2 distance)
+        public static bool DrawDragLine(Rect position, Direction2 direction, out Vector2 distance)
         {
             return DrawGUIDragAreaUtility.DrawDragLine(position, direction, out distance);
         }
@@ -408,7 +459,7 @@ namespace MoShan.Unity.EngineExpand
         /// <param name="position">位置</param>
         /// <param name="distance">移动距离</param>
         /// <returns>返回用户输入的拖拽区域位置。</returns>
-        public static Rect DrawDragArea(Rect position, out Vector2 distance)
+        public static bool DrawDragArea(Rect position, out Vector2 distance)
         {
             return DrawGUIDragAreaUtility.DrawDragArea(position, out distance);
         }
