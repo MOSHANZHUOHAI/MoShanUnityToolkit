@@ -60,14 +60,14 @@ namespace MoShan.Unity.EngineExpand
             }
             #endregion
 
-            // 获取【控件编号】
+            // 获取【控件标识】
             int controlId = GUIUtility.GetControlID(CONTROL_HASH, FocusType.Passive, position);
 
             #region 获取【事件信息】
             // 获取【当前事件】
             Event currentEvent = Event.current;
 
-            // 获取【控件编号】对应的【当前事件类型】
+            // 获取【控件标识】对应的【当前事件类型】
             EventType eventType = currentEvent.GetTypeForControl(controlId);
             #endregion
 
@@ -92,7 +92,7 @@ namespace MoShan.Unity.EngineExpand
                     // 或<<【当前事件类型】是否为【按下鼠标】>、<【输入位置】是否不包含【鼠标位置】>>
                     || (eventType == EventType.MouseDown && !position.Contains(currentEvent.mousePosition)))
                 {
-                    // 重置【聚焦控件编号】
+                    // 重置【聚焦控件标识】
                     GUIUtility.hotControl      = 0;
                     GUIUtility.keyboardControl = 0;
 

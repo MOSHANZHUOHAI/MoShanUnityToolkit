@@ -136,17 +136,17 @@ namespace MoShan.Unity.EngineExpand
             );
             #endregion
 
-            // 获取【控件编号】
+            // 获取【控件标识】
             int controlId = GUIUtility.GetControlID(CONTROL_HASH, FocusType.Passive, position);
 
             #region 获取【事件信息】
             // 获取【当前事件】
             Event currentEvent = Event.current;
 
-            // 获取【控件编号】对应的【当前事件类型】
+            // 获取【控件标识】对应的【当前事件类型】
             EventType eventType = currentEvent.GetTypeForControl(controlId);
 
-            // 判断 <【GUI 实用程序】的【当前热控件 ID】是否等于【控件编号】>，即<【当前控件】是否拥有焦点>
+            // 判断 <【GUI 实用程序】的【当前热控件标识】是否等于【控件标识】>，即<【当前控件】是否拥有焦点>
             bool isHasFocus = GUIUtility.hotControl == controlId;
             #endregion
 
@@ -244,7 +244,7 @@ namespace MoShan.Unity.EngineExpand
                             break;
                         }
 
-                        // 设置【GUI 实用程序】的【当前热控件 ID】为【当前控件 ID】
+                        // 设置【GUI 实用程序】的【当前热控件标识】为【当前控件标识】
                         GUIUtility.hotControl = controlId;
                         
                         // 初始化【热控件值】
@@ -259,7 +259,7 @@ namespace MoShan.Unity.EngineExpand
                     // 判断 <【当前控件】是否拥有焦点>
                     if (isHasFocus)
                     {
-                        // 重置【GUI 实用程序】中的【当前热控件 ID】
+                        // 重置【GUI 实用程序】中的【当前热控件标识】
                         GUIUtility.hotControl = 0;
 
                         UpdateResult();

@@ -65,17 +65,17 @@ namespace MoShan.Unity.EngineExpand
         /// <returns>返回用户输入的颜色。</returns>
         public static Color DrawColorField(Rect position, Color value, bool isRetrunImmediately)
         {
-            // 获取【控件编号】
+            // 获取【控件标识】
             int controlId = GUIUtility.GetControlID(CONTROL_HASH, FocusType.Passive, position);
 
             #region 获取【事件信息】
             // 获取【当前事件】
             Event currentEvent = Event.current;
 
-            // 获取【控件编号】对应的【当前事件类型】
+            // 获取【控件标识】对应的【当前事件类型】
             EventType eventType = currentEvent.GetTypeForControl(controlId);
 
-            // 判断 <【GUI 实用程序】的【当前热控件 ID】是否等于【控件编号】>，即<【当前控件】是否拥有焦点>
+            // 判断 <【GUI 实用程序】的【当前热控件标识】是否等于【控件标识】>，即<【当前控件】是否拥有焦点>
             bool isHasFocus = GUIUtility.hotControl == controlId;
             #endregion
 
@@ -101,7 +101,7 @@ namespace MoShan.Unity.EngineExpand
                     // 判断 <【位置】是否包含【鼠标位置】>
                     if (position.Contains(mousePosition))
                     {
-                        // 设置【GUI 实用程序】的【当前热控件 ID】为【当前控件 ID】
+                        // 设置【GUI 实用程序】的【当前热控件标识】为【当前控件标识】
                         GUIUtility.hotControl = controlId;
 
                         s_HotControlId = controlId;
@@ -123,7 +123,7 @@ namespace MoShan.Unity.EngineExpand
                     break;
             }
 
-            // 判断 <【热控件 ID】是否等于【当前控件 ID】>、<是否正在编辑>
+            // 判断 <【热控件 ID】是否等于【当前控件标识】>、<是否正在编辑>
             if (s_HotControlId == controlId && s_IsEditoring)
             {
                 // TODO: 获取窗口颜色
