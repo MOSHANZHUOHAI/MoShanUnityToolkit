@@ -374,11 +374,7 @@ namespace MoShan.Unity.EngineExpand
                         continue;
                     }
 
-                    // 判断 <【当前事件】的【类型】是否为【重绘】>或<【当前布局】是否为【聚焦布局】>
-                    if (Event.current.type == EventType.Repaint || currentLayout == s_FocusingLayout)
-                    {
-                        currentLayout.Draw();
-                    }
+                    currentLayout.Draw();
                 }
             }
         }

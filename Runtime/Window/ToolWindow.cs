@@ -92,6 +92,9 @@ namespace MoShan.Unity.EngineExpand
         /// <inheritdoc/>
         protected sealed override void OnDraw(Rect position)
         {
+            // 获取【内容位置】
+            Rect contentPosition;
+
             // 判断 <【工具栏高度】是否大于【0】>，即<是否需要绘制工具栏>
             if (ToolbarHeight > 0)
             {
@@ -101,7 +104,13 @@ namespace MoShan.Unity.EngineExpand
                     GetStyle(TOOLBAR_BACKGROUND_STYLE_NAME, GUI.skin.box)
                 );
 
-                OnDrawToolbar(new Rect(0, 0, position.width, ToolbarHeight));
+                contentPosition = new Rect(0, 0, position.width, ToolbarHeight);
+
+                GUILayout.BeginArea(contentPosition);
+
+                OnDrawToolbar(contentPosition);
+
+                GUILayout.EndArea();
 
                 DrawGUIUtility.EndGroup();
 
@@ -110,7 +119,13 @@ namespace MoShan.Unity.EngineExpand
 
             DrawGUIUtility.BeginGroup(position);
 
-            OnDrawContent(new Rect(0, 0, position.width, position.height));
+            contentPosition = new Rect(0, 0, position.width, position.height);
+
+            GUILayout.BeginArea(contentPosition);
+
+            OnDrawContent(contentPosition);
+
+            GUILayout.EndArea();
 
             DrawGUIUtility.EndGroup();
         }
