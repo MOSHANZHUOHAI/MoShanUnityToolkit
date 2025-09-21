@@ -6,8 +6,6 @@ namespace MoShan.Unity.EngineExpand
 {
     using Rect    = global::UnityEngine.Rect;
     using Vector2 = global::UnityEngine.Vector2;
-    using TestWindow = global::MoShan.Unity.EngineExpand.Test.TestWindow;
-    using ConsoleWindow = global::MoShan.Unity.EngineExpand.Test.ConsoleWindow;
 
     /// <summary>
     /// 实用程序：运行时停靠
