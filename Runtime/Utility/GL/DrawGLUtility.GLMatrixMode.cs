@@ -32,7 +32,7 @@ namespace MoShan.Unity.EngineExpand
             /// </summary>
             /// <remarks>
             /// <br>单位：像素</br>
-            /// <br>屏幕左上角为原点(0, 0)，屏幕右下角为(<see cref="Screen.width">屏幕宽度</see>, <see cref="Screen.height">屏幕高度</see>)</br>
+            /// <br>屏幕左上角为原点(0, 0)，屏幕右下角为(<see cref="global::UnityEngine.Screen.width">屏幕宽度</see>, <see cref="global::UnityEngine.Screen.height">屏幕高度</see>)</br>
             /// </remarks>
             Pixel,
             /// <summary>

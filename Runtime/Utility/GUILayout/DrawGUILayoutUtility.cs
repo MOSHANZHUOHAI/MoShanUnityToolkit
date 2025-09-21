@@ -84,10 +84,20 @@ namespace MoShan.Unity.EngineExpand
         /// 获取【控件位置】
         /// </summary>
         /// <param name="height">控件高度</param>
-        /// <returns></returns>
+        /// <returns>返回获取到的控件位置。</returns>
         public static Rect GetControlRect(float height)
         {
             return GUILayoutUtility.GetRect(0.0f, int.MaxValue, height, height);
+        }
+
+        /// <summary>
+        /// 获取【控件位置】
+        /// </summary>
+        /// <param name="content">内容</param>
+        /// <returns>返回获取到的控件位置。</returns>
+        public static Rect GetControlRect(GUIContent content, GUIStyle style)
+        {
+            return GUILayoutUtility.GetRect(content, style);
         }
 
         /// <summary>
@@ -116,7 +126,7 @@ namespace MoShan.Unity.EngineExpand
             // 绘制【标签】
             DrawGUIUtility.DrawLabel
             (
-                HandleBroder(GetControlRect(FIELD_HEIGHT)),
+                DrawPrefixLabel(label, FIELD_HEIGHT),
                 label
             );
         }
@@ -132,7 +142,7 @@ namespace MoShan.Unity.EngineExpand
             // 绘制【切换】
             return DrawGUIUtility.DrawToggle
             (
-                DrawPrefixLabel(FIELD_HEIGHT, label),
+                DrawPrefixLabel(label, FIELD_HEIGHT),
                 value
             );
         }
@@ -148,7 +158,7 @@ namespace MoShan.Unity.EngineExpand
         {
             return DrawGUIUtility.DrawTextField
             (
-                DrawPrefixLabel(FIELD_HEIGHT, label),
+                DrawPrefixLabel(label, FIELD_HEIGHT),
                 text,
                 isRetrunImmediately
             );
@@ -165,7 +175,7 @@ namespace MoShan.Unity.EngineExpand
         {
             return DrawGUIUtility.DrawFloatField
             (
-                DrawPrefixLabel(FIELD_HEIGHT, label),
+                DrawPrefixLabel(label, FIELD_HEIGHT),
                 value,
                 isRetrunImmediately
             );
@@ -182,7 +192,7 @@ namespace MoShan.Unity.EngineExpand
         {
             return DrawGUIUtility.DrawIntField
             (
-                DrawPrefixLabel(FIELD_HEIGHT, label),
+                DrawPrefixLabel(label, FIELD_HEIGHT),
                 value,
                 isRetrunImmediately
             );
@@ -199,7 +209,7 @@ namespace MoShan.Unity.EngineExpand
         {
             return DrawGUIUtility.DrawColorField
             (
-                DrawPrefixLabel(FIELD_HEIGHT, label),
+                DrawPrefixLabel(label, FIELD_HEIGHT),
                 value,
                 isRetrunImmediately
             );
@@ -215,7 +225,7 @@ namespace MoShan.Unity.EngineExpand
         public static Vector2 DrawVector2Field(GUIContent label, Vector2 value, bool isRetrunImmediately = false)
         {
             // 获取【字段位置】
-            Rect fieldPosition = DrawPrefixLabel(FIELD_HEIGHT, label);
+            Rect fieldPosition = DrawPrefixLabel(label, FIELD_HEIGHT);
 
             // 获取【向量分量宽度】
             float componentWidth = fieldPosition.width * 0.5f;
@@ -272,7 +282,7 @@ namespace MoShan.Unity.EngineExpand
         {
             return DrawGUIUtility.DrawSlider
             (
-                DrawPrefixLabel(FIELD_HEIGHT, label),
+                DrawPrefixLabel(label, FIELD_HEIGHT),
                 8.0f,
                 value,
                 min,
@@ -295,7 +305,7 @@ namespace MoShan.Unity.EngineExpand
         {
             return DrawGUIUtility.DrawIntSlider
             (
-                DrawPrefixLabel(FIELD_HEIGHT, label),
+                DrawPrefixLabel(label, FIELD_HEIGHT),
                 8.0f,
                 value,
                 min,
@@ -322,7 +332,7 @@ namespace MoShan.Unity.EngineExpand
 
             return DrawGUIUtility.DrawCircleSlider
             (
-                DrawPrefixLabel(controlHeight, label),
+                DrawPrefixLabel(label, controlHeight),
                 8.0f,
                 value,
                 min,
@@ -453,18 +463,39 @@ namespace MoShan.Unity.EngineExpand
         /// <summary>
         /// 绘制【前缀标签】
         /// </summary>
+        /// <param name="content">内容</param>
+        /// <param name="style">样式</param>
+        /// <returns>返回绘制前缀标签之后仍可用于后续控件的绘制位置。</returns>
+        private static Rect DrawPrefixLabel(GUIContent content, GUIStyle style)
+        {
+            // 获取【总位置】
+            Rect totalPosition = GetControlRect(content, style);
+
+            // 获取【前缀标签位置】
+            Rect prefixLabelPosition = GetPrefixLabelPosition(totalPosition, content);
+
+            // 绘制【前缀标签】
+            DrawGUIUtility.DrawLabel(HandleBroder(prefixLabelPosition), content);
+
+            return HandleBroder(GetControlPosition(totalPosition, prefixLabelPosition));
+        }
+
+        /// <summary>
+        /// 绘制【前缀标签】
+        /// </summary>
+        /// <param name="content">内容</param>
         /// <param name="height">控件高度</param>
         /// <returns>返回绘制前缀标签之后仍可用于后续控件的绘制位置。</returns>
-        private static Rect DrawPrefixLabel(float height, GUIContent label)
+        private static Rect DrawPrefixLabel(GUIContent content, float height)
         {
             // 获取【总位置】
             Rect totalPosition = GetControlRect(height);
 
             // 获取【前缀标签位置】
-            Rect prefixLabelPosition = GetPrefixLabelPosition(totalPosition, label);
+            Rect prefixLabelPosition = GetPrefixLabelPosition(totalPosition, content);
 
             // 绘制【前缀标签】
-            DrawGUIUtility.DrawLabel(HandleBroder(prefixLabelPosition), label);
+            DrawGUIUtility.DrawLabel(HandleBroder(prefixLabelPosition), content);
 
             return HandleBroder(GetControlPosition(totalPosition, prefixLabelPosition));
         }
