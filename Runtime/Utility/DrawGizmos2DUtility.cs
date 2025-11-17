@@ -231,6 +231,15 @@ namespace MoShan.Unity.EngineExpand
         }
 
         /// <summary>
+        /// 设置【矩阵】
+        /// </summary>
+        /// <param name="value">值</param>
+        public static void SetMatrix(Matrix4x4 value)
+        {
+            Gizmos.matrix = value;
+        }
+
+        /// <summary>
         /// 重置【矩阵】
         /// </summary>
         public static void ResetMatrix()
@@ -248,8 +257,6 @@ namespace MoShan.Unity.EngineExpand
         {
             BeginMatrixChange();
 
-            ResetMatrix();
-
             InternalDrawLine(from, to);
 
             EndMatrixChange();
@@ -264,8 +271,6 @@ namespace MoShan.Unity.EngineExpand
         {
             BeginMatrixChange();
 
-            ResetMatrix();
-
             Gizmos.DrawRay(from, direction);
 
             EndMatrixChange();
@@ -279,8 +284,6 @@ namespace MoShan.Unity.EngineExpand
         public static void DrawCircle(Vector2 center, float radius)
         {
             BeginMatrixChange();
-
-            ResetMatrix();
 
             MoveMatrix(center);
 
@@ -325,8 +328,6 @@ namespace MoShan.Unity.EngineExpand
         {
             BeginMatrixChange();
 
-            ResetMatrix();
-
             InternalDrawLine(vertex_0, vertex_1);
             InternalDrawLine(vertex_1, vertex_2);
             InternalDrawLine(vertex_2, vertex_0);
@@ -347,8 +348,6 @@ namespace MoShan.Unity.EngineExpand
             }
 
             BeginMatrixChange();
-
-            ResetMatrix();
 
             // 循环以按照输入顶点顺序绘制【多边形】线框
             for (int i = 0; i < vertexs.Length - 1; i++)
@@ -387,8 +386,6 @@ namespace MoShan.Unity.EngineExpand
 
 
             BeginMatrixChange();
-
-            ResetMatrix();
 
             RotateMatrix(angle);
 
@@ -463,8 +460,6 @@ namespace MoShan.Unity.EngineExpand
 
             BeginMatrixChange();
 
-            ResetMatrix();
-
             RotateMatrix(angle);
 
             MoveMatrix(center);
@@ -537,8 +532,6 @@ namespace MoShan.Unity.EngineExpand
         {
             BeginMatrixChange();
 
-            ResetMatrix();
-
             // 循环以绘制【贝塞尔曲线】
             for (int i = 0; i <= 100; i += 1)
             {
@@ -599,8 +592,6 @@ namespace MoShan.Unity.EngineExpand
             }
 
             BeginMatrixChange();
-
-            ResetMatrix();
 
             RotateMatrix(angle);
 
@@ -688,8 +679,6 @@ namespace MoShan.Unity.EngineExpand
         {
             BeginMatrixChange();
 
-            ResetMatrix();
-
             RotateMatrix(angle);
 
             MoveMatrix(center);
@@ -767,8 +756,6 @@ namespace MoShan.Unity.EngineExpand
         public static void DrawRect(Vector2 center, float width, float height, float angle)
         {
             BeginMatrixChange();
-
-            ResetMatrix();
 
             RotateMatrix(angle);
 
@@ -872,8 +859,6 @@ namespace MoShan.Unity.EngineExpand
         public static void DrawGrid(Vector2 center, float width, float height, int row, int column, float angle, Vector2 scaleBeforeRotate, Vector2 scaleAfterRotate)
         {
             BeginMatrixChange();
-
-            ResetMatrix();
 
             // 应用【旋转前的缩放】到【线框矩阵】
             ScaleMatrix(new Vector3(scaleBeforeRotate.x, scaleBeforeRotate.y, 1));
@@ -1031,8 +1016,6 @@ namespace MoShan.Unity.EngineExpand
         public static void DrawDiamond(Vector2 center, float width, float height, float angle)
         {
             BeginMatrixChange();
-
-            ResetMatrix();
 
             RotateMatrix(angle);
 
