@@ -389,12 +389,9 @@ namespace MoShan.Unity.EngineExpand
                 return;
             }
 
-
             BeginMatrixChange();
 
-            RotateMatrix(angle);
-
-            MoveMatrix(center);
+            TransformMatrix(center, angle, Vector2.one);
 
             #region 初始化【参数】
             // 判断 <【边数】是否为【偶数】>
@@ -465,9 +462,7 @@ namespace MoShan.Unity.EngineExpand
 
             BeginMatrixChange();
 
-            RotateMatrix(angle);
-
-            MoveMatrix(center);
+            TransformMatrix(center, angle, Vector2.one);
 
             // 声明【间隔】
             float delta = 2 * Mathf.PI / cornerCount;
@@ -560,7 +555,7 @@ namespace MoShan.Unity.EngineExpand
         /// <param name="angle">旋转角度（角度制），取值范围为[0°, 360°)</param>
         public static void DrawSector(Vector2 center, Vector2 radius, float range, float angle)
         {
-            DrawSector(center, radius, range, angle);
+            DrawSector(center, radius, range, angle, true);
         }
 
         /// <summary>
@@ -584,7 +579,7 @@ namespace MoShan.Unity.EngineExpand
                     TransformMatrix(center, angle, Vector2.one);
 
                     // 绘制中心到【目标点位】的连线
-                    InternalDrawLine(Vector2.zero, new Vector2(radius.x * Mathf.Cos(0), radius.y * Mathf.Sin(0)));
+                    InternalDrawLine(Vector2.zero, new Vector2(radius.x, 0.0f));
 
                     EndMatrixChange();
                 }
@@ -616,50 +611,63 @@ namespace MoShan.Unity.EngineExpand
             {
                 range += 360.0f;
             }
-
-            // 转换【扇形范围】为【弧度制】
-            range *= Mathf.Deg2Rad;
             #endregion
 
-            // 获取【间隔】，化简：delta = range * Mathf.Deg2Rad / (int)range ≈ Mathf.Deg2Rad
-            float delta = Mathf.Deg2Rad;
+            // 获取【整数范围】
+            int integerRange = (int)range;
 
-            // 获取【开始点位】与【结束点位】
-            Vector2 startPoint = new Vector2(radius.x * Mathf.Cos(-range / 2), radius.y * Mathf.Sin(-range / 2));
-            Vector2 endPoint   = Vector2.zero;
+            // 获取转换为【弧度制】的【半范围】
+            float halfRange = (range * Mathf.Deg2Rad) / 2;
 
-            // 判断 <是否绘制边缘>
-            if (isDrawEdge)
-            {
-                // 绘制该图形右侧边
-                InternalDrawLine(center, startPoint);
-            }
+            // 获取不包括开始点与结束点在内的【线段总数】
+            int lineCount = integerRange;
 
-            // 循环以绘制该图形线框
-            for (float theta = -range / 2 + delta; theta < range / 2; theta += delta)
-            {
-                // 更新【结束点位】
-                endPoint = new Vector2(radius.x * Mathf.Cos(theta), radius.y * Mathf.Sin(theta));
-
-                // 绘制该图形线框
-                InternalDrawLine(startPoint, endPoint);
-
-                // 更新【开始点位】，以应用于下一轮循环中的绘制
-                startPoint = endPoint;
-            }
-
-            // 更新【结束点位】
-            endPoint = new Vector2(radius.x * Mathf.Cos(range / 2), radius.y * Mathf.Sin(range / 2));
-
-            // 绘制该图形线框，连接【开始点位】和【起始点位】以完成弧度绘制
-            InternalDrawLine(startPoint, endPoint);
+            // 获取【开始点】
+            Vector3 start = new Vector2(radius.x * Mathf.Cos(-halfRange), radius.y * Mathf.Sin(-halfRange));
+            // 获取【结束点】
+            Vector3 end   = new Vector2(radius.x * Mathf.Cos( halfRange), radius.y * Mathf.Sin( halfRange));
 
             // 判断 <是否绘制边缘>
             if (isDrawEdge)
             {
-                // 绘制该图形左侧边
-                InternalDrawLine(center, endPoint);
+                // 连接【中心】与【开始点】以绘制【扇形边缘】
+                InternalDrawLine(Vector3.zero, start);
+                // 连接【中心】与【结束点】以绘制【扇形边缘】
+                InternalDrawLine(Vector3.zero, end );
             }
+
+            // 创建【点数组】
+            Vector3[] points = new Vector3[lineCount + 2];
+
+            // 获取不包括开始点与结束点在内的点与点之间基于圆心的角度间隔作为【增量】
+            float delta = (integerRange * Mathf.Deg2Rad) / lineCount;
+
+            // 获取转换为【弧度制】的【半整数范围】
+            float halfIntegerRange = (integerRange * Mathf.Deg2Rad) / 2;
+
+            // 获取【当前点弧度】
+            float currentPointRadian = -halfIntegerRange;
+
+            // 循环以填充【点数组】
+            for (int i = 1; i < points.Length - 1; i++)
+            {
+                // 填充点
+                points[i] = new Vector3
+                (
+                    radius.x * Mathf.Cos(currentPointRadian),
+                    radius.y * Mathf.Sin(currentPointRadian)
+                );
+
+                currentPointRadian += delta;
+            }
+
+            // 填充【开始点】
+            points[0]                 = start;
+            // 填充【结束点】
+            points[points.Length - 1] = end;
+
+            // 绘制【扇形弧线】
+            InternalDrawLineStrip(points, false);
 
             EndMatrixChange();
         }
@@ -759,9 +767,7 @@ namespace MoShan.Unity.EngineExpand
         {
             BeginMatrixChange();
 
-            RotateMatrix(angle);
-
-            MoveMatrix(center);
+            TransformMatrix(center, angle, Vector2.one);
 
             // 获取【矩形】顶点
             Vector2 leftTop     = new Vector2(-width / 2.0f,  height / 2.0f);
@@ -1019,9 +1025,7 @@ namespace MoShan.Unity.EngineExpand
         {
             BeginMatrixChange();
 
-            RotateMatrix(angle);
-
-            MoveMatrix(center);
+            TransformMatrix(center, angle, Vector2.one);
 
             // 获取【菱形】顶点
             Vector2 top    = new Vector2(0.0f         ,  height * 0.5f);
