@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace MoShan.Unity.EngineExpand
@@ -122,6 +123,7 @@ namespace MoShan.Unity.EngineExpand
         /// 变更【颜色】
         /// </summary>
         /// <param name="newColor">需要变更的新【线框颜色】</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ChangeColor(Color newColor)
         {
             Gizmos.color = newColor;
@@ -197,43 +199,53 @@ namespace MoShan.Unity.EngineExpand
         /// <summary>
         /// 移动【矩阵】
         /// </summary>
-        public static void MoveMatrix(Vector3 position)
+        /// <param name="position">位置</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void MoveMatrix(Vector2 position)
         {
             // 应用【移动】到【线框矩阵】
-            Gizmos.matrix *= Matrix4x4.TRS(position, Quaternion.identity, Vector2.one);
+            Gizmos.matrix *= Matrix4x4.Translate(position);
         }
 
         /// <summary>
         /// 旋转【矩阵】
         /// </summary>
-        public static void RotateMatrix(float angle)
+        /// <param name="rotation">旋转（角度制）</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void RotateMatrix(float rotation)
         {
             // 应用【旋转】到【线框矩阵】
-            Gizmos.matrix *= Matrix4x4.TRS(Vector2.zero, Quaternion.Euler(0.0f, 0.0f, angle), Vector2.one);
-        }
-
-        /// <summary>
-        /// 旋转【矩阵】
-        /// </summary>
-        public static void RotateMatrix(Quaternion rotation)
-        {
-            // 应用【旋转】到【线框矩阵】
-            Gizmos.matrix *= Matrix4x4.TRS(Vector2.zero, rotation, Vector2.one);
+            Gizmos.matrix *= Matrix4x4.Rotate(Quaternion.Euler(0.0f, 0.0f, rotation));
         }
 
         /// <summary>
         /// 缩放【矩阵】
         /// </summary>
-        public static void ScaleMatrix(Vector3 scale)
+        /// <param name="angle">缩放</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void ScaleMatrix(Vector2 scale)
         {
             // 应用【缩放】到【线框矩阵】
-            Gizmos.matrix *= Matrix4x4.TRS(Vector2.zero, Quaternion.identity, scale);
+            Gizmos.matrix *= Matrix4x4.Scale(scale);
+        }
+
+        /// <summary>
+        /// 变换【矩阵】
+        /// </summary>
+        /// <param name="position">位置</param>
+        /// <param name="rotation">旋转（角度制）</param>
+        /// <param name="scale">缩放</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void TransformMatrix(Vector2 position, float rotation, Vector2 scale)
+        {
+            Gizmos.matrix *= Matrix4x4.TRS(position, Quaternion.Euler(0.0f, 0.0f, rotation), scale);
         }
 
         /// <summary>
         /// 设置【矩阵】
         /// </summary>
         /// <param name="value">值</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SetMatrix(Matrix4x4 value)
         {
             Gizmos.matrix = value;
@@ -242,6 +254,7 @@ namespace MoShan.Unity.EngineExpand
         /// <summary>
         /// 重置【矩阵】
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ResetMatrix()
         {
             Gizmos.matrix = Matrix4x4.identity;
@@ -253,13 +266,10 @@ namespace MoShan.Unity.EngineExpand
         /// </summary>
         /// <param name="from">起点</param>
         /// <param name="to">终点</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DrawLine(Vector2 from, Vector2 to)
         {
-            BeginMatrixChange();
-
-            InternalDrawLine(from, to);
-
-            EndMatrixChange();
+            Gizmos.DrawLine(from, to);
         }
 
         /// <summary>
@@ -267,13 +277,10 @@ namespace MoShan.Unity.EngineExpand
         /// </summary>
         /// <param name="from">起点</param>
         /// <param name="direction">方向</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DrawRay(Vector2 from, Vector2 direction)
         {
-            BeginMatrixChange();
-
             Gizmos.DrawRay(from, direction);
-
-            EndMatrixChange();
         }
 
         /// <summary>
@@ -290,30 +297,28 @@ namespace MoShan.Unity.EngineExpand
             // 初始化【半径】
             radius = Math.Abs(radius);
 
-            // 获取【间隔】
-            float delta = 2 * Mathf.PI / 360;
+            // 获取【线段总数】，取值范围为[3, +∞)
+            int lineCount = 360;
 
-            // 获取【起始点位】以记录首个点位坐标
-            Vector2 originPoint = new Vector2(radius * Mathf.Cos(0.0f), radius * Mathf.Sin(0.0f));
+            // 获取点与点之间基于圆心的角度间隔作为【增量】
+            float delta = (2 * Mathf.PI) / lineCount;
 
-            // 获取【开始点位】与【结束点位】
-            Vector2 startPoint = originPoint;
-            Vector2 endPoint = Vector2.zero;
+            // 创建【点数组】
+            Vector3[] points = new Vector3[lineCount];
 
-            // 循环以绘制该图形线框
-            for (float theta = delta; theta < 2 * Mathf.PI; theta += delta)
+            // 循环以填充【点数组】
+            for (int i = 0; i < points.Length; i++)
             {
-                // 更新【结束点位】
-                endPoint = new Vector2(radius * Mathf.Cos(theta), radius * Mathf.Sin(theta));
-
-                InternalDrawLine(startPoint, endPoint);
-
-                // 更新【开始点位】，以应用于下一轮循环中的绘制
-                startPoint = endPoint;
+                // 填充点
+                points[i] = new Vector3
+                (
+                    radius * Mathf.Cos(i * delta),
+                    radius * Mathf.Sin(i * delta)
+                );
             }
 
             // 连接【结束点位】和【起始点位】以闭环线框绘制
-            InternalDrawLine(endPoint, originPoint);
+            InternalDrawLineStrip(points, true);
 
             EndMatrixChange();
         }
@@ -553,7 +558,7 @@ namespace MoShan.Unity.EngineExpand
         /// <param name="radius">扇形半径</param>
         /// <param name="range">扇形范围（角度制），取值范围为[0°, 360°)</param>
         /// <param name="angle">旋转角度（角度制），取值范围为[0°, 360°)</param>
-        public static void DrawSector(Vector2 center, float radius, float range, float angle)
+        public static void DrawSector(Vector2 center, Vector2 radius, float range, float angle)
         {
             DrawSector(center, radius, range, angle);
         }
@@ -566,60 +571,62 @@ namespace MoShan.Unity.EngineExpand
         /// <param name="range">扇形范围（角度制），取值范围为[0°, 360°)</param>
         /// <param name="angle">旋转角度（角度制），取值范围为[0°, 360°)</param>
         /// <param name="isDrawEdge">是否绘制边缘</param>
-        public static void DrawSector(Vector2 center, float radius, float range, float angle, bool isDrawEdge)
+        public static void DrawSector(Vector2 center, Vector2 radius, float range, float angle, bool isDrawEdge)
         {
             // 判断 <扇形范围是否为【0°】>
-            if (range == 0f)
+            if (range == 0.0f)
             {
+                // 判断 <是否绘制边缘>
                 if (isDrawEdge)
                 {
-                    // 获取【目标点位】
-                    Vector2 targetPoint = center + new Vector2(radius, 0);
+                    BeginMatrixChange();
+
+                    TransformMatrix(center, angle, Vector2.one);
 
                     // 绘制中心到【目标点位】的连线
-                    InternalDrawLine(center, targetPoint);
+                    InternalDrawLine(Vector2.zero, new Vector2(radius.x * Mathf.Cos(0), radius.y * Mathf.Sin(0)));
+
+                    EndMatrixChange();
                 }
 
                 return;
             }
 
             // 判断 <扇形范围是否可以被【360°】整除，即表现为圆形>
-            if (range % 360f == 0f)
+            if (range % 360.0f == 0.0f)
             {
-                DrawCircle(center, radius);
+                DrawEllipse(center, radius, angle);
 
                 return;
             }
 
             BeginMatrixChange();
 
-            RotateMatrix(angle);
-
-            MoveMatrix(center);
+            TransformMatrix(center, angle, Vector2.one);
 
             #region 初始化【参数】
             // 初始化【半径】
-            radius = Math.Abs(radius);
+            radius = new Vector2(Math.Abs(radius.x), Math.Abs(radius.y));
 
-            // 约束输入【范围】
-            range = range % 360.0f;
+            // 约束【输入范围】
+            range %= 360.0f;
 
             // 判断 <【扇形范围】是否为【负数】>
             if (range < 0.0f)
             {
-                range = range + 360.0f;
+                range += 360.0f;
             }
 
-            // 转换输入【范围】为【弧度制】
-            range = range * Mathf.Deg2Rad;
+            // 转换【扇形范围】为【弧度制】
+            range *= Mathf.Deg2Rad;
             #endregion
 
             // 获取【间隔】，化简：delta = range * Mathf.Deg2Rad / (int)range ≈ Mathf.Deg2Rad
             float delta = Mathf.Deg2Rad;
 
             // 获取【开始点位】与【结束点位】
-            Vector2 startPoint = new Vector2(radius * Mathf.Cos(-range / 2), radius * Mathf.Sin(-range / 2));
-            Vector2 endPoint = Vector2.zero;
+            Vector2 startPoint = new Vector2(radius.x * Mathf.Cos(-range / 2), radius.y * Mathf.Sin(-range / 2));
+            Vector2 endPoint   = Vector2.zero;
 
             // 判断 <是否绘制边缘>
             if (isDrawEdge)
@@ -632,7 +639,7 @@ namespace MoShan.Unity.EngineExpand
             for (float theta = -range / 2 + delta; theta < range / 2; theta += delta)
             {
                 // 更新【结束点位】
-                endPoint = new Vector2(radius * Mathf.Cos(theta), radius * Mathf.Sin(theta));
+                endPoint = new Vector2(radius.x * Mathf.Cos(theta), radius.y * Mathf.Sin(theta));
 
                 // 绘制该图形线框
                 InternalDrawLine(startPoint, endPoint);
@@ -642,7 +649,7 @@ namespace MoShan.Unity.EngineExpand
             }
 
             // 更新【结束点位】
-            endPoint = new Vector2(radius * Mathf.Cos(range / 2), radius * Mathf.Sin(range / 2));
+            endPoint = new Vector2(radius.x * Mathf.Cos(range / 2), radius.y * Mathf.Sin(range / 2));
 
             // 绘制该图形线框，连接【开始点位】和【起始点位】以完成弧度绘制
             InternalDrawLine(startPoint, endPoint);
@@ -679,35 +686,30 @@ namespace MoShan.Unity.EngineExpand
         {
             BeginMatrixChange();
 
-            RotateMatrix(angle);
+            TransformMatrix(center, angle, Vector2.one);
 
-            MoveMatrix(center);
+            // 获取【线段总数】，取值范围为[3, +∞)
+            int lineCount = 360;
 
-            // 声明【间隔】
-            float delta = 2 * Mathf.PI / 360.0f;
+            // 获取点与点之间基于圆心的角度间隔作为【增量】
+            float delta = (2 * Mathf.PI) / lineCount;
 
-            // 声明【起始点位】以记录首个点位坐标
-            Vector2 originPoint = new Vector2(radius.x * Mathf.Cos(0.0f), radius.y * Mathf.Sin(0.0f));
+            // 创建【点数组】
+            Vector3[] points = new Vector3[lineCount];
 
-            // 声明【开始点位】与【结束点位】
-            Vector2 startPoint = originPoint;
-            Vector2 endPoint = Vector2.zero;
-
-            // 循环以绘制该图形线框
-            for (float theta = delta; theta < 2 * Mathf.PI; theta += delta)
+            // 循环以填充【点数组】
+            for (int i = 0; i < points.Length; i++)
             {
-                // 更新【结束点位】
-                endPoint = new Vector2(radius.x * Mathf.Cos(theta), radius.y * Mathf.Sin(theta));
-
-                // 绘制该图形线框
-                InternalDrawLine(startPoint, endPoint);
-
-                // 更新【开始点位】，以应用于下一轮循环中的绘制
-                startPoint = endPoint;
+                // 填充点
+                points[i] = new Vector3
+                (
+                    radius.x * Mathf.Cos(i * delta),
+                    radius.y * Mathf.Sin(i * delta)
+                );
             }
 
             // 连接【结束点位】和【起始点位】以闭环线框绘制
-            InternalDrawLine(endPoint, originPoint);
+            InternalDrawLineStrip(points, true);
 
             EndMatrixChange();
         }
@@ -721,7 +723,7 @@ namespace MoShan.Unity.EngineExpand
         /// <param name="size">矩形尺寸</param>
         public static void DrawRect(Vector2 center, Vector2 size)
         {
-            DrawRect(center, size.x, size.y, 0f);
+            DrawRect(center, size.x, size.y, 0.0f);
         }
 
         /// <summary>
@@ -743,7 +745,7 @@ namespace MoShan.Unity.EngineExpand
         /// <param name="height">矩形高度</param>
         public static void DrawRect(Vector2 center, float width, float height)
         {
-            DrawRect(center, width, height, 0f);
+            DrawRect(center, width, height, 0.0f);
         }
 
         /// <summary>
@@ -762,10 +764,10 @@ namespace MoShan.Unity.EngineExpand
             MoveMatrix(center);
 
             // 获取【矩形】顶点
-            Vector2 leftTop     = new Vector2(-width / 2,  height / 2);
-            Vector2 rightTop    = new Vector2( width / 2,  height / 2);
-            Vector2 leftBottom  = new Vector2(-width / 2, -height / 2);
-            Vector2 rightBottom = new Vector2( width / 2, -height / 2);
+            Vector2 leftTop     = new Vector2(-width / 2.0f,  height / 2.0f);
+            Vector2 rightTop    = new Vector2( width / 2.0f,  height / 2.0f);
+            Vector2 leftBottom  = new Vector2(-width / 2.0f, -height / 2.0f);
+            Vector2 rightBottom = new Vector2( width / 2.0f, -height / 2.0f);
 
             // 绘制【矩形】线框
             InternalDrawLine(leftTop   , rightTop   );
@@ -1045,9 +1047,24 @@ namespace MoShan.Unity.EngineExpand
         /// </summary>
         /// <param name="from">起点</param>
         /// <param name="to">终点</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void InternalDrawLine(Vector3 from, Vector3 to)
         {
             Gizmos.DrawLine(from, to);
+        }
+
+        /// <summary>
+        /// 内部绘制【线段序列】
+        /// </summary>
+        /// <remarks>
+        /// 使用前一个点与后一个点进行线段绘制
+        /// </remarks>
+        /// <param name="points">所有点</param>
+        /// <param name="looped">是否连接第一个点与最后一个点</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void InternalDrawLineStrip(ReadOnlySpan<Vector3> points, bool looped)
+        {
+            Gizmos.DrawLineStrip(points, looped);
         }
 
         /// <summary>
@@ -1055,7 +1072,7 @@ namespace MoShan.Unity.EngineExpand
         /// </summary>
         /// <param name="point">需要进行旋转的点</param>
         /// <param name="pivot">轴心</param>
-        /// <param name="angle">旋转角度(角度制)，取值范围为[0°, 360°)</param>
+        /// <param name="angle">旋转角度（角度制），取值范围为[0°, 360°)</param>
         /// <returns>返回围绕轴心进行旋转后的旋转点。</returns>
         private static Vector2 RotatePoint(Vector2 point, Vector2 pivot, float angle)
         {
@@ -1063,11 +1080,11 @@ namespace MoShan.Unity.EngineExpand
             float angleRadians = angle * Mathf.Deg2Rad;
 
             // 计算旋转后的坐标
-            float cosTheta = Mathf.Cos(angleRadians);
-            float sinTheta = Mathf.Sin(angleRadians);
+            float cos = Mathf.Cos(angleRadians);
+            float sin = Mathf.Sin(angleRadians);
 
-            float x = pivot.x + (point.x - pivot.x) * cosTheta - (point.y - pivot.y) * sinTheta;
-            float y = pivot.y + (point.x - pivot.x) * sinTheta + (point.y - pivot.y) * cosTheta;
+            float x = pivot.x + (point.x - pivot.x) * cos - (point.y - pivot.y) * sin;
+            float y = pivot.y + (point.x - pivot.x) * sin + (point.y - pivot.y) * cos;
 
             return new Vector2(x, y);
         }
