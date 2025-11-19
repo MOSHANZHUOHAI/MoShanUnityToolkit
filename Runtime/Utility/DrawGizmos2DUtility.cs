@@ -617,33 +617,36 @@ namespace MoShan.Unity.EngineExpand
             int integerRange = (int)range;
 
             // 获取转换为【弧度制】的【半范围】
-            float halfRange = (range * Mathf.Deg2Rad) / 2;
-
-            // 获取不包括开始点与结束点在内的【线段总数】
-            int lineCount = integerRange;
+            float halfRange = range / 2.0f * Mathf.Deg2Rad;
 
             // 获取【开始点】
-            Vector3 start = new Vector2(radius.x * Mathf.Cos(-halfRange), radius.y * Mathf.Sin(-halfRange));
+            Vector3 start = GetEllipsePointByGeometricAngle(-halfRange);
             // 获取【结束点】
-            Vector3 end   = new Vector2(radius.x * Mathf.Cos( halfRange), radius.y * Mathf.Sin( halfRange));
+            Vector3 end   = GetEllipsePointByGeometricAngle( halfRange);
 
             // 判断 <是否绘制边缘>
             if (isDrawEdge)
             {
                 // 连接【中心】与【开始点】以绘制【扇形边缘】
+                // 使用【几何角】获取点以确保半径不同但开扇角度相同的扇形的两侧边缘重合
                 InternalDrawLine(Vector3.zero, start);
+
                 // 连接【中心】与【结束点】以绘制【扇形边缘】
-                InternalDrawLine(Vector3.zero, end );
+                // 使用【几何角】获取点以确保半径不同但开扇角度相同的扇形的两侧边缘重合
+                InternalDrawLine(Vector3.zero, end  );
             }
+
+            // 获取不包括开始点与结束点在内的【线段总数】
+            int lineCount = integerRange;
 
             // 创建【点数组】
             Vector3[] points = new Vector3[lineCount + 2];
 
             // 获取不包括开始点与结束点在内的点与点之间基于圆心的角度间隔作为【增量】
-            float delta = (integerRange * Mathf.Deg2Rad) / lineCount;
+            float delta = integerRange / lineCount * Mathf.Deg2Rad;
 
             // 获取转换为【弧度制】的【半整数范围】
-            float halfIntegerRange = (integerRange * Mathf.Deg2Rad) / 2;
+            float halfIntegerRange = integerRange / 2.0f * Mathf.Deg2Rad;
 
             // 获取【当前点弧度】
             float currentPointRadian = -halfIntegerRange;
@@ -652,17 +655,13 @@ namespace MoShan.Unity.EngineExpand
             for (int i = 1; i < points.Length - 1; i++)
             {
                 // 填充点
-                points[i] = new Vector3
-                (
-                    radius.x * Mathf.Cos(currentPointRadian),
-                    radius.y * Mathf.Sin(currentPointRadian)
-                );
+                points[i] = GetEllipsePointByGeometricAngle(currentPointRadian);
 
                 currentPointRadian += delta;
             }
 
             // 填充【开始点】
-            points[0]                 = start;
+            points[0] = start;
             // 填充【结束点】
             points[points.Length - 1] = end;
 
@@ -670,6 +669,65 @@ namespace MoShan.Unity.EngineExpand
             InternalDrawLineStrip(points, false);
 
             EndMatrixChange();
+
+            #region 局部方法
+            // 局部方法：获取【椭圆上一点的坐标（基于参数角）】
+            // @param radians：角度（弧度制）
+            // @returns：返回【输入参数角】对应的椭圆上一点的坐标。
+            Vector2 GetEllipsePointByParameterAngle(float radians)
+            {
+                /*
+                 * 椭圆上一点（x，y）公式：
+                 * x = 圆心.x + 半径.x * Cos(角度)
+                 * y = 圆心.y + 半径.y * Sin(角度)
+                 */
+
+                return new Vector2
+                (
+                    radius.x * MathF.Cos(radians),
+                    radius.y * MathF.Sin(radians)
+                );
+            }
+
+            // 局部方法：获取【椭圆上一点的坐标（基于几何角）】
+            // @param radians：角度（弧度制）
+            // @returns：返回【输入几何角】对应的椭圆上一点的坐标。
+            Vector2 GetEllipsePointByGeometricAngle(float radians)
+            {
+                // 获取【方向】
+                Vector2 direction = new Vector2(MathF.Cos(radians), MathF.Sin(radians));
+
+                // 计算射线与椭圆的交点
+
+                // 获取【斜率】
+                // 射线方程: y = tan(θ) * x
+                float slope = direction.y / direction.x;
+
+                // 椭圆方程: (x / radius.X) ^ 2 + (y / radius.Y) ^ 2 = 1
+                // 获取【X 轴交点】
+                float xIntersect = MathF.Sqrt(1 / (1 / (radius.x * radius.x) + slope * slope / (radius.y * radius.y)));
+                // 获取【Y 轴交点】
+                float yIntersect = slope * xIntersect;
+
+                // 取绝对值处理，确保值都为正
+                xIntersect = Math.Abs(xIntersect);
+                yIntersect = Math.Abs(yIntersect);
+
+                // 判断 <【方向】的【X 轴坐标】是否小于【0】>，即<【当前局部坐标】是否位于笛卡尔坐标系的左侧>
+                if (direction.x < 0)
+                {
+                    xIntersect = -xIntersect;
+                }
+
+                // 判断 <【方向】的【Y 轴坐标】是否小于【0】>，即<【当前局部坐标】是否位于笛卡尔坐标系的下方>
+                if (direction.y < 0)
+                {
+                    yIntersect = -yIntersect;
+                }
+
+                return new Vector2(xIntersect, yIntersect);
+            }
+            #endregion
         }
         #endregion
 
