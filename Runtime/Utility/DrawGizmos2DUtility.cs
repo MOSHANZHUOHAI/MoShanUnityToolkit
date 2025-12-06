@@ -894,7 +894,7 @@ namespace MoShan.Unity.EngineExpand
         /// <param name="column">格子列数</param>
         public static void DrawGrid(Vector2 center, float width, float height, int row, int column)
         {
-            DrawGrid(center, width, width, row, column, 0f, Vector2.one, Vector2.one);
+            DrawGrid(center, width, height, row, column, 0.0f, Vector2.one, Vector2.one);
         }
 
         /// <summary>
@@ -939,21 +939,21 @@ namespace MoShan.Unity.EngineExpand
             MoveMatrix(center);
 
             // 获取网格【总尺寸】
-            Vector2 totalSize = new Vector2(width * column, height * row);
+            Vector2 totalSize = new Vector2(width * row, height * column);
 
             // 获取网格【起始点（左下角）】
             Vector2 startPoint = -totalSize * 0.5f;
 
             // 循环以绘制【网格】
-            for (int i = 0; i <= row; i++)
+            for (int i = 0; i <= column; i++)
             {
-                for (int j = 0; j <= column; j++)
+                for (int j = 0; j <= row; j++)
                 {
                     // 计算当前格子的位置
                     Vector2 point = startPoint + new Vector2(j * width, i * height);
 
                     // 绘制【垂直线】
-                    if (j < column)
+                    if (j < row)
                     {
                         Vector2 nextPoint = startPoint + new Vector2((j + 1) * width, i * height);
 
@@ -961,7 +961,7 @@ namespace MoShan.Unity.EngineExpand
                     }
 
                     // 绘制【水平线】
-                    if (i < row)
+                    if (i < column)
                     {
                         Vector2 nextPoint = startPoint + new Vector2(j * width, (i + 1) * height);
 
