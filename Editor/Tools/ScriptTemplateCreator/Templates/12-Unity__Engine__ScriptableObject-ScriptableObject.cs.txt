@@ -1,0 +1,17 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+    #ROOTNAMESPACEBEGIN#
+/// <summary>
+/// #SCRIPTNAME#
+/// </summary>
+[CreateAssetMenu(fileName = "New#SCRIPTNAME#", menuName = "Data/#SCRIPTNAME#")]
+[Serializable]
+public class #SCRIPTNAME# : ScriptableObject
+{
+    #region 字段
+
+    #endregion
+}
+#ROOTNAMESPACEEND#

@@ -1,0 +1,32 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+    #ROOTNAMESPACEBEGIN#
+/// <summary>
+/// #SCRIPTNAME#
+/// </summary>
+public class #SCRIPTNAME# : MonoBehaviour
+{
+    #region 字段
+
+    #endregion
+
+    #region 生命周期方法
+    private void Awake()
+    {
+        #NOTRIM#
+    }
+
+    private void Start()
+    {
+        #NOTRIM#
+    }
+
+    private void Update()
+    {
+        #NOTRIM#
+    }
+    #endregion
+}
+#ROOTNAMESPACEEND#

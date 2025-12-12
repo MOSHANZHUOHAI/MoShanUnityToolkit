@@ -1,0 +1,11 @@
+using System;
+#ROOTNAMESPACEBEGIN#
+/// <summary>
+/// #SCRIPTNAME#
+/// </summary>
+[Serializable]
+public enum #SCRIPTNAME# : int
+{
+    
+}
+#ROOTNAMESPACEEND#

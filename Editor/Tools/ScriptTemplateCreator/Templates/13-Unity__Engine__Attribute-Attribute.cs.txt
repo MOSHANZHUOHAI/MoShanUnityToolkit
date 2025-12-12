@@ -1,0 +1,35 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+    #ROOTNAMESPACEBEGIN#
+/// <summary>
+/// #SCRIPTNAME#
+/// </summary>
+/// <remarks>
+/// <para>适用范围：</para>
+/// <para>注意：该脚本不能放在 Editor 文件夹下，否则会报错找不到该特性，且需要配合放在 Editor 文件夹下的 #SCRIPTNAME#Drawer.cs 使用</para>
+/// </remarks>
+/// <example>
+/// <code><![CDATA[
+/// [#SCRIPTNAME#]
+/// public string Example;
+/// ]]></code>
+/// </example>
+public class #SCRIPTNAME# : PropertyAttribute
+{
+    #region 字段
+
+    #endregion
+    
+    #region 构造方法
+    /// <summary>
+    /// 构造方法
+    /// </summary>
+    public #SCRIPTNAME#()
+    {
+        #NOTRIM#
+    }
+    #endregion
+}
+#ROOTNAMESPACEEND#

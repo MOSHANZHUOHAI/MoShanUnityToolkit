@@ -1,0 +1,88 @@
+#if UNITY_EDITOR
+using System;
+using System.Reflection;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
+    #ROOTNAMESPACEBEGIN#
+/// <summary>
+/// 编辑器拓展绘制：#目标MonoBehaviour的名称#
+/// </summary>
+/// <remarks>
+/// 注意：该脚本需要放在 Editor 文件夹下
+/// </remarks>
+[CustomEditor(typeof(#目标MonoBehaviour的名称#))] // 关联脚本
+public class #SCRIPTNAME# : Editor
+{
+    #region 字段
+    /// <summary>
+    /// 当前脚本依附的实例
+    /// </summary>
+    private #目标MonoBehaviour的名称# This;
+
+    /// <summary>
+    /// 脚本
+    /// </summary>
+    private MonoScript monoScript;
+    #endregion
+
+    #region 生命周期方法
+    private void OnEnable()
+    {
+        This = target as #目标MonoBehaviour的名称#;
+
+        #region 获取【脚本】
+        // 获取【脚本类型】
+        Type monoScriptType = Type.GetType("UnityEditor.MonoScript, UnityEditor");
+
+        // 获取【从脚本对象获取脚本】的【方法信息】
+        MethodInfo fromScriptedObjectMethod = monoScriptType.GetMethod("FromScriptedObject", BindingFlags.NonPublic | BindingFlags.Static);
+
+        // 获取【脚本】
+        monoScript = (MonoScript)fromScriptedObjectMethod.Invoke(null, new object[] { This });
+        #endregion
+    }
+
+    public override void OnInspectorGUI()
+    {
+        #region 绘制【标题】
+        // 开始【附带背景填充的水平布局】
+        EditorGUILayout.BeginHorizontal("box"); 
+
+        // 添加【可伸缩空间】
+        GUILayout.FlexibleSpace();
+
+        // 绘制【粗体标签】
+        GUILayout.Label("#目标MonoBehaviour的名称#", EditorStyles.boldLabel);
+
+        // 添加【可伸缩空间】
+        GUILayout.FlexibleSpace();
+
+        // 结束【水平布局】
+        EditorGUILayout.EndHorizontal();
+        #endregion
+
+        #region 绘制【脚本】
+        // 禁用 GUI 字段编辑
+        GUI.enabled = false;
+
+        // 绘制【脚本】
+        EditorGUILayout.ObjectField("脚本", monoScript, typeof(MonoScript), false);
+
+        // 启用 GUI 字段编辑
+        GUI.enabled = true;
+        #endregion
+
+        // 更新序列化对象
+        serializedObject.Update();
+
+        // TODO: 绘制内容
+
+        // 应用属性修改
+        serializedObject.ApplyModifiedProperties();
+    }
+    #endregion
+}
+#endif
+#ROOTNAMESPACEEND#

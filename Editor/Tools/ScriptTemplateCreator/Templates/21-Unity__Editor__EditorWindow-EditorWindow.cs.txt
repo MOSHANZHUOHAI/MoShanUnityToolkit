@@ -1,0 +1,59 @@
+#if UNITY_EDITOR
+using System;
+using UnityEditor;
+using UnityEngine;
+    #ROOTNAMESPACEBEGIN#
+/// <summary>
+/// 编辑器窗口：#SCRIPTNAME#
+/// </summary>
+/// <remarks>
+/// 注意：该脚本需要放在 Editor 文件夹下
+/// </remarks>
+public class #SCRIPTNAME# : EditorWindow
+{
+    #region 启动
+    /// <summary>
+    /// 显示窗口
+    /// </summary>
+    [MenuItem("Tools/#SCRIPTNAME#")]
+    public static void ShowWindow()
+    {
+        // 获取【窗口】
+        #SCRIPTNAME# window = EditorWindow.GetWindow<#SCRIPTNAME#>(false, "#SCRIPTNAME#", true);
+
+        // 设置【尺寸】
+        float width = 500f;
+        float height = 800f;
+
+        // 设置【尺寸下限】
+        window.minSize = new Vector2(width, height);
+
+        // 获取当前显示器的分辨率以设置窗口到屏幕中心
+        window.position = new Rect(Screen.currentResolution.width / 2 - width / 2, Screen.currentResolution.height / 2 - height / 2, width, height);
+
+        // 绘制窗口
+        window.Show();
+
+        // 聚焦窗口
+        window.Focus();
+    }
+    #endregion
+
+    #region 字段
+
+    #endregion
+
+    #region 生命周期方法
+    private void OnEnable()
+    {
+        #NOTRIM#
+    }
+
+    private void OnGUI()
+    {
+        #NOTRIM#
+    }
+    #endregion 
+}
+#endif
+#ROOTNAMESPACEEND#

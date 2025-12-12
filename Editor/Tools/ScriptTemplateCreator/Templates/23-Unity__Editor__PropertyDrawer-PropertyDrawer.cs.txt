@@ -1,0 +1,103 @@
+#if UNITY_EDITOR
+using System.Collections;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
+    #ROOTNAMESPACEBEGIN#
+/// <summary>
+/// 自定义属性绘制器：#目标类型class或结构体struct的名称#
+/// </summary>
+/// <remarks>
+/// 注意：该脚本需要放在 Editor 文件夹下
+/// </remarks>
+[CustomPropertyDrawer(typeof(#目标类型class或结构体struct的名称#))] // 关联脚本
+public class #SCRIPTNAME# : PropertyDrawer
+{
+    #region 常量
+    /// <summary>
+    /// 缩进距离
+    /// </summary>
+    private const int indentDistance = 15;
+
+    /// <summary>
+    /// 空行高度
+    /// </summary>
+    private const int space = 6;
+    #endregion
+
+    #region 字段
+    /// <summary>
+    /// 缩进级别
+    /// </summary>
+    private int IndentLevel = 0;
+    #endregion
+
+    #region 属性
+    /// <summary>
+    /// 单线高度
+    /// </summary>
+    private float SingleLineHeight
+    {
+        get
+        {
+            return EditorGUIUtility.SingleLineHeight;
+        }
+    }
+
+    /// <summary>
+    /// 每行间距
+    /// </summary>
+    private float SpacePerRow
+    {
+        get
+        {
+            return EditorGUIUtility.SingleLineHeight + 2f;
+        }
+    }
+    #endregion
+
+    #region 生命周期方法
+    /// <summary>
+    /// 绘制 GUI 时
+    /// </summary>
+    /// <param name="position">绘制区域</param>
+    /// <param name="property">属性</param>
+    /// tparam name="label">标签</param>
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        // 重置【缩进级别】
+        IndentLevel = 0;
+
+        // 开始属性绘制
+        EditorGUI.BeginProperty(position, label, property);
+
+        // 绘制【标题】，高度为【1】行
+        GUI.Label(new Rect(position.x, position.y, position.width, SingleLineHeight), label);
+
+        // TODO: 绘制内容
+
+        // 结束属性绘制
+        EditorGUI.EndProperty();
+    }
+
+    /// <summary>
+    /// 获取【属性高度】
+    /// </summary>
+    /// <param name="property">属性</param>
+    /// tparam name="label">标签</param>
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        // 计算整个 PropertyDrawer 需要的高度
+        float result = 0;
+
+        // 累加【标题高度】
+        result += SpacePerRow;
+
+        // TODO: 计算属性高度
+
+        return result;
+    }
+    #endregion
+}
+#endif
+#ROOTNAMESPACEEND#

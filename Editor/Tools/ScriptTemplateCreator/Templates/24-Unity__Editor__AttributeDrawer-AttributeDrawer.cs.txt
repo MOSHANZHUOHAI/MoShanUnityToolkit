@@ -1,0 +1,40 @@
+#if UNITY_EDITOR
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
+    #ROOTNAMESPACEBEGIN#
+/// <summary>
+/// 自定义属性绘制器：#目标特性Attribute的名称#
+/// </summary>
+/// <remarks>
+/// 注意：该脚本需要放在 Editor 文件夹下，且需要配合不放在 Editor 文件夹下的【#目标特性Attribute的名称#.cs】使用
+/// </remarks>
+[CustomPropertyDrawer(typeof(#目标特性Attribute的名称#))] // 关联脚本
+public class #SCRIPTNAME# : PropertyDrawer
+{
+    #region 生命周期方法
+    /// <summary>
+    /// 绘制 GUI 时
+    /// </summary>
+    /// <param name="position">绘制区域</param>
+    /// <param name="property">属性</param>
+    /// tparam name="label">标签</param>
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        #目标特性Attribute的名称# This = attribute as #目标特性Attribute的名称#;
+    }
+
+    /// <summary>
+    /// 获取【属性高度】
+    /// </summary>
+    /// <param name="property">属性</param>
+    /// tparam name="label">标签</param>
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        return EditorGUI.GetPropertyHeight(property, label, true);
+    }
+    #endregion
+}
+#endif
+#ROOTNAMESPACEEND#
