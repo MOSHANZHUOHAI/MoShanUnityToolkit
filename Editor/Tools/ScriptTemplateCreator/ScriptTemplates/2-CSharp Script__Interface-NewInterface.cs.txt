@@ -1,9 +1,10 @@
 using System;
+
 #ROOTNAMESPACEBEGIN#
 /// <summary>
 /// #SCRIPTNAME#
 /// </summary>
-public class #SCRIPTNAME#
+public interface #SCRIPTNAME#
 {
     #region 属性
 

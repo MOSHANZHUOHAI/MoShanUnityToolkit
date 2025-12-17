@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-    #ROOTNAMESPACEBEGIN#
+
+#ROOTNAMESPACEBEGIN#
 /// <summary>
 /// 自定义属性绘制器：#目标类型class或结构体struct的名称#
 /// </summary>
@@ -17,12 +18,12 @@ public class #SCRIPTNAME# : PropertyDrawer
     /// <summary>
     /// 缩进距离
     /// </summary>
-    private const int indentDistance = 15;
+    private const int INDENT_DISTANCE = 15;
 
     /// <summary>
     /// 空行高度
     /// </summary>
-    private const int space = 6;
+    private const int LINE_HIGHT = 6;
     #endregion
 
     #region 字段
@@ -34,7 +35,7 @@ public class #SCRIPTNAME# : PropertyDrawer
 
     #region 属性
     /// <summary>
-    /// 单线高度
+    /// 单行高度
     /// </summary>
     private float SingleLineHeight
     {
@@ -47,11 +48,11 @@ public class #SCRIPTNAME# : PropertyDrawer
     /// <summary>
     /// 每行间距
     /// </summary>
-    private float SpacePerRow
+    private float SpacePerLine
     {
         get
         {
-            return EditorGUIUtility.SingleLineHeight + 2f;
+            return EditorGUIUtility.SingleLineHeight + 2.0f;
         }
     }
     #endregion
@@ -91,7 +92,7 @@ public class #SCRIPTNAME# : PropertyDrawer
         float result = 0;
 
         // 累加【标题高度】
-        result += SpacePerRow;
+        result += SpacePerLine;
 
         // TODO: 计算属性高度
 

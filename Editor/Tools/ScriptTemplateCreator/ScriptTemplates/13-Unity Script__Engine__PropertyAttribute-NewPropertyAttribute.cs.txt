@@ -2,7 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-    #ROOTNAMESPACEBEGIN#
+
+#ROOTNAMESPACEBEGIN#
 /// <summary>
 /// #SCRIPTNAME#
 /// </summary>
@@ -16,11 +17,16 @@ using UnityEngine;
 /// public string Example;
 /// ]]></code>
 /// </example>
+[AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
 public class #SCRIPTNAME# : PropertyAttribute
 {
     #region 字段
 
     #endregion
+
+    #rengin 属性
+
+    #endrrengin
     
     #region 构造方法
     /// <summary>

@@ -1,16 +1,17 @@
 #if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEditor;
-    #ROOTNAMESPACEBEGIN#
+using UnityEngine;
+
+#ROOTNAMESPACEBEGIN#
 /// <summary>
 /// 自定义属性绘制器：#目标特性Attribute的名称#
 /// </summary>
 /// <remarks>
 /// 注意：该脚本需要放在 Editor 文件夹下，且需要配合不放在 Editor 文件夹下的【#目标特性Attribute的名称#.cs】使用
 /// </remarks>
-[CustomPropertyDrawer(typeof(#目标特性Attribute的名称#))] // 关联脚本
+[CustomPropertyDrawer(typeof(#目标PropertyAttribute的名称#))] // 关联脚本
 public class #SCRIPTNAME# : PropertyDrawer
 {
     #region 生命周期方法

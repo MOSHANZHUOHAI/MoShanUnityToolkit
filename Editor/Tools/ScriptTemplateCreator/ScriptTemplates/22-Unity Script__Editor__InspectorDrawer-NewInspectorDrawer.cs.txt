@@ -3,9 +3,10 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEditor;
-    #ROOTNAMESPACEBEGIN#
+using UnityEngine;
+
+#ROOTNAMESPACEBEGIN#
 /// <summary>
 /// 编辑器拓展绘制：#目标MonoBehaviour的名称#
 /// </summary>
@@ -19,7 +20,7 @@ public class #SCRIPTNAME# : Editor
     /// <summary>
     /// 当前脚本依附的实例
     /// </summary>
-    private #目标MonoBehaviour的名称# This;
+    private #目标MonoBehaviour的名称# m_This;
 
     /// <summary>
     /// 脚本
@@ -30,7 +31,7 @@ public class #SCRIPTNAME# : Editor
     #region 生命周期方法
     private void OnEnable()
     {
-        This = target as #目标MonoBehaviour的名称#;
+        m_This = target as #目标MonoBehaviour的名称#;
 
         #region 获取【脚本】
         // 获取【脚本类型】
@@ -40,7 +41,7 @@ public class #SCRIPTNAME# : Editor
         MethodInfo fromScriptedObjectMethod = monoScriptType.GetMethod("FromScriptedObject", BindingFlags.NonPublic | BindingFlags.Static);
 
         // 获取【脚本】
-        monoScript = (MonoScript)fromScriptedObjectMethod.Invoke(null, new object[] { This });
+        monoScript = (MonoScript)fromScriptedObjectMethod.Invoke(null, new object[] { m_This });
         #endregion
     }
 

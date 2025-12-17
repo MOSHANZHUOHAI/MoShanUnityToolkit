@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
 #ROOTNAMESPACEBEGIN#
 /// <summary>
-/// 类型 #SCRIPTNAME#
+/// #SCRIPTNAME#
 /// </summary>
 [Serializable]
 public class #SCRIPTNAME#
