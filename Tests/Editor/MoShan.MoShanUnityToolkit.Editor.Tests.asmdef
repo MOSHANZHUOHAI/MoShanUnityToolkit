@@ -6,7 +6,9 @@
         "MoShan.MoShanUnityToolkit.Editor",
         "MoShan.MoShanUnityToolkit.Tests"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
