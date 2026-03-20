@@ -38,7 +38,7 @@ namespace MoShan.Unity.EditorExpand
             // 若属性是数组或列表的元素属性，为了在检视面板中正确显示每个元素的标签，则将属性的显示名称直接赋值给标签的文本
             if (!Regex.IsMatch(property.displayName, "Element \\d+"))
             {
-                // 判断 <【属性的自定义标签名称】是否不为【空】>
+                // 判断 <【属性的自定义标签名称】是否不为空值>
                 if (!string.IsNullOrWhiteSpace(target.Name))
                 {
                     // 设置【标签】为【自定义标签】
@@ -141,7 +141,7 @@ namespace MoShan.Unity.EditorExpand
         {
             FieldInfo fieldInfo = property.serializedObject.targetObject.GetType().GetField(property.name);
 
-            // 判断 <【字段信息】是否为【空】>
+            // 判断 <【字段信息】是否为空值>
             if (fieldInfo == null)
             {
                 return false;

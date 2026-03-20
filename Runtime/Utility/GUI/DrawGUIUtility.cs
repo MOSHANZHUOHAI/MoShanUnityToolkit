@@ -86,7 +86,7 @@ namespace MoShan.Unity.EngineExpand
         {
             get
             {
-                // 判断 <【矩形纹理】是否为【空】>
+                // 判断 <【矩形纹理】是否为空值>
                 if (s_RectTexture == null)
                 {
                     // 创建【矩形纹理】
@@ -263,7 +263,7 @@ namespace MoShan.Unity.EngineExpand
         /// <returns>返回结束颜色变更后，当前仍记录的【GUI 颜色】变更的总数。</returns>
         public static int EndColorChange()
         {
-            // 判断 <【颜色变更记录栈】是否为【空】>
+            // 判断 <【颜色变更记录栈】是否为空值>
             if (s_ColorRecords.Count == 0)
             {
                 return 0;
@@ -280,7 +280,7 @@ namespace MoShan.Unity.EngineExpand
         /// </summary>
         public static void EndAllColorChange()
         {
-            // 判断 <【颜色变更记录栈】是否为【空】>
+            // 判断 <【颜色变更记录栈】是否为空值>
             if (s_ColorRecords.Count == 0)
             {
                 return;

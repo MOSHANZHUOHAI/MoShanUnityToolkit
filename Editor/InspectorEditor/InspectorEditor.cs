@@ -168,7 +168,7 @@ namespace MoShan.Unity.EditorExpand
             // 获取【序列化对象】
             SerializedObject serializedObject = base.serializedObject;
 
-            // 判断 <【序列化对象】是否为【空】>
+            // 判断 <【序列化对象】是否为空值>
             if (serializedObject != null)
             {
                 GetSerializedProperties(base.serializedObject);

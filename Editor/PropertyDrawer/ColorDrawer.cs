@@ -1,5 +1,4 @@
 #if UNITY_EDITOR
-using System.Globalization;
 using UnityEditor;
 using UnityEngine;
 

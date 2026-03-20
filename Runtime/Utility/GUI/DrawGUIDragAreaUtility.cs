@@ -168,6 +168,7 @@ namespace MoShan.Unity.EngineExpand
 
             #region 局部方法
             // 获取【距离】
+            // @returns：返回距离。
             Vector2 GetDistance()
             {
                 // 判断 <【输入布局模式】是否为【水平】>

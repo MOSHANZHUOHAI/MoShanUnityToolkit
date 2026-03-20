@@ -428,7 +428,7 @@ namespace MoShan.Unity.EditorExpand
         /// </summary>
         private void DrawCopyButton()
         {
-            // 判断 <检查器窗口所示的【游戏对象】是否为【空】>
+            // 判断 <检查器窗口所示的【游戏对象】是否为空值>
             if (Selection.activeGameObject == null)
             {
                 return;
@@ -452,7 +452,7 @@ namespace MoShan.Unity.EditorExpand
         /// </summary>
         private void DrawPasteButton()
         {
-            // 判断 <检查器窗口所示的【游戏对象】是否为【空】>
+            // 判断 <检查器窗口所示的【游戏对象】是否为空值>
             if (Selection.activeGameObject == null)
             {
                 return;

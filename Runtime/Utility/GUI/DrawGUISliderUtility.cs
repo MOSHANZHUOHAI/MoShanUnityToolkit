@@ -308,9 +308,9 @@ namespace MoShan.Unity.EngineExpand
 
             #region 局部方法
             // 静态局部方法：绘制圆形
-            // @position：位置
-            // @color：颜色
-            // @radius：半径
+            // @param position：位置
+            // @param color   ：颜色
+            // @param radius  ：半径
             static void DrawCircle(Rect position, Color color, float radius)
             {
                 GUI.DrawTexture

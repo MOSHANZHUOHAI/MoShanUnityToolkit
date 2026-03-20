@@ -59,7 +59,7 @@ namespace MoShan.Unity.EditorExpand
         /// </summary>
         /// <param name="target">目标对象</param>
         /// <param name="inspectorEditorTypeFullName">检视窗口编辑器类型全称</param>
-        /// <returns>若获取成功，返回【检视窗口编辑器】；否则，返回【空】</returns>
+        /// <returns>若获取成功，返回【检视窗口编辑器】；否则，返回空值</returns>
         private static Editor GetInspectorEditor(Object target, string inspectorEditorTypeFullName)
         {
             // 获取【检视窗口编辑器】类型
@@ -71,7 +71,7 @@ namespace MoShan.Unity.EditorExpand
                 // 获取名称对应的【原始组件编辑器】类型
                 .FirstOrDefault(item => item.FullName == inspectorEditorTypeFullName);
 
-            // 判断 <对应的【检视窗口编辑器】类型是否为【空】>
+            // 判断 <对应的【检视窗口编辑器】类型是否为空值>
             if (editorType == null)
             {
                 return null;
@@ -138,7 +138,7 @@ namespace MoShan.Unity.EditorExpand
         /// </summary>
         public sealed override void OnInspectorGUI()
         {
-            // 判断 <【原始组件检视窗口编辑器】是否为【空】>
+            // 判断 <【原始组件检视窗口编辑器】是否为空值>
             if (s_OriginalComponentEditor == null)
             {
                 return;
@@ -157,7 +157,7 @@ namespace MoShan.Unity.EditorExpand
         {
             OnExit();
 
-            // 判断 <【原始组件检视窗口编辑器】是否为【空】>
+            // 判断 <【原始组件检视窗口编辑器】是否为空值>
             if (s_OriginalComponentEditor == null)
             {
                 return;

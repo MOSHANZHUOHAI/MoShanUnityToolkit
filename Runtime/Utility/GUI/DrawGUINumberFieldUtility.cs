@@ -53,7 +53,7 @@ namespace MoShan.Unity.EngineExpand
             // 设置【文本字段高度】
             position.height = 18;
 
-            // 判断 <【输入文本】是否为【空】>
+            // 判断 <【输入文本】是否为空值>
             if (text == null)
             {
                 text = string.Empty;

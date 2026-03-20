@@ -32,7 +32,7 @@ namespace MoShan.Unity.EngineExpand
             {
                 string newValue;
 
-                // 判断 <【输入值】是否为【空】>
+                // 判断 <【输入值】是否为空值>
                 if (string.IsNullOrWhiteSpace(value))
                 {
                     newValue = GetType().Name;
@@ -42,7 +42,7 @@ namespace MoShan.Unity.EngineExpand
                     // 使用正则表达式匹配【所有非空格的空白字符】替换为【空字符串】
                     newValue = Regex.Replace(value, @"[\s-[ ]]", string.Empty);
 
-                    // 判断 <【输入值】是否为【空】>
+                    // 判断 <【输入值】是否为空值>
                     if (string.IsNullOrWhiteSpace(newValue))
                     {
                         newValue = GetType().Name;

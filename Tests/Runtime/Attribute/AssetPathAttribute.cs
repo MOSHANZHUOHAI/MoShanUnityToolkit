@@ -99,7 +99,7 @@ namespace MoShan.Unity.EngineExpand.Test
         /// <param name="type">类型</param>
         public AssetPathAttribute(Type type)
         {
-            // 判断 <【输入类型】是否不为【空】>
+            // 判断 <【输入类型】是否不为空值>
             if (type != null)
             {
                 AssetType = type;

@@ -369,7 +369,7 @@ namespace MoShan.Unity.EngineExpand
         /// <returns>返回前缀标签的绘制位置。</returns>
         public static Rect GetPrefixLabelPosition(Rect totalPosition, GUIContent label)
         {
-            // 判断 <【标签】是否为【空】>
+            // 判断 <【标签】是否为空值>
             if (label == null || label == GUIContent.none)
             {
                 totalPosition.size = Vector2.zero;

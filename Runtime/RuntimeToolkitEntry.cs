@@ -25,13 +25,13 @@ namespace MoShan.Unity.EngineExpand
         {
             get
             {
-                // 判断 <【对应字段的值】是否为【空】>
+                // 判断 <【对应字段的值】是否为空值>
                 if (s_Instance == null)
                 {
                     // 全场景搜索该单例类型的实例
                     s_Instance = FindObjectOfType<RuntimeToolkitEntry>();
 
-                    // 判断 <【对应字段的值】是否为【空】>
+                    // 判断 <【对应字段的值】是否为空值>
                     if (s_Instance == null)
                     {
                         // 创建承载该单例类型的实例的游戏对象
@@ -74,7 +74,7 @@ namespace MoShan.Unity.EngineExpand
         /// <summary>
         /// 获取【单例实例】
         /// </summary>
-        /// <returns>若获取成功，返回该类型对应的【单例实例】；否则，返回【空】。</returns>
+        /// <returns>若获取成功，返回该类型对应的【单例实例】；否则，返回空值。</returns>
         public static RuntimeToolkitEntry GetInstance()
         {
             return Instance;
@@ -84,7 +84,7 @@ namespace MoShan.Unity.EngineExpand
         #region 生命周期方法
         private void Awake()
         {
-            // 判断 <【单例实例】是否为【空】>
+            // 判断 <【单例实例】是否为空值>
             if (s_Instance == null)
             {
                 s_Instance = this;
@@ -130,6 +130,5 @@ namespace MoShan.Unity.EngineExpand
             }
         }
         #endregion
-
     }
 }

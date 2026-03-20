@@ -108,7 +108,7 @@ namespace MoShan.Unity.EngineExpand
         /// </summary>
         static DrawGLUtility()
         {
-            // 判断 <【线材质】是否为【空】>
+            // 判断 <【线材质】是否为空值>
             if (!s_LineMaterial)
             {
                 s_LineMaterial = new Material(Shader.Find("UI/Default"));
@@ -396,7 +396,7 @@ namespace MoShan.Unity.EngineExpand
                     // 将标识加载到当前的模型和视图矩阵中。
                     GL.LoadIdentity();
 
-                    // 判断 <【主摄像机】是否不为【空】>
+                    // 判断 <【主摄像机】是否不为空值>
                     if (Camera.main != null)
                     {
                         // 获取【主摄像机】的【矩阵】
@@ -410,7 +410,7 @@ namespace MoShan.Unity.EngineExpand
                     }
                     else
                     {
-                        Debug.LogWarning("【主摄像机】为【空】，无法正确初始化 GL 绘制。");
+                        Debug.LogWarning("【主摄像机】为空值，无法正确初始化 GL 绘制。");
                     }
                     break;
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace MoShan.Unity.EngineExpand
@@ -102,10 +103,10 @@ namespace MoShan.Unity.EngineExpand
         /// 创建【停靠】
         /// </summary>
         /// <param name="window">窗口</param>
-        /// <returns>若创建成功，返回新建的【停靠】实例；否则，返回【空】。</returns>
+        /// <returns>若创建成功，返回新建的【停靠】实例；否则，返回空值。</returns>
         internal static Dock CreateDock(Window window)
         {
-            // 判断 <【输入窗口】是否为【空】>
+            // 判断 <【输入窗口】是否为空值>
             if (window == null)
             {
                 return null;
@@ -123,10 +124,10 @@ namespace MoShan.Unity.EngineExpand
         /// 创建【停靠】
         /// </summary>
         /// <param name="windows">所有窗口</param>
-        /// <returns>若创建成功，返回新建的【停靠】实例；否则，返回【空】。</returns>
+        /// <returns>若创建成功，返回新建的【停靠】实例；否则，返回空值。</returns>
         internal static Dock CreateDock(params Window[] windows)
         {
-            // 判断 <【输入窗口】是否为【空】>
+            // 判断 <【输入窗口】是否为空值>
             if (windows == null || windows.Length == 0 || windows.All(item => item == null))
             {
                 return null;
@@ -138,7 +139,7 @@ namespace MoShan.Unity.EngineExpand
             // 循环以添加所有窗口
             for (int i = 0; i < windows.Length; i++)
             {
-                // 判断 <【当前窗口】是否为【空】>
+                // 判断 <【当前窗口】是否为空值>
                 if (windows[i] == null)
                 {
                     continue;
@@ -160,7 +161,7 @@ namespace MoShan.Unity.EngineExpand
         /// <returns>若获取成功，返回【输入名称】对应的【样式】；否则，返回【输入默认样式】；</returns>
         private static GUIStyle GetStyle(string name, GUIStyle defaultStyle)
         {
-            // 判断 <【风格】是否为【空】>
+            // 判断 <【风格】是否为空值>
             if (Skin == null)
             {
                 return defaultStyle;
@@ -169,7 +170,7 @@ namespace MoShan.Unity.EngineExpand
             // 获取【样式】
             GUIStyle style = Skin.FindStyle(name);
 
-            // 判断 <【样式】是否为【空】>
+            // 判断 <【样式】是否为空值>
             if (style == null)
             {
                 style = defaultStyle;
@@ -241,7 +242,7 @@ namespace MoShan.Unity.EngineExpand
         {
             get
             {
-                // 判断 <【窗口列表】是否为【空】>
+                // 判断 <【窗口列表】是否为空值>
                 if (m_Windows == null)
                 {
                     return 0;
@@ -319,7 +320,7 @@ namespace MoShan.Unity.EngineExpand
         /// <returns>返回该实例与其它同类型实例进行相等比较的判断结果。</returns>
         public bool Equals(Dock other)
         {
-            // 判断 <【输入值】是否为【空】>
+            // 判断 <【输入值】是否为空值>
             if (ReferenceEquals(other, null))
             {
                 return false;
@@ -350,7 +351,7 @@ namespace MoShan.Unity.EngineExpand
                 return;
             }
 
-            // 判断 <【窗口列表】是否为【空】>
+            // 判断 <【窗口列表】是否为空值>
             if (m_Windows == null || m_Windows.Count == 0)
             {
                 return;
@@ -447,7 +448,7 @@ namespace MoShan.Unity.EngineExpand
         /// <returns>返回添加窗口是否成功的判断结果。</returns>
         internal bool AddWindow(Window window)
         {
-            // 判断 <【输入窗口】是否为【空】>或<【窗口列表】是否包含【输入窗口】>
+            // 判断 <【输入窗口】是否为空值>或<【窗口列表】是否包含【输入窗口】>
             if (window == null || m_Windows.Contains(window))
             {
                 return false;
@@ -465,7 +466,7 @@ namespace MoShan.Unity.EngineExpand
         /// <returns>返回移除窗口是否成功的判断结果。</returns>
         internal bool RemoveWindow(Window window)
         {
-            // 判断 <【输入窗口】是否为【空】>或<【窗口列表】是否不包含【输入窗口】>
+            // 判断 <【输入窗口】是否为空值>或<【窗口列表】是否不包含【输入窗口】>
             if (window == null || !m_Windows.Contains(window))
             {
                 return false;
@@ -505,7 +506,7 @@ namespace MoShan.Unity.EngineExpand
         /// <summary>
         /// 移除【当前窗口】
         /// </summary>
-        /// <returns>若移除成功，返回已移除的【当前窗口】；否则，返回【空】。</returns>
+        /// <returns>若移除成功，返回已移除的【当前窗口】；否则，返回空值。</returns>
         internal Window RemoveCurrentWindow()
         {
             // 判断 <【选中索引】是否超限>
@@ -549,6 +550,7 @@ namespace MoShan.Unity.EngineExpand
         /// 绘制【标题栏】
         /// </summary>
         /// <param name="position">位置</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void DrawHeader(Rect position)
         {
             DrawGUIUtility.BeginGroup(position, GetStyle(HEADER_BACKGROUND_STYLE_NAME, GUI.skin.box));
@@ -573,6 +575,7 @@ namespace MoShan.Unity.EngineExpand
         /// </summary>
         /// <param name="position">位置</param>
         /// <returns>返回绘制后剩余的位置。</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Rect DrawHeaderButtons(Rect position)
         {
             #region 绘制【关闭窗口按钮】
@@ -584,7 +587,7 @@ namespace MoShan.Unity.EngineExpand
             #endregion
 
             #region 绘制【最大化窗口按钮】
-            // 判断 <是否可变更尺寸>、<【最大化时事件】是否不为【空】>
+            // 判断 <是否可变更尺寸>、<【最大化时事件】是否不为空值>
             if (OnMaximizing != null)
             {
                 // 绘制【最大化窗口按钮】并判断 <按钮是否被触发>
@@ -599,6 +602,7 @@ namespace MoShan.Unity.EngineExpand
 
             #region 局部方法
             // 局部方法：获取【按钮位置】
+            // @returns：返回按钮位置
             Rect GetButtonPosition()
             {
                 // 移除【即将被使用的位置】
@@ -620,6 +624,7 @@ namespace MoShan.Unity.EngineExpand
         /// </summary>
         /// <param name="position">位置</param>
         /// <returns>返回绘制后剩余的位置。</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Rect DrawDragtabScroller(Rect position)
         {
             // 判断 <【所有拖拽选项卡的总宽度】是否小于等于【位置】的【宽度】>，即<是否不绘制【滚动按钮】>
@@ -964,11 +969,11 @@ namespace MoShan.Unity.EngineExpand
 
             #region 局部方法
             // 静态局部方法：绘制【拖拽选项卡】
-            // @position  ：位置
-            // @label     ：标签
-            // @isHover   ：是否悬停
-            // @isSelected：是否选中
-            // @style     ：样式
+            // @param position  ：位置
+            // @param label     ：标签
+            // @param isHover   ：是否悬停
+            // @param isSelected：是否选中
+            // @param style     ：样式
             static void DrawDragtab(Rect position, GUIContent label, bool isHover, bool isSelected, GUIStyle style)
             {
                 style.Draw(position, label, isHover, false, isSelected, false);
@@ -983,6 +988,7 @@ namespace MoShan.Unity.EngineExpand
         /// <param name="label">标签</param>
         /// <param name="direction">方向，取值范围为{-1、1}</param>
         /// <param name="style">样式</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void DrawDragtabScrollerButton(Rect position, GUIContent label, float direction, GUIStyle style)
         {
             // 绘制【按钮】并判断 <是否触发该按钮>
@@ -998,6 +1004,7 @@ namespace MoShan.Unity.EngineExpand
         /// 绘制【可拖拽区域】
         /// </summary>
         /// <param name="position">位置</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void DrawDragableArea(Rect position)
         {
             // 判断 <是否正在拖拽标签>或<【可拖拽区域位置】的【宽度】是否小于等于【0】>，即<是否无需绘制【可拖拽区域】>
@@ -1019,6 +1026,7 @@ namespace MoShan.Unity.EngineExpand
         /// 绘制【选项卡窗口】
         /// </summary>
         /// <param name="position">位置</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void DrawTabWindow(Rect position)
         {
             // 判断 <【选中选项卡索引】是否超限>
@@ -1052,10 +1060,10 @@ namespace MoShan.Unity.EngineExpand
         /// <returns>返回【运算符号左侧的值】是否等于【运算符号右侧的值】的判断结果。</returns>
         public static bool operator ==(Dock left, Dock right)
         {
-            // 判断 <【左侧值】是否为【空】>
+            // 判断 <【左侧值】是否为空值>
             if (left is null)
             {
-                // 判断 <【右侧值】是否为【空】>
+                // 判断 <【右侧值】是否为空值>
                 if (right is null)
                 {
                     return true;

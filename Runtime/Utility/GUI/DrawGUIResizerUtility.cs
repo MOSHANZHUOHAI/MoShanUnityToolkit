@@ -234,8 +234,8 @@ namespace MoShan.Unity.EngineExpand
 
             #region 局部方法
             /// 局部方法：辅助绘制尺寸调整手柄
-            /// @position ：尺寸调整手柄位置
-            /// @direction：尺寸调整方向
+            /// @param position ：尺寸调整手柄位置
+            /// @param direction：尺寸调整方向
             void HelpDrawResizeHandle(Rect position, ResizeDirections direction)
             {
                 DrawResizeHandle(position, direction, minSize, maxSize, border, ref windowPosition);
@@ -274,8 +274,6 @@ namespace MoShan.Unity.EngineExpand
                     Math.Max(border.xMin        , Math.Max(windowPosition.xMax - maxSize.x, float.MinValue)),
                     Math.Min(windowPosition.xMax, Math.Max(windowPosition.xMax - minSize.x, float.MinValue))
                 );
-
-                Debug.Log($"{last}|{windowPosition.xMin}");
             }
             // 判断 <【尺寸调整方向】是否包含【右侧】>，即<是否调整右侧边缘>
             else if (direction.IsHasDirection(ResizeDirections.Right))

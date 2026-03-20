@@ -1,10 +1,9 @@
 #if UNITY_EDITOR
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEditor;
 using UnityEngine;
 
-#ROOTNAMESPACEBEGIN#
+    #ROOTNAMESPACEBEGIN#
 /// <summary>
 /// 自定义属性绘制器：#目标类型class或结构体struct的名称#
 /// </summary>

@@ -106,7 +106,7 @@ namespace MoShan.Unity.EngineExpand
         {
             get
             {
-                // 判断 <【风格】是否为【空】>
+                // 判断 <【风格】是否为空值>
                 if (s_Skin == null)
                 {
                     return GUI.skin.window;
@@ -270,7 +270,7 @@ namespace MoShan.Unity.EngineExpand
                     // 获取【当前布局】
                     DockLayout currentLayout = s_FloatingLayouts[i];
 
-                    // 判断 <【当前布局】是否为【空】>
+                    // 判断 <【当前布局】是否为空值>
                     if (currentLayout == null)
                     {
                         continue;
@@ -291,7 +291,7 @@ namespace MoShan.Unity.EngineExpand
             // 判断 <是否绘制【固定布局】>
             if (s_IsDrawFixedLayout)
             {
-                // 判断 <获取【聚焦布局】是否成功>、<【聚焦布局】的【内容】是否不为【空】>
+                // 判断 <获取【聚焦布局】是否成功>、<【聚焦布局】的【内容】是否不为空值>
                 if (s_FixedLayout.GetFocusingLayout(mousePosition, out DockLayout focusLayout) && focusLayout.Content != null)
                 {
                     return focusLayout;
@@ -316,7 +316,7 @@ namespace MoShan.Unity.EngineExpand
 
             s_FocusingLayout = layout;
 
-            // 判断 <【聚焦布局】是否为【空】>
+            // 判断 <【聚焦布局】是否为空值>
             if (s_FocusingLayout == null)
             {
                 return;
@@ -355,7 +355,7 @@ namespace MoShan.Unity.EngineExpand
                 return;
             }
 
-            // 判断 <【浮动停靠列表】是否不为【空】>
+            // 判断 <【浮动停靠列表】是否不为空值>
             if (s_FloatingLayouts != null && s_FloatingLayouts.Count > 0)
             {
                 // 循环以绘制【所有浮动停靠】
@@ -364,7 +364,7 @@ namespace MoShan.Unity.EngineExpand
                     // 获取【当前布局】
                     DockLayout currentLayout = s_FloatingLayouts[i];
 
-                    // 判断 <【当前布局】是否为【空】>、<【当前布局】是否已关闭>
+                    // 判断 <【当前布局】是否为空值>、<【当前布局】是否已关闭>
                     if (currentLayout == null || currentLayout.IsClosed)
                     {
                         s_FloatingLayouts.RemoveAt(i);
@@ -374,7 +374,11 @@ namespace MoShan.Unity.EngineExpand
                         continue;
                     }
 
-                    currentLayout.Draw();
+                    // 判断 <【当前事件】的【类型】是否为【重绘】>或<【当前布局】是否为【聚焦布局】>
+                    if (Event.current.type == EventType.Repaint || currentLayout == s_FocusingLayout)
+                    {
+                        currentLayout.Draw();
+                    }
                 }
             }
         }

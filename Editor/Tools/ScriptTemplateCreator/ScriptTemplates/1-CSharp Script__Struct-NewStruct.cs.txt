@@ -1,6 +1,6 @@
 using System;
 
-#ROOTNAMESPACEBEGIN#
+    #ROOTNAMESPACEBEGIN#
 /// <summary>
 /// #SCRIPTNAME#
 /// </summary>

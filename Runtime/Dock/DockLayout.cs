@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace MoShan.Unity.EngineExpand
@@ -75,7 +76,7 @@ namespace MoShan.Unity.EngineExpand
         /// 创建【固定停靠布局】
         /// </summary>
         /// <param name="position">位置</param>
-        /// <returns>若创建成功，返回新建的【固定停靠布局】实例；否则，返回【空】。</returns>
+        /// <returns>若创建成功，返回新建的【固定停靠布局】实例；否则，返回空值。</returns>
         internal static DockLayout CreateFixedLayout(Rect position)
         {
             return new DockLayout(position, position, DockLayoutType.Fixed, null);
@@ -87,13 +88,13 @@ namespace MoShan.Unity.EngineExpand
         /// <param name="position">位置</param>
         /// <param name="border">边界</param>
         /// <param name="windows">窗口</param>
-        /// <returns>若创建成功，返回新建的【浮动停靠布局】实例；否则，返回【空】。</returns>
+        /// <returns>若创建成功，返回新建的【浮动停靠布局】实例；否则，返回空值。</returns>
         internal static DockLayout CreateFloatingLayout(Rect position, Rect border, Window windows)
         {
             // 创建【停靠】
             Dock dock = Dock.CreateDock(windows);
 
-            // 判断 <【停靠】是否为【空】>
+            // 判断 <【停靠】是否为空值>
             if (dock == null)
             {
                 return null;
@@ -108,13 +109,13 @@ namespace MoShan.Unity.EngineExpand
         /// <param name="position">位置</param>
         /// <param name="border">边界</param>
         /// <param name="windows">所有窗口</param>
-        /// <returns>若创建成功，返回新建的【浮动停靠布局】实例；否则，返回【空】。</returns>
+        /// <returns>若创建成功，返回新建的【浮动停靠布局】实例；否则，返回空值。</returns>
         internal static DockLayout CreateFloatingLayout(Rect position, Rect border, params Window[] windows)
         {
             // 创建【停靠】
             Dock dock = Dock.CreateDock(windows);
 
-            // 判断 <【停靠】是否为【空】>
+            // 判断 <【停靠】是否为空值>
             if (dock == null)
             {
                 return null;
@@ -192,7 +193,7 @@ namespace MoShan.Unity.EngineExpand
                     newValue.height > minSize.y ? newValue.height : minSize.y
                 );
 
-                // 判断 <【父级】是否不为【空】>
+                // 判断 <【父级】是否不为空值>
                 if (m_Parent != null)
                 {
                     newValue.width  = Mathf.Clamp(newValue.width , minSize.x, m_Parent.Position.width );
@@ -294,7 +295,7 @@ namespace MoShan.Unity.EngineExpand
                     return;
                 }
 
-                // 判断 <【内容】是否不为【空】>
+                // 判断 <【内容】是否不为空值>
                 if (m_Content != null)
                 {
                     m_Content.OnClosing  -= OnClosingContent;
@@ -303,7 +304,7 @@ namespace MoShan.Unity.EngineExpand
 
                 m_Content = value;
 
-                // 判断 <【内容】是否不为【空】>
+                // 判断 <【内容】是否不为空值>
                 if (m_Content != null)
                 {
                     m_Content.OnClosing  += OnClosingContent;
@@ -319,7 +320,7 @@ namespace MoShan.Unity.EngineExpand
         {
             get
             {
-                // 判断 <【父级】是否为【空】>
+                // 判断 <【父级】是否为空值>
                 if (m_Parent == null)
                 {
                     return 0;
@@ -336,7 +337,7 @@ namespace MoShan.Unity.EngineExpand
         {
             get
             {
-                // 判断 <【子级布局列表】是否为【空】>
+                // 判断 <【子级布局列表】是否为空值>
                 if (m_Children == null)
                 {
                     return 0;
@@ -437,7 +438,7 @@ namespace MoShan.Unity.EngineExpand
         {
             get
             {
-                // 判断 <【子级列表】是否为【空】>
+                // 判断 <【子级列表】是否为空值>
                 if (ChildCount == 0)
                 {
                     return false;
@@ -534,7 +535,7 @@ namespace MoShan.Unity.EngineExpand
                 // 循环以绘制所有子级
                 for (int i = 0; i < m_Children.Count; i++)
                 {
-                    // 判断 <【当前子级】是否为【空】>
+                    // 判断 <【当前子级】是否为空值>
                     if (m_Children[i] == null)
                     {
                         break;
@@ -614,7 +615,7 @@ namespace MoShan.Unity.EngineExpand
         /// <returns>返回该布局及子级布局是否包含【输入停靠】的判断结果。</returns>
         internal bool ContainsWithChildren(Dock dock)
         {
-            // 判断 <【输入停靠】是否为【空】>
+            // 判断 <【输入停靠】是否为空值>
             if (dock == null)
             {
                 return false;
@@ -704,6 +705,7 @@ namespace MoShan.Unity.EngineExpand
         /// <summary>
         /// 绘制【尺寸调整边框】
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void DrawResizeBorder()
         {
             // 判断 <是否不为【根布局】>或<【布局类型】是否不为【浮动】>
@@ -725,6 +727,7 @@ namespace MoShan.Unity.EngineExpand
         /// <summary>
         /// 绘制【尺寸调整线】
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void DrawResizeLine()
         {
             // 判断 <是否不存在子级>，即<是否不需要绘制【尺寸调整线】>

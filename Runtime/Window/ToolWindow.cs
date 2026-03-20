@@ -40,7 +40,7 @@ namespace MoShan.Unity.EngineExpand
         /// <returns>若获取成功，返回【输入名称】对应的【样式】；否则，返回【输入默认样式】；</returns>
         private static GUIStyle GetStyle(string name, GUIStyle defaultStyle)
         {
-            // 判断 <【风格】是否为【空】>
+            // 判断 <【风格】是否为空值>
             if (Skin == null)
             {
                 return defaultStyle;
@@ -49,7 +49,7 @@ namespace MoShan.Unity.EngineExpand
             // 获取【样式】
             GUIStyle style = Skin.FindStyle(name);
 
-            // 判断 <【样式】是否为【空】>
+            // 判断 <【样式】是否为空值>
             if (style == null)
             {
                 style = defaultStyle;

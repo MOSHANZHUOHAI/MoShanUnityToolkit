@@ -88,7 +88,7 @@ namespace MoShan.Unity.EngineExpand
         /// <returns>返回结束颜色变更后，当前仍记录的【线框颜色】变更的总数。</returns>
         public static int EndColorChange()
         {
-            // 判断 <【颜色变更记录栈】是否为【空】>
+            // 判断 <【颜色变更记录栈】是否为空值>
             if (s_ColorRecords.Count == 0)
             {
                 return 0;
@@ -105,7 +105,7 @@ namespace MoShan.Unity.EngineExpand
         /// </summary>
         public static void EndAllColorChange()
         {
-            // 判断 <【颜色变更记录栈】是否为【空】>
+            // 判断 <【颜色变更记录栈】是否为空值>
             if (s_ColorRecords.Count == 0)
             {
                 return;
@@ -165,7 +165,7 @@ namespace MoShan.Unity.EngineExpand
         /// <returns>返回结束矩阵变更后，当前仍记录的【线框矩阵】变更的总数。</returns>
         public static int EndMatrixChange()
         {
-            // 判断 <【矩阵变更记录栈】是否为【空】>
+            // 判断 <【矩阵变更记录栈】是否为空值>
             if (s_MatrixRecords.Count == 0)
             {
                 return 0;
@@ -182,7 +182,7 @@ namespace MoShan.Unity.EngineExpand
         /// </summary>
         public static void EndAllMatrixChange()
         {
-            // 判断 <【矩阵变更记录栈】是否为【空】>
+            // 判断 <【矩阵变更记录栈】是否为空值>
             if (s_MatrixRecords.Count == 0)
             {
                 return;
@@ -346,7 +346,7 @@ namespace MoShan.Unity.EngineExpand
         /// <param name="vertexs">顶点数组</param>
         public static void DrawPolygon(params Vector2[] vertexs)
         {
-            // 判断 <【输入顶点数组】是否为【空】>或<顶点数组长度是否小于【2】，即无法构成至少一条直线，无意义>
+            // 判断 <【输入顶点数组】是否为空值>或<顶点数组长度是否小于【2】，即无法构成至少一条直线，无意义>
             if (vertexs == null || vertexs.Length < 2)
             {
                 return;
@@ -849,8 +849,8 @@ namespace MoShan.Unity.EngineExpand
         /// </summary>
         /// <param name="center">中心</param>
         /// <param name="size">格子尺寸</param>
-        /// <param name="row">格子行数</param>
-        /// <param name="column">格子列数</param>
+        /// <param name="row">每行格子数</param>
+        /// <param name="column">每列格子数</param>
         public static void DrawGrid(Vector2 center, Vector2 size, int row, int column)
         {
             DrawGrid(center, size.x, size.y, row, column, 0f, Vector2.one, Vector2.one);
@@ -861,8 +861,8 @@ namespace MoShan.Unity.EngineExpand
         /// </summary>
         /// <param name="center">中心</param>
         /// <param name="size">格子尺寸</param>
-        /// <param name="row">格子行数</param>
-        /// <param name="column">格子列数</param>
+        /// <param name="row">每行格子数</param>
+        /// <param name="column">每列格子数</param>
         /// <param name="angle">旋转角度（角度制），取值范围为[0°, 360°)</param>
         public static void DrawGrid(Vector2 center, Vector2 size, int row, int column, float angle)
         {
@@ -874,8 +874,8 @@ namespace MoShan.Unity.EngineExpand
         /// </summary>
         /// <param name="center">中心</param>
         /// <param name="size">格子尺寸</param>
-        /// <param name="row">格子行数</param>
-        /// <param name="column">格子列数</param>
+        /// <param name="row">每行格子数</param>
+        /// <param name="column">每列格子数</param>
         /// <param name="angle">旋转角度（角度制），取值范围为[0°, 360°)</param>
         /// <param name="scaleBeforeRotate">旋转前缩放</param>
         /// <param name="scaleAfterRotate">旋转后缩放</param>
@@ -890,8 +890,8 @@ namespace MoShan.Unity.EngineExpand
         /// <param name="center">中心</param>
         /// <param name="width">格子宽度</param>
         /// <param name="height">格子高度</param>
-        /// <param name="row">格子行数</param>
-        /// <param name="column">格子列数</param>
+        /// <param name="row">每行格子数</param>
+        /// <param name="column">每列格子数</param>
         public static void DrawGrid(Vector2 center, float width, float height, int row, int column)
         {
             DrawGrid(center, width, height, row, column, 0.0f, Vector2.one, Vector2.one);
@@ -903,8 +903,8 @@ namespace MoShan.Unity.EngineExpand
         /// <param name="center">中心</param>
         /// <param name="width">格子宽度</param>
         /// <param name="height">格子高度</param>
-        /// <param name="row">格子行数</param>
-        /// <param name="column">格子列数</param>
+        /// <param name="row">每行格子数</param>
+        /// <param name="column">每列格子数</param>
         /// <param name="angle">旋转角度（角度制），取值范围为[0°, 360°)</param>
         public static void DrawGrid(Vector2 center, float width, float height, int row, int column, float angle)
         {
@@ -917,8 +917,8 @@ namespace MoShan.Unity.EngineExpand
         /// <param name="center">中心</param>
         /// <param name="width">格子宽度</param>
         /// <param name="height">格子高度</param>
-        /// <param name="row">格子行数</param>
-        /// <param name="column">格子列数</param>
+        /// <param name="row">每行格子数</param>
+        /// <param name="column">每列格子数</param>
         /// <param name="angle">旋转角度（角度制），取值范围为[0°, 360°)</param>
         /// <param name="scaleBeforeRotate">旋转前缩放</param>
         /// <param name="scaleAfterRotate">旋转后缩放</param>
