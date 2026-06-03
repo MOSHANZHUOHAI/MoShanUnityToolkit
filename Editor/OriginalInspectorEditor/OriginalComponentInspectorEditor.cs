@@ -12,14 +12,14 @@ namespace MoShan.Unity.EditorExpand
     using Component = global::UnityEngine.Component;
 
     /// <summary>
-    /// 检视窗口编辑器：原始组件
+    /// 检视窗口编辑器：原生组件
     /// </summary>
     /// <remarks>
-    /// <para>用于自定义【<see cref="global::UnityEngine.Component">原生的 Unity 官方组件</see>】在【<see cref="global::UnityEditor.InspectorWindow">检视窗口</see>】的显示。</para>
-    /// <para>
-    /// <br><b>注意：</b></br>
-    /// <br>该类型所在的脚本文件应放在【Editor】文件夹下。</br>
-    /// </para>
+    /// 用于自定义 <see cref="global::UnityEngine.Component">原生的 Unity 官方组件</see> 在 <see cref="global::UnityEditor.InspectorWindow">检视窗口</see> 的显示。
+    /// <para/>
+    /// <b>注意：</b>
+    /// <br/>
+    /// 该类型所在的脚本文件应放在 Editor 文件夹下。
     /// </remarks>
     /// <typeparam name="TComponent">泛型 原生的 Unity 官方组件</typeparam>
     // [CanEditMultipleObjects] // 可以编辑多个对象
@@ -29,20 +29,20 @@ namespace MoShan.Unity.EditorExpand
     {
         #region 静态字段
         /// <summary>
-        /// 原始组件检视窗口编辑器
+        /// 原生组件检视窗口编辑器
         /// </summary>
         /// <remarks>
-        /// 原生的 Unity 官方组件对应的检视窗口拓展类型
+        /// 原生的 Unity 官方组件对应的检视窗口拓展类型。
         /// </remarks>
         private static Editor s_OriginalComponentEditor;
         #endregion
 
         #region 静态属性
         /// <summary>
-        /// 原始组件检视窗口编辑器
+        /// 原生组件检视窗口编辑器
         /// </summary>
         /// <remarks>
-        /// 原生的 Unity 官方组件对应的检视窗口拓展类型
+        /// 原生的 Unity 官方组件对应的检视窗口拓展类型。
         /// </remarks>
         protected static Editor OriginalComponentEditor
         {
@@ -55,40 +55,37 @@ namespace MoShan.Unity.EditorExpand
 
         #region 静态私有方法
         /// <summary>
-        /// 获取【检视窗口编辑器】
+        /// 获取检视窗口编辑器
         /// </summary>
-        /// <param name="target">目标对象</param>
-        /// <param name="inspectorEditorTypeFullName">检视窗口编辑器类型全称</param>
-        /// <returns>若获取成功，返回【检视窗口编辑器】；否则，返回空值</returns>
-        private static Editor GetInspectorEditor(Object target, string inspectorEditorTypeFullName)
+        /// <param name="targets">指定需要获取的目标对象。</param>
+        /// <param name="inspectorEditorTypeFullName">指定需要获取实例的检视窗口编辑器类型的全称。</param>
+        /// <returns>
+        /// 如果获取成功，返回值为检视窗口编辑器；
+        /// <br/>
+        /// 如果获取失败，返回值为 <see langword="null"/>。
+        /// </returns>
+        private static Editor GetInspectorEditor(Object[] targets, string inspectorEditorTypeFullName)
         {
-            // 获取【检视窗口编辑器】类型
+            // 获取检视窗口编辑器类型
             Type editorType = Assembly
-                // 获取【检视窗口编辑器】类型所在的程序集
+                // 获取检视窗口编辑器类型所在的程序集
                 .GetAssembly(typeof(global::UnityEditor.Editor))
-                // 获取【程序集】下的所有类型
+                // 获取程序集下的所有类型
                 .GetTypes()
-                // 获取名称对应的【原始组件编辑器】类型
+                // 获取名称对应的原生的 Unity 官方组件编辑器类型
                 .FirstOrDefault(item => item.FullName == inspectorEditorTypeFullName);
 
-            // 判断 <对应的【检视窗口编辑器】类型是否为空值>
+            // 判断 <对应的检视窗口编辑器类型是否为空值>
             if (editorType == null)
             {
                 return null;
             }
 
-            // 创建【输入目标】对应的【检视窗口编辑器】实例
-            Editor inspectorEditor = CreateEditor(target, editorType);
+            // 创建输入目标对应的检视窗口编辑器实例
+            Editor inspectorEditor = CreateEditor(targets, editorType);
 
             return inspectorEditor;
         }
-        #endregion
-
-        #region 字段
-        /// <summary>
-        /// 目标
-        /// </summary>
-        private TComponent m_Target;
         #endregion
 
         #region 属性
@@ -99,12 +96,23 @@ namespace MoShan.Unity.EditorExpand
         {
             get
             {
-                return m_Target;
+                return target as TComponent;
             }
         }
 
         /// <summary>
-        /// 原始组件检视器类型全称
+        /// 所有目标
+        /// </summary>
+        protected TComponent[] Targets
+        {
+            get
+            {
+                return targets.Cast<TComponent>().ToArray();
+            }
+        }
+
+        /// <summary>
+        /// 原生组件检视器类型全称
         /// </summary>
         protected abstract string OriginalComponentEditorTypeFullName { get; }
         #endregion
@@ -115,19 +123,30 @@ namespace MoShan.Unity.EditorExpand
         /// </summary>
         private void OnEnable()
         {
-            // 获取【目标】
-            m_Target = target as TComponent;
+            // 获取原生组件检视窗口编辑器
+            s_OriginalComponentEditor = GetInspectorEditor(targets, OriginalComponentEditorTypeFullName);
 
-            // 获取【原始组件检视窗口编辑器】
-            s_OriginalComponentEditor = GetInspectorEditor(target, OriginalComponentEditorTypeFullName);
+            // 判断 <原生组件检视窗口编辑器是否为空值>
+            if (s_OriginalComponentEditor == null)
+            {
+                Debug.LogError(string.Format
+                (
+                    "无法加载 {0} 类型的编辑器，请检查 {1} 属性的值是否正确！\r\n{1} = {2}",
+                    typeof(TComponent).FullName,
+                    nameof(OriginalComponentEditorTypeFullName),
+                    OriginalComponentEditorTypeFullName
+                ));
 
-            // 获取【序列化对象】
+                return;
+            }
+
+            // 获取序列化对象
             SerializedObject serializedObject = base.serializedObject;
 
-            // 判断 <【序列化对象】是否为空>
+            // 判断 <序列化对象是否为空>
             if (serializedObject != null)
             {
-                GetSerializedProperties(base.serializedObject);
+                GetSerializedProperties(serializedObject);
             }
 
             OnEnter();
@@ -138,16 +157,31 @@ namespace MoShan.Unity.EditorExpand
         /// </summary>
         public sealed override void OnInspectorGUI()
         {
-            // 判断 <【原始组件检视窗口编辑器】是否为空值>
+            // 判断 <原生组件检视窗口编辑器是否为空值>
             if (s_OriginalComponentEditor == null)
             {
+                EditorGUILayout.HelpBox
+                (
+                    string.Format
+                    (
+                        "无法加载 {0} 类型的编辑器，请检查 {1} 属性的值是否正确！",
+                        typeof(TComponent).FullName,
+                        nameof(OriginalComponentEditorTypeFullName)
+                    ),
+                    MessageType.Error
+                );
+
                 return;
             }
 
-            // 绘制【原始组件检视窗口编辑器】的检视窗口 GUI
+            serializedObject.Update();
+
+            // 绘制原生组件检视窗口编辑器的检视窗口 GUI
             s_OriginalComponentEditor.OnInspectorGUI();
 
             OnDraw();
+
+            serializedObject.ApplyModifiedProperties();
         }
 
         /// <summary>
@@ -157,29 +191,29 @@ namespace MoShan.Unity.EditorExpand
         {
             OnExit();
 
-            // 判断 <【原始组件检视窗口编辑器】是否为空值>
+            // 判断 <原生组件检视窗口编辑器是否为空值>
             if (s_OriginalComponentEditor == null)
             {
                 return;
             }
 
-            // 立即销毁【原始组件检视窗口编辑器】
+            // 立即销毁原生组件检视窗口编辑器
             DestroyImmediate(s_OriginalComponentEditor);
         }
         #endregion
 
         #region 私有方法
         /// <summary>
-        /// 获取【序列化属性】
+        /// 获取序列化属性
         /// </summary>
-        /// <param name="serializedObject">序列化对象</param>
+        /// <param name="serializedObject">指定需要获取其中的序列化属性的序列化对象，</param>
         protected virtual void GetSerializedProperties(SerializedObject serializedObject) { }
 
         /// <summary>
         /// 进入时
         /// </summary>
         /// <remarks>
-        /// 在【<see cref="OnEnable">启用时</see>】的最后调用
+        /// 在 <see cref="OnEnable">启用时</see> 的最后调用。
         /// </remarks>
         protected virtual void OnEnter() { }
 
@@ -187,7 +221,7 @@ namespace MoShan.Unity.EditorExpand
         /// 绘制时
         /// </summary>
         /// <remarks>
-        /// 在【<see cref="OnInspectorGUI">当绘制检视窗口 GUI 时</see>】的最后调用
+        /// 在 <see cref="OnInspectorGUI">当绘制检视窗口 GUI 时</see> 的最后调用。
         /// </remarks>
         protected abstract void OnDraw();
 
@@ -195,7 +229,7 @@ namespace MoShan.Unity.EditorExpand
         /// 退出时
         /// </summary>
         /// <remarks>
-        /// 在【<see cref="OnDisable">禁用时</see>】的最后调用
+        /// 在 <see cref="OnDisable">禁用时</see> 的最后调用。
         /// </remarks>
         protected virtual void OnExit() { }
 
