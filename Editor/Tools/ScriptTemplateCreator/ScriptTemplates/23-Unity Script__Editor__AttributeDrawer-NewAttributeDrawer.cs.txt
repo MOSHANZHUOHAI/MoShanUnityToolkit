@@ -5,36 +5,41 @@ using UnityEngine;
 
     #ROOTNAMESPACEBEGIN#
 /// <summary>
-/// 自定义属性绘制器：#目标特性Attribute的名称#
+/// 自定义属性绘制器：#目标特性PropertyAttribute#
 /// </summary>
 /// <remarks>
-/// 注意：该脚本需要放在 Editor 文件夹下，且需要配合不放在 Editor 文件夹下的【#目标特性Attribute的名称#.cs】使用
+/// <b>注意：</b>
+/// <br/>
+/// 该类型所在的脚本文件需要放置在 Editor 文件夹下；
+/// <br/>
+/// 该类型需要配合 <see cref="#目标特性PropertyAttribute#"/> 类型使用，且对应类型所在的脚本文件应放置在非 Editor 文件夹下。
 /// </remarks>
-[CustomPropertyDrawer(typeof(#目标PropertyAttribute的名称#))] // 关联脚本
+[CustomPropertyDrawer(typeof(#目标特性PropertyAttribute#))] // 关联脚本
 public class #SCRIPTNAME# : PropertyDrawer
 {
     #region 生命周期方法
     /// <summary>
     /// 绘制 GUI 时
     /// </summary>
-    /// <param name="position">绘制区域</param>
-    /// <param name="property">属性</param>
-    /// tparam name="label">标签</param>
+    /// <param name="position">指定需要绘制的 <paramref name="property"/> 的绘制区域。</param>
+    /// <param name="property">指定需要绘制的序列化属性。</param>
+    /// <param name="label">指定需要绘制的 <paramref name="property"/> 的 GUI 内容。</param>
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
-        #目标特性Attribute的名称# This = attribute as #目标特性Attribute的名称#;
+        #目标特性PropertyAttribute# target = attribute as #目标特性PropertyAttribute#;
     }
 
     /// <summary>
-    /// 获取【属性高度】
+    /// 获取属性高度
     /// </summary>
-    /// <param name="property">属性</param>
-    /// tparam name="label">标签</param>
+    /// <param name="property">指定需要绘制的序列化属性。</param>
+    /// <param name="label">指定需要绘制的 <paramref name="property"/> 的 GUI 内容。</param>
+    /// <returns>返回值为属性在 <see cref="global::UnityEditor.InspectorWindow">检视窗口</see> 的绘制高度。</returns>
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
         return EditorGUI.GetPropertyHeight(property, label, true);
     }
     #endregion
 }
-#endif
 #ROOTNAMESPACEEND#
+#endif

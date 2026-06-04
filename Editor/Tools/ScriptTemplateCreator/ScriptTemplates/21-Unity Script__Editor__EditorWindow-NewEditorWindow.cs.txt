@@ -19,14 +19,14 @@ public class #SCRIPTNAME# : EditorWindow
     [MenuItem("Tools/#SCRIPTNAME#")]
     public static void ShowWindow()
     {
-        // 获取【窗口】
+        // 获取窗口
         #SCRIPTNAME# window = EditorWindow.GetWindow<#SCRIPTNAME#>(false, "#SCRIPTNAME#", true);
 
-        // 设置【尺寸】
+        // 设置窗口的大小
         float width  = 500.0f;
         float height = 800.0f;
 
-        // 设置【尺寸下限】
+        // 设置窗口的大小下限
         window.minSize = new Vector2(width, height);
 
         // 获取当前显示器的分辨率以设置窗口到屏幕中心
@@ -62,5 +62,5 @@ public class #SCRIPTNAME# : EditorWindow
     }
     #endregion 
 }
-#endif
 #ROOTNAMESPACEEND#
+#endif

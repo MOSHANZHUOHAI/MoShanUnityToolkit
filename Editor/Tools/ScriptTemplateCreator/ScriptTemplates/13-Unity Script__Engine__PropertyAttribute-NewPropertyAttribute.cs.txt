@@ -6,13 +6,20 @@ using UnityEngine;
 /// #SCRIPTNAME#
 /// </summary>
 /// <remarks>
-/// <para>适用范围：</para>
-/// <para>注意：该脚本不能放在 Editor 文件夹下，否则会报错找不到该特性，且需要配合放在 Editor 文件夹下的 #SCRIPTNAME#Drawer.cs 使用</para>
+/// <b>使用：</b>
+/// <br/>
+/// #描述该特性的作用#
+/// <para/>
+/// <b>注意：</b>
+/// <br/>
+/// 该类型所在的脚本文件应放置在非 Editor 文件夹下，否则会因为找不到该类型而导致报错。
 /// </remarks>
 /// <example>
 /// <code><![CDATA[
+
 /// [#SCRIPTNAME#]
 /// public string Example;
+
 /// ]]></code>
 /// </example>
 [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
@@ -22,9 +29,9 @@ public class #SCRIPTNAME# : PropertyAttribute
 
     #endregion
 
-    #rengin 属性
+    #region 属性
 
-    #endrrengin
+    #endregion
     
     #region 构造方法
     /// <summary>

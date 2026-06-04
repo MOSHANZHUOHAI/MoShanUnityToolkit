@@ -5,12 +5,14 @@ using UnityEngine;
 
     #ROOTNAMESPACEBEGIN#
 /// <summary>
-/// 自定义属性绘制器：#目标类型class或结构体struct的名称#
+/// 自定义属性绘制器：#目标类型class或结构体struct或特性attribute#
 /// </summary>
 /// <remarks>
-/// 注意：该脚本需要放在 Editor 文件夹下
+/// <b>注意：</b>
+/// <br/>
+/// 该类型所在的脚本文件需要放置在 Editor 文件夹下；
 /// </remarks>
-[CustomPropertyDrawer(typeof(#目标类型class或结构体struct的名称#))] // 关联脚本
+[CustomPropertyDrawer(typeof(#目标类型class或结构体struct#))] // 关联脚本
 public class #SCRIPTNAME# : PropertyDrawer
 {
     #region 常量
@@ -60,18 +62,18 @@ public class #SCRIPTNAME# : PropertyDrawer
     /// <summary>
     /// 绘制 GUI 时
     /// </summary>
-    /// <param name="position">绘制区域</param>
-    /// <param name="property">属性</param>
-    /// tparam name="label">标签</param>
+    /// <param name="position">指定需要绘制的 <paramref name="property"/> 的绘制区域。</param>
+    /// <param name="property">指定需要绘制的序列化属性。</param>
+    /// <param name="label">指定需要绘制的 <paramref name="property"/> 的 GUI 内容。</param>
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
-        // 重置【缩进级别】
+        // 重置缩进级别
         IndentLevel = 0;
 
         // 开始属性绘制
         EditorGUI.BeginProperty(position, label, property);
 
-        // 绘制【标题】，高度为【1】行
+        // 绘制标题，高度为 1 行
         GUI.Label(new Rect(position.x, position.y, position.width, SingleLineHeight), label);
 
         // TODO: 绘制内容
@@ -81,16 +83,17 @@ public class #SCRIPTNAME# : PropertyDrawer
     }
 
     /// <summary>
-    /// 获取【属性高度】
+    /// 获取属性高度
     /// </summary>
-    /// <param name="property">属性</param>
-    /// tparam name="label">标签</param>
+    /// <param name="property">指定需要绘制的序列化属性。</param>
+    /// <param name="label">指定需要绘制的 <paramref name="property"/> 的 GUI 内容。</param>
+    /// <returns>返回值为属性在 <see cref="global::UnityEditor.InspectorWindow">检视窗口</see> 的绘制高度。</returns>
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
         // 计算整个 PropertyDrawer 需要的高度
         float result = 0;
 
-        // 累加【标题高度】
+        // 累加标题高度
         result += SpacePerLine;
 
         // TODO: 计算属性高度
@@ -99,5 +102,5 @@ public class #SCRIPTNAME# : PropertyDrawer
     }
     #endregion
 }
-#endif
 #ROOTNAMESPACEEND#
+#endif
