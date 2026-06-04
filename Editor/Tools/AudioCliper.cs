@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 using System;
+using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
 
@@ -25,11 +26,11 @@ namespace MoShan.Unity.EditorExpand
             // 获取窗口
             AudioCliper window = EditorWindow.GetWindow<AudioCliper>(true, "音频剪辑器", true);
 
-            // 设置窗口大小
-            float width = 500f;
+            // 设置窗口的大小
+            float width  = 500f;
             float height = 800f;
 
-            // 设置尺寸下限
+            // 设置窗口的大小下限
             window.minSize = new Vector2(width, height);
 
             // 获取当前显示器的分辨率以设置窗口到屏幕中心
@@ -288,6 +289,7 @@ namespace MoShan.Unity.EditorExpand
         /// <summary>
         /// 剪辑并保存音频片段
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void ClipAndSave()
         {
             // 判断 <音频片段是否不为空值>
@@ -311,6 +313,7 @@ namespace MoShan.Unity.EditorExpand
         /// <summary>
         /// 更新波形图
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void UpdateWaveformTexture()
         {
             // 判断 <样本是否不为空值>
@@ -328,6 +331,7 @@ namespace MoShan.Unity.EditorExpand
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <returns>返回生成的波形图</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Texture2D GenerateWaveformTexture(float[] samples, int channels, int width, int height)
         {
             Texture2D texture = new Texture2D(width, height, TextureFormat.RGBA32, false);
@@ -368,10 +372,11 @@ namespace MoShan.Unity.EditorExpand
         /// <summary>
         /// 剪辑音频片段
         /// </summary>
-        /// <param name="originalClip">原始音频片段</param>
-        /// <param name="start">剪辑开始时间</param>
-        /// <param name="end">剪辑结束时间</param>
-        /// <returns>返回完成剪辑的音频片段</returns>
+        /// <param name="originalClip">指定需要剪辑的原始音频片段。</param>
+        /// <param name="start">指定剪辑 <paramref name="originalClip"/> 的开始时间。</param>
+        /// <param name="end">指定剪辑 <paramref name="originalClip"/> 的结束时间。</param>
+        /// <returns>返回值为 <paramref name="originalClip"/> 的剪辑结果。</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private AudioClip ClipAudio(AudioClip originalClip, float start, float end)
         {
             float[] data = new float[originalClip.samples * originalClip.channels];

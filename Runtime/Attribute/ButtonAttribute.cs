@@ -7,14 +7,13 @@ namespace MoShan.Unity.EngineExpand
     /// 按钮特性
     /// </summary>
     /// <remarks>
-    /// <para>
-    /// <br><b>使用：</b></br>
-    /// <br>使用该特性标记的【方法】将在检视窗口底部显示自定义名称的按钮。</br>
-    /// </para>
-    /// <para>
-    /// <br><b>注意：</b></br>
-    /// <br>该类型所在的脚本文件应放置在非【Editor】文件夹下，否则会因为找不到该类型而导致报错。</br>
-    /// </para>
+    /// <b>使用：</b>
+    /// <br/>
+    /// 使用该特性标记的方法将在检视窗口底部显示自定义名称的按钮。
+    /// <para/>
+    /// <b>注意：</b>
+    /// <br/>
+    /// 该类型所在的脚本文件应放置在非 Editor 文件夹下，否则会因为找不到该类型而导致报错。
     /// </remarks>
     /// <example>
     /// <code><![CDATA[
@@ -27,7 +26,7 @@ namespace MoShan.Unity.EngineExpand
     /// 
     /// ]]></code>
     /// </example>
-    [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = false)] // 仅对方法生效，不可继承，单个方法上不允许添加多个该属性
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)] // 仅对方法生效；单个方法上不允许添加多个该属性；不可继承
     public sealed class ButtonAttribute : PropertyAttribute
     {
         #region 字段

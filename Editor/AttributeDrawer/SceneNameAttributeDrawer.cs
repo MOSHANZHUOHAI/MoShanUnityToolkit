@@ -20,7 +20,7 @@ namespace MoShan.Unity.EditorExpand
     /// 该类型需要配合 <see cref="SceneNameAttribute">场景名称特性</see> 类型使用，且对应类型所在的脚本文件应放置在非 Editor 文件夹下。
     /// </remarks>
     [CustomPropertyDrawer(typeof(SceneNameAttribute))] // 设置自定义属性绘制器对应的类型
-    public class SceneNameAttributeDrawer : PropertyDrawer
+    internal sealed class SceneNameAttributeDrawer : PropertyDrawer
     {
         #region 静态私有方法
         /// <summary>
