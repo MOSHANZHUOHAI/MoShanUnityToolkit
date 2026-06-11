@@ -7,7 +7,8 @@ using UnityEngine;
 namespace MoShan.Unity.EditorExpand
 {
     using Vector2 = global::UnityEngine.Vector2;
-    using Rect = global::UnityEngine.Rect;
+    using Vector3 = global::UnityEngine.Vector3;
+    using Rect    = global::UnityEngine.Rect;
 
     /// <summary>
     /// 编辑器窗口：纹理 UV 编辑器

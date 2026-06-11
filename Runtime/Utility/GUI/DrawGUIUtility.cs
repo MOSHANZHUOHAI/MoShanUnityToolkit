@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace MoShan.Unity.EngineExpand
 {
-    using Rect = global::UnityEngine.Rect;
+    using Vector2 = global::UnityEngine.Vector2;
+    using Rect    = global::UnityEngine.Rect;
 
     /// <summary>
     /// 实用程序：IMGUI 绘制

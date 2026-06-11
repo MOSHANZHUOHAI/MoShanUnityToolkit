@@ -6,7 +6,8 @@ using UnityEngine;
 
 namespace MoShan.Unity.EditorExpand
 {
-    using Rect = global::UnityEngine.Rect;
+    using Vector2 = global::UnityEngine.Vector2;
+    using Rect    = global::UnityEngine.Rect;
 
     /// <summary>
     /// 编辑器窗口：音频剪辑器

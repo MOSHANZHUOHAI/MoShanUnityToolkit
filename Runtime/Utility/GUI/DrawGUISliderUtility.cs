@@ -4,6 +4,9 @@ using UnityEngine.UIElements;
 
 namespace MoShan.Unity.EngineExpand
 {
+    using Vector2 = global::UnityEngine.Vector2;
+    using Rect    = global::UnityEngine.Rect;
+
     /// <summary>
     /// 实用程序：IMGUI 滑动条绘制
     /// </summary>

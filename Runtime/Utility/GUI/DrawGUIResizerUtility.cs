@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace MoShan.Unity.EngineExpand
 {
-    using Rect    = global::UnityEngine.Rect;
-    using Vector2 = global::UnityEngine.Vector2;
+    using Rect      = global::UnityEngine.Rect;
+    using Vector2   = global::UnityEngine.Vector2;
 
     /// <summary>
     /// 实用程序：IMGUI 尺寸调整边框绘制

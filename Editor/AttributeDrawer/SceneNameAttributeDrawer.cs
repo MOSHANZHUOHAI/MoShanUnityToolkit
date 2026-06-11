@@ -9,6 +9,8 @@ namespace MoShan.Unity.EditorExpand
 {
     using Path = global::System.IO.Path;
 
+    using Rect = global::UnityEngine.Rect;
+
     /// <summary>
     /// 属性绘制器：场景名称特性
     /// </summary>
